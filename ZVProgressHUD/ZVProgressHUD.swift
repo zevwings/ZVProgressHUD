@@ -437,7 +437,7 @@ extension ZVProgressHUD {
     }
     
     func overlayDidTouchUpInside(_ sender: Any) {
-        NotificationCenter.default.post(name: .ZVProgressHUDTouchEvent, object: self, userInfo: nil)
+        NotificationCenter.default.post(name: .ZVProgressHUDDidReceiveTouchEvent, object: self, userInfo: nil)
     }
 
 }
@@ -649,6 +649,6 @@ extension Timer {
 
 public extension Notification.Name {
     
-    static let ZVProgressHUDTouchEvent = Notification.Name(rawValue: "com.zevwings.progresshud.touchup.inside")
+    static let ZVProgressHUDDidReceiveTouchEvent = Notification.Name(rawValue: "com.zevwings.progresshud.touchup.inside")
 }
 

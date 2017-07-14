@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDTouchEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDDidReceiveTouchEvent, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
