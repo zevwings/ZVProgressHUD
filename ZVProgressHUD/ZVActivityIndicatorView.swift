@@ -80,6 +80,7 @@ internal class ZVActivityIndicatorView: UIView {
         self._activityIndicatorLayer.path = path.cgPath
         self._activityIndicatorLayer.strokeStart = 0.0
         self._activityIndicatorLayer.strokeEnd = 0.0
+
     }
     
     internal func startAnimating() {

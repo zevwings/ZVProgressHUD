@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "zevwings" => "zevwings@gmail.com" }
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/zevwings/ZVRefreshing.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/zevwings/ZVProgressHUD.git", :tag => "#{s.version}" }
   s.source_files = "ZVProgressHUD/**/*.swift", "ZVProgressHUD/ZVProgressHUD.h"
   s.resources    = "ZVProgressHUD/Resource.bundle"
   s.requires_arc = true

@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var textField: UITextField!
     
     var progress: Float = 0.0
+    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,12 +90,21 @@ extension ViewController {
     }
     
     func showProgress() {
+//        ZVProgressHUD.show(progress: 1.0)
         self.progress = 0
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
+        if  self.timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
     }
     
     func showProgressWithLabel() {
         self.progress = 0
+        if  self.timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
     }
     
