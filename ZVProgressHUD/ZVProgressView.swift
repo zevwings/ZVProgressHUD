@@ -47,6 +47,7 @@ internal class ZVProgressView: UIView {
     internal override init(frame: CGRect) {
         super.init(frame: frame)
         self.layer.addSublayer(_progressLayer)
+        self.layer.masksToBounds = true
         self.layer.cornerRadius = self.frame.width * 0.5
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor(white: 1.0, alpha: 0.75).cgColor
