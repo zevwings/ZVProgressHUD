@@ -33,21 +33,6 @@ public extension ZVProgressHUD {
         case text(label: String)
         case custom(view: UIView)
         
-        fileprivate var delay: TimeInterval {
-            switch self {
-            case .text:
-                return 3.0
-            case .custom:
-                return 0.0
-            case .state(_, let state):
-                switch state {
-                case .custom, .error, .success, .warning:
-                    return 3.0
-                default:
-                    return 0.0
-                }
-            }
-        }
     }
     
     /// 显示风格
@@ -81,6 +66,15 @@ public extension ZVProgressHUD {
                 return color.backgroundColor
             }
         }
+    }
+    
+    /// 加载动画类型
+    ///
+    /// - native: 本地
+    /// - extended: 拓展
+    public enum AnimationType {
+        case native
+        case extended
     }
     
     /// 遮罩层类型
@@ -143,7 +137,7 @@ public class ZVProgressHUD: UIView {
             self._disableActions = true
             self._isFinishedLayout = false
             self._prepare()
-            self._placeSubView()
+            self._placeSubView(showKeyboard: true)
             self._disableActions = false
             self._isFinishedLayout = true
         }
@@ -176,12 +170,18 @@ public class ZVProgressHUD: UIView {
     /// baseView圆角 NOTE: 当视图为纯文本时圆角为该值的一般
     internal var cornerRadius: CGFloat = 12.0
     
+    /// 整体延时时间
     internal var delay: TimeInterval = 0.0
+    
+    /// 加载动画类型
+    internal var animationType: AnimationType = .extended
     
     // MARK: 基础控件
     
     fileprivate lazy var _overlayView: ZVBackgroundView = {
         let overlayView = ZVBackgroundView()
+        overlayView.backgroundColor = UIColor.clear
+        overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         overlayView.addTarget(self,
                               action: #selector(ZVProgressHUD.overlayDidTouchUpInside(_:)),
                               for: .touchUpInside)
@@ -195,16 +195,17 @@ public class ZVProgressHUD: UIView {
     }()
     
     fileprivate lazy var _stateLabel: UILabel = {
-        let stateLabel = UILabel()
-        stateLabel.font = .systemFont(ofSize: 14.0)
+        let stateLabel = UILabel(frame: .zero)
         stateLabel.textColor = .white
-        stateLabel.numberOfLines = 0
+        stateLabel.backgroundColor = .clear
+        stateLabel.baselineAdjustment = .alignCenters
         stateLabel.textAlignment = .center
         return stateLabel
     }()
     
     fileprivate lazy var _stateView: ZVStateView = {
         let stateView = ZVStateView()
+        stateView.autoresizingMask = [.flexibleBottomMargin, .flexibleTopMargin, .flexibleRightMargin, .flexibleLeftMargin ]
         return stateView
     }()
     
@@ -238,20 +239,20 @@ public class ZVProgressHUD: UIView {
     
     // MARK: 通知
     func orientationDidChange(notification: Notification) {
-        self._placeSubView()
+        self._placeSubView(showKeyboard: true)
     }
     
     func keyboardWillShow(notification: Notification) {
         
         guard self.superview != nil else { return }
         UIView.animate(withDuration: AnimationDuration.keyboard) {
-            guard let bounds = notification.userInfo?["UIKeyboardBoundsUserInfoKey"] as? CGRect else {
+            guard let bounds = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect else {
                 return
             }
             var frame = self.keyWindow?.frame ?? .zero
             let height = frame.height - bounds.height
             frame.size.height = height
-            self._placeSubView(with: frame)
+            self._placeSubView(showKeyboard: true)
 
         }
     }
@@ -259,7 +260,7 @@ public class ZVProgressHUD: UIView {
     func keyboardWillHide(notification: Notification) {
         guard self.superview != nil else { return }
         UIView.animate(withDuration: AnimationDuration.keyboard) {
-            self._placeSubView()
+            self._placeSubView(showKeyboard: false)
         }
     }
 }
@@ -311,6 +312,7 @@ extension ZVProgressHUD {
                 _baseView.addSubview(_stateView)
             }
             _stateView.color = self.displayStyle.foregroundColor
+            _stateView.animationType = self.animationType
             _stateView.stateType = state
             guard let titleValue = title, titleValue.isEmpty == false else {
                 self._stateLabel.text = nil
@@ -332,18 +334,20 @@ extension ZVProgressHUD {
     }
     
     //MARK: 摆放控件
-    fileprivate func _placeSubView(with frame: CGRect = .zero) {
-        
-        print(#function)
+    fileprivate func _placeSubView(showKeyboard: Bool = false) {
 
         CATransaction.begin()
         CATransaction.setDisableActions(self._disableActions)
+
+        let keyboardHeight = self.keyboardFrame.height
+
+        var _frame: CGRect = keyWindow?.frame ?? .zero
         
-        if frame == .zero {
-            self.frame = keyWindow?.frame ?? .zero
-        } else {
-            self.frame = frame
+        if showKeyboard {
+            _frame.size.height -= keyboardHeight
         }
+        
+        self.frame = _frame
         
         self._overlayView.frame = self.frame
         
@@ -500,6 +504,11 @@ extension ZVProgressHUD {
         set { self.shared.cornerRadius = newValue }
     }
     
+    public static var animationType: ZVProgressHUD.AnimationType {
+        get { return self.shared.animationType }
+        set { self.shared.animationType = newValue }
+    }
+    
     // MARK: 显示方法
     
     /// 显示纯文本
@@ -571,10 +580,8 @@ extension ZVProgressHUD {
                 })
             }
             
-            let duration = displayType.delay
-            
             if self._fadeOutTimer != nil { self._removeTimer() }
-            if duration != 0.0 { self._addTimer(delay: duration) }
+            if self.fadeOut.0 { self._addTimer() }
         }
     }
     
@@ -593,8 +600,8 @@ extension ZVProgressHUD {
         }
     }
     
-    private func _addTimer(delay duration: TimeInterval) {
-        self._fadeOutTimer = Timer.schedule(delay: duration, handler: { (timer) in
+    private func _addTimer() {
+        self._fadeOutTimer = Timer.schedule(delay: self.fadeOut.1, handler: { (timer) in
             self._dismiss()
             self._removeTimer()
         })
@@ -606,8 +613,8 @@ extension ZVProgressHUD {
     }
     
     /// key window
-    var keyWindow: UIWindow? {
-        for window in UIApplication.shared.windows.reversed() {
+    fileprivate var keyWindow: UIWindow? {
+        for window in UIApplication.shared.windows {
             if window.screen == UIScreen.main &&
                 window.isHidden == false && window.alpha > 0 &&
                 window.windowLevel == UIWindowLevelNormal {
@@ -615,6 +622,58 @@ extension ZVProgressHUD {
             }
         }
         return nil
+    }
+    
+    fileprivate var keyboardFrame: CGRect {
+        
+        let windows = UIApplication.shared.windows
+        var keyboardWindow: UIWindow!
+        for window in windows.reversed() {
+            if #available(iOS 9.0, *) {
+                if NSStringFromClass(window.classForCoder) == "UIRemoteKeyboardWindow" {
+                    keyboardWindow = window
+                }
+            } else {
+                if NSStringFromClass(window.classForCoder) == "UITextEffectWindow" {
+                    keyboardWindow = window
+                }
+            }
+        }
+        
+        var containerView: UIView!
+        if keyboardWindow == nil { return .zero }
+        if keyboardWindow.isHidden { return .zero }
+        for subview in keyboardWindow.subviews {
+            if NSStringFromClass(subview.classForCoder) == "UIInputSetContainerView" {
+                containerView = subview
+            }
+        }
+        
+        if containerView == nil { return .zero }
+        for subview in containerView.subviews {
+            if NSStringFromClass(subview.classForCoder) == "UIInputSetHostView" {
+                return subview.frame
+            }
+        }
+        
+        return .zero
+    }
+    
+    fileprivate var fadeOut: (Bool, TimeInterval) {
+        let delay: TimeInterval = self.delay > 0 ? self.delay : 3.0
+        switch self.displayType {
+        case .text:
+            return (true, delay)
+        case .custom:
+            return (false, delay)
+        case .state(_, let state):
+            switch state {
+            case .custom, .error, .success, .warning:
+                return (true, delay)
+            default:
+                return (false, delay)
+            }
+        }
     }
 }
 

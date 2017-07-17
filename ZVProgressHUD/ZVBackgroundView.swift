@@ -10,35 +10,38 @@ import UIKit
 
 internal class ZVBackgroundView: UIControl {
     
-    private var _coloredLayer: CALayer?
+    private lazy var _coloredLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.clear.cgColor
+        return layer
+    }()
     
     internal override var frame: CGRect {
         didSet {
-            self._coloredLayer?.frame = frame
+            self._coloredLayer.frame = frame
         }
     }
     
     internal var maskType: ZVProgressHUD.MaskType = .none {
         didSet {
-            if self._coloredLayer == nil {
-                self._coloredLayer = CALayer()
-                self.layer.addSublayer(_coloredLayer!)
+            if self._coloredLayer.superlayer == nil {
+                self.layer.addSublayer(_coloredLayer)
             }
             switch self.maskType {
             case .none:
-                self._coloredLayer?.backgroundColor = UIColor.clear.cgColor
+                self._coloredLayer.backgroundColor = UIColor.clear.cgColor
                 self.isUserInteractionEnabled = false
                 break
             case .clear:
-                self._coloredLayer?.backgroundColor = UIColor.clear.cgColor
+                self._coloredLayer.backgroundColor = UIColor.clear.cgColor
                 self.isUserInteractionEnabled = true
                 break
             case .black:
-                self._coloredLayer?.backgroundColor = UIColor(white: 0, alpha: 0.35).cgColor
+                self._coloredLayer.backgroundColor = UIColor(white: 0, alpha: 0.35).cgColor
                 self.isUserInteractionEnabled = true
                 break
             case .custom(let color):
-                self._coloredLayer?.backgroundColor = color.cgColor
+                self._coloredLayer.backgroundColor = color.cgColor
                 self.isUserInteractionEnabled = true
                 break
             }

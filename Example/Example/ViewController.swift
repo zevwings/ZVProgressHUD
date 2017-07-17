@@ -37,12 +37,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
                 
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDDidReceiveTouchEvent, object: nil)
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
     }
+    
 }
 
 // MARK: - ZVProgressHUD Notification
@@ -50,7 +52,7 @@ class ViewController: UIViewController {
 extension ViewController {
     
     func progressHUDTouchEvent(notification: Notification) {
-        ZVProgressHUD.dismiss()
+        self.dismissHUD()
     }
 }
 
@@ -59,7 +61,6 @@ extension ViewController {
 extension ViewController {
 
     func showIndicator() {
-        
         ZVProgressHUD.show()
     }
     
@@ -90,7 +91,6 @@ extension ViewController {
     }
     
     func showProgress() {
-//        ZVProgressHUD.show(progress: 1.0)
         self.progress = 0
         if  self.timer != nil {
             timer?.invalidate()
@@ -105,7 +105,7 @@ extension ViewController {
             timer?.invalidate()
             timer = nil
         }
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
     }
     
     
@@ -131,6 +131,10 @@ extension ViewController {
     }
     
     func dismissHUD() {
+        if self.timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
         ZVProgressHUD.dismiss()
     }
     
@@ -174,6 +178,20 @@ extension ViewController {
         }
     }
     
+    @IBAction func setAnimationType(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            ZVProgressHUD.animationType = .extended
+            break
+        case 1:
+            ZVProgressHUD.animationType = .native
+            break
+        default:
+            break
+        }
+    }
+
+    
     func progressTimerAction(_ sender: Timer) {
         
         let userInfo = sender.userInfo as? [String: String]
@@ -211,3 +229,29 @@ extension ViewController: UITableViewDelegate {
         self.perform(selector)
     }
 }
+
+extension ViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        self.textField.resignFirstResponder()
+        
+        return true
+    }
+}
+
+
+extension ViewController {
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
+
+extension UINavigationController {
+    
+    open override var childViewControllerForStatusBarStyle: UIViewController? {
+        return self.topViewController
+    }
+}
+

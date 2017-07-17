@@ -30,6 +30,7 @@ internal class ZVProgressView: UIView {
         }
         set {
             self._progressLayer.strokeColor = newValue?.cgColor
+            self.layer.borderColor = newValue?.withAlphaComponent(0.75).cgColor
         }
     }
 

@@ -13,6 +13,7 @@ import UIKit
 internal class ZVStateView: UIView {
     
     internal var color: UIColor?
+    internal var animationType: ZVProgressHUD.AnimationType = .extended
     
     /// 控件大小
     private struct size {
@@ -29,6 +30,9 @@ internal class ZVStateView: UIView {
                 
                 if _indicatorView.superview != nil {
                     _indicatorView.removeFromSuperview()
+                }
+                if _nativeIndicatorView.superview != nil {
+                    _nativeIndicatorView.removeFromSuperview()
                 }
                 if _progressView.superview != nil {
                     _progressView.removeFromSuperview()
@@ -48,11 +52,27 @@ internal class ZVStateView: UIView {
                 if _progressView.superview != nil {
                     _progressView.removeFromSuperview()
                 }
-                if _indicatorView.superview == nil {
-                    self.addSubview(_indicatorView)
-                    _indicatorView.color = self.color
+                if self.animationType == .extended {
+                    if _nativeIndicatorView.superview != nil {
+                        _nativeIndicatorView.removeFromSuperview()
+                    }
+                    if _indicatorView.superview == nil {
+                        self.addSubview(_indicatorView)
+                        _indicatorView.color = self.color
+                    }
+                    _indicatorView.startAnimating()
+                } else {
+                    if _indicatorView.superview != nil {
+                        _indicatorView.removeFromSuperview()
+                    }
+                    if _nativeIndicatorView.superview == nil {
+                        self.addSubview(_nativeIndicatorView)
+                        let center = CGPoint(x: self.frame.width * 0.5, y: self.frame.height * 0.5)
+                        _nativeIndicatorView.center = center
+                        self._nativeIndicatorView.color = self.color
+                    }
+                    _nativeIndicatorView.startAnimating()
                 }
-                _indicatorView.startAnimating()
                 break
                 
             case .progress(let value):
@@ -61,6 +81,9 @@ internal class ZVStateView: UIView {
                 }
                 if _indicatorView.superview != nil {
                     _indicatorView.removeFromSuperview()
+                }
+                if _nativeIndicatorView.superview != nil {
+                    _nativeIndicatorView.removeFromSuperview()
                 }
                 if _progressView.superview == nil {
                     self.addSubview(_progressView)
@@ -95,6 +118,14 @@ internal class ZVStateView: UIView {
         return indicatorView
     }()
     
+    private lazy var _nativeIndicatorView: UIActivityIndicatorView = {
+        let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let indicatorView = UIActivityIndicatorView(frame: frame)
+        indicatorView.activityIndicatorViewStyle = .whiteLarge
+        indicatorView.hidesWhenStopped = true
+        return indicatorView
+    }()
+    
     private lazy var _progressView: ZVProgressView = {
         let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         let progressView = ZVProgressView(frame: frame)
@@ -105,6 +136,7 @@ internal class ZVStateView: UIView {
     private lazy var _imageView: UIImageView = {
         let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         let imageView = UIImageView(frame: frame)
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
     

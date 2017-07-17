@@ -31,7 +31,7 @@
             </objects>
             <point key="canvasLocation" x="-1219" y="-55"/>
         </scene>
-        <!--View Controller-->
+        <!--ZVProgressHUD-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
@@ -44,7 +44,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zdR-fL-ctk">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="174"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lAf-uf-og0">
                                         <rect key="frame" x="110" y="13" width="247" height="29"/>
@@ -87,38 +87,65 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="我说一个打酱油的" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EOH-2M-oms">
-                                        <rect key="frame" x="12" y="92" width="351" height="24"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="我是一个打酱油的" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EOH-2M-oms">
+                                        <rect key="frame" x="12" y="138" width="351" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="LpQ-ew-aRc"/>
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="wll-zl-4rD"/>
+                                        </connections>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AnimationType" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzG-hN-M2r">
+                                        <rect key="frame" x="12" y="96" width="80" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iTW-HY-RGN">
+                                        <rect key="frame" x="110" y="97" width="247" height="29"/>
+                                        <segments>
+                                            <segment title="Extended"/>
+                                            <segment title="Native"/>
+                                        </segments>
+                                        <color key="tintColor" red="0.84313725490000002" green="0.12941176469999999" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="setAnimationType:" destination="BYZ-38-t0r" eventType="valueChanged" id="R84-a9-P5E"/>
+                                        </connections>
+                                    </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="mzG-hN-M2r" firstAttribute="width" secondItem="gGJ-5S-buc" secondAttribute="width" id="2WZ-XB-Jvk"/>
+                                    <constraint firstItem="iTW-HY-RGN" firstAttribute="centerY" secondItem="mzG-hN-M2r" secondAttribute="centerY" id="6ZJ-wX-Wsh"/>
                                     <constraint firstItem="Eb9-qY-HWQ" firstAttribute="leading" secondItem="gGJ-5S-buc" secondAttribute="trailing" constant="18" id="77R-xW-lRM"/>
                                     <constraint firstItem="7bi-UK-UE0" firstAttribute="leading" secondItem="zdR-fL-ctk" secondAttribute="leading" constant="12" id="9xQ-dV-iTy"/>
                                     <constraint firstAttribute="trailing" secondItem="Eb9-qY-HWQ" secondAttribute="trailing" constant="18" id="FQn-YP-eBO"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="width" secondItem="7bi-UK-UE0" secondAttribute="width" id="JQ9-yg-KrW"/>
                                     <constraint firstAttribute="bottom" secondItem="EOH-2M-oms" secondAttribute="bottom" constant="12" id="KY2-ID-rea"/>
+                                    <constraint firstItem="iTW-HY-RGN" firstAttribute="width" secondItem="Eb9-qY-HWQ" secondAttribute="width" id="L7d-Va-lln"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="leading" secondItem="7bi-UK-UE0" secondAttribute="leading" id="QdD-Zz-Nzn"/>
                                     <constraint firstAttribute="trailing" secondItem="EOH-2M-oms" secondAttribute="trailing" constant="12" id="aRZ-X9-d2s"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="height" secondItem="7bi-UK-UE0" secondAttribute="height" id="dAl-eF-xJ5"/>
                                     <constraint firstItem="lAf-uf-og0" firstAttribute="leading" secondItem="7bi-UK-UE0" secondAttribute="trailing" constant="18" id="e6K-8g-NPj"/>
                                     <constraint firstAttribute="trailing" secondItem="lAf-uf-og0" secondAttribute="trailing" constant="18" id="eMF-Gr-tcL"/>
                                     <constraint firstItem="EOH-2M-oms" firstAttribute="leading" secondItem="zdR-fL-ctk" secondAttribute="leading" constant="12" id="gW0-bo-Lsy"/>
+                                    <constraint firstItem="mzG-hN-M2r" firstAttribute="height" secondItem="gGJ-5S-buc" secondAttribute="height" id="heJ-dd-caw"/>
                                     <constraint firstItem="Eb9-qY-HWQ" firstAttribute="centerY" secondItem="gGJ-5S-buc" secondAttribute="centerY" id="hfB-tG-FF3"/>
                                     <constraint firstItem="7bi-UK-UE0" firstAttribute="top" secondItem="zdR-fL-ctk" secondAttribute="top" constant="12" id="hx5-E9-L0Z"/>
+                                    <constraint firstItem="iTW-HY-RGN" firstAttribute="leading" secondItem="Eb9-qY-HWQ" secondAttribute="leading" id="rpb-7S-mVB"/>
+                                    <constraint firstItem="mzG-hN-M2r" firstAttribute="leading" secondItem="gGJ-5S-buc" secondAttribute="leading" id="sIr-Do-7Wd"/>
+                                    <constraint firstItem="mzG-hN-M2r" firstAttribute="top" secondItem="gGJ-5S-buc" secondAttribute="bottom" constant="12" id="sSZ-4V-Jpp"/>
+                                    <constraint firstItem="EOH-2M-oms" firstAttribute="top" secondItem="mzG-hN-M2r" secondAttribute="bottom" constant="12" id="tOF-e4-rKx"/>
                                     <constraint firstItem="lAf-uf-og0" firstAttribute="centerY" secondItem="7bi-UK-UE0" secondAttribute="centerY" id="vI3-ep-kEx"/>
-                                    <constraint firstItem="EOH-2M-oms" firstAttribute="top" secondItem="gGJ-5S-buc" secondAttribute="bottom" constant="8" id="wr6-ck-wpn"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="top" secondItem="7bi-UK-UE0" secondAttribute="bottom" constant="12" id="x1j-A9-2GZ"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fRL-Mv-oJj">
-                                <rect key="frame" x="0.0" y="128" width="375" height="475"/>
+                                <rect key="frame" x="0.0" y="174" width="375" height="429"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReuseIdentifier" id="Ei7-Pb-6Ta">
@@ -147,11 +174,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fRL-Mv-oJj" secondAttribute="bottom" id="h6o-4L-5qI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="6x1-7Q-jEP">
-                        <barButtonItem key="rightBarButtonItem" title="Show Keyboard" id="tH9-yA-t65">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="ZVProgressHUD" id="6x1-7Q-jEP"/>
                     <connections>
                         <outlet property="tableView" destination="fRL-Mv-oJj" id="hon-BV-RQL"/>
                         <outlet property="textField" destination="EOH-2M-oms" id="5lP-JK-UU0"/>
