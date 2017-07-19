@@ -56,6 +56,11 @@ $ carthage update
 
 第二步，在你的项目配置找到 Targets -> Genral -> Embedded Binaries，点击 `+` 按钮， 选择`ZVProgressHUD.framework` 并添加到工程。 
 
+## Demo
+### Appetize
+你可以在线查看Demo: 
+https://appetize.io/app/hkhybxa53yyw594zp8v5chee0r?device=iphone6s&scale=75&orientation=portrait&osVersion=10.0
+
 ## Usage
 在需要使用 `ZVProgressHUD`时，使用 `import ZVProgressHUD`导入便可以使用
 
