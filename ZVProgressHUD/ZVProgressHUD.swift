@@ -17,6 +17,11 @@ public extension ZVProgressHUD {
         static let keyboard: TimeInterval = 0.25
     }
     
+    fileprivate struct StateSize {
+        static let width: CGFloat = 38.0
+        static let height: CGFloat = 38.0
+    }
+    
     /// 显示位置
     public enum DisplayPosition {
         case center, bottom
@@ -175,6 +180,9 @@ public class ZVProgressHUD: UIView {
     
     /// 加载动画类型
     internal var animationType: AnimationType = .extended
+    
+    /// 图片或指示器大小
+    internal var stateSize: CGSize = CGSize(width: StateSize.width, height: StateSize.height)
     
     // MARK: 基础控件
     
@@ -353,7 +361,7 @@ extension ZVProgressHUD {
         
         let labelSize = self._stateLabel.textSize(with: .init(width: self.frame.width * 0.5,
                                                               height: self.frame.width * 0.5))
-        let stateSize = self._stateView.frame.size
+
         let labelWidth = labelSize.width + self.titleInsets.left + self.titleInsets.right
         let stateWidth = stateSize.width + self.stateInsets.left + self.stateInsets.right
         
@@ -502,6 +510,13 @@ extension ZVProgressHUD {
     public static var cornerRadius: CGFloat {
         get { return self.shared.cornerRadius }
         set { self.shared.cornerRadius = newValue }
+    }
+    
+    /// 图片或指示器大小
+    /// NOTE: Resource.bundle 内图片大小为114px，请慎重设置该值
+    public static var stateSize: CGSize {
+        get { return self.shared.stateSize }
+        set { self.shared.stateSize = newValue }
     }
     
     public static var animationType: ZVProgressHUD.AnimationType {

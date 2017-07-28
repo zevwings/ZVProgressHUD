@@ -15,12 +15,16 @@ internal class ZVStateView: UIView {
     internal var color: UIColor?
     internal var animationType: ZVProgressHUD.AnimationType = .extended
     
-    /// 控件大小
-    private struct size {
-        static let height: CGFloat = 38.0
-        static let width: CGFloat = 38.0
+    override var frame: CGRect {
+        didSet {
+            let frame = CGRect(origin: .zero,
+                               size: .init(width: self.frame.width, height: self.frame.height))
+            self._imageView.frame = frame
+            self._indicatorView.frame = frame
+            self._progressView.frame = frame
+            self._nativeIndicatorView.frame = frame
+        }
     }
-    
     
     /// 设置状态类型
     internal var stateType: ZVProgressHUD.StateType = .indicator {
@@ -111,7 +115,7 @@ internal class ZVStateView: UIView {
     
     // MARK: 基础控件
     private lazy var _indicatorView: ZVActivityIndicatorView = {
-        let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         let indicatorView = ZVActivityIndicatorView(frame: frame)
         indicatorView.hiddenWhenStopped = true
         indicatorView.lineWidth = 2.5
@@ -119,7 +123,7 @@ internal class ZVStateView: UIView {
     }()
     
     private lazy var _nativeIndicatorView: UIActivityIndicatorView = {
-        let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         let indicatorView = UIActivityIndicatorView(frame: frame)
         indicatorView.activityIndicatorViewStyle = .whiteLarge
         indicatorView.hidesWhenStopped = true
@@ -127,14 +131,14 @@ internal class ZVStateView: UIView {
     }()
     
     private lazy var _progressView: ZVProgressView = {
-        let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         let progressView = ZVProgressView(frame: frame)
         progressView.lineWidth = 2
         return progressView
     }()
     
     private lazy var _imageView: UIImageView = {
-        let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        let frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
         let imageView = UIImageView(frame: frame)
         imageView.isUserInteractionEnabled = true
         return imageView
@@ -142,19 +146,14 @@ internal class ZVStateView: UIView {
     
     // MARK: 初始化状态
     
-    internal convenience init() {
-        let frame = CGRect(x: 0, y: 0, width:  size.width, height: size.height)
-        self.init(frame: frame)
-    }
-    
-    private override init(frame: CGRect) {
+    internal override init(frame: CGRect) {
         super.init(frame: frame)
         self.isUserInteractionEnabled = false
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        self.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
     }
 }
 

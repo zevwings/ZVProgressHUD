@@ -21,6 +21,12 @@ internal class ZVProgressView: UIView {
         }
     }
     
+    override var frame: CGRect {
+        didSet {
+            self.layer.cornerRadius = self.frame.width * 0.5
+        }
+    }
+    
     internal var color: UIColor? {
         get {
             if let strokeColor = self._progressLayer.strokeColor {
@@ -49,7 +55,6 @@ internal class ZVProgressView: UIView {
         super.init(frame: frame)
         self.layer.addSublayer(_progressLayer)
         self.layer.masksToBounds = true
-        self.layer.cornerRadius = self.frame.width * 0.5
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor(white: 1.0, alpha: 0.75).cgColor
     }
@@ -80,7 +85,7 @@ internal class ZVProgressView: UIView {
     
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn))
-        CATransaction.setAnimationDuration(0.5)
+        CATransaction.setAnimationDuration(0.25)
         self._progressLayer.strokeEnd = CGFloat(v)
         CATransaction.commit()
     }

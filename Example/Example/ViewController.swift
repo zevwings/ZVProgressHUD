@@ -26,6 +26,8 @@ class ViewController: UIViewController {
         ("showLabelOnCenter", #selector(ViewController.showLabelOnCenter)),
         ("dismiss", #selector(ViewController.dismissHUD))]
     
+    @IBOutlet weak var stateSizeTextField: UITextField!
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var textField: UITextField!
@@ -190,7 +192,6 @@ extension ViewController {
             break
         }
     }
-
     
     func progressTimerAction(_ sender: Timer) {
         
@@ -237,6 +238,55 @@ extension ViewController: UITextFieldDelegate {
         self.textField.resignFirstResponder()
         
         return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard textField == self.stateSizeTextField else { return true }
+        
+        var text = textField.text ?? ""
+        let range = text.range(from: range)
+        text.replaceSubrange(range!, with: string)
+        
+        let value = Int(text)
+        guard let size = value, size > 0 else { return true }
+    
+        ZVProgressHUD.stateSize = .init(width: size, height: size)
+        print(size)
+        
+        return true
+    }
+    
+}
+extension String {
+    
+    
+    /// 将 Range<String.Index> 转为 NSRange
+    ///
+    /// - Parameter range: Range<String.Index>
+    /// - Returns: NSRange
+    func nsRange(from range: Range<String.Index>) -> NSRange {
+        let fromIndex = range.lowerBound.samePosition(in: utf16)
+        let toIndex = range.upperBound.samePosition(in: utf16)
+        return NSRange(location: utf16.distance(from: utf16.startIndex, to: fromIndex),
+                       length: utf16.distance(from: fromIndex, to: toIndex))
+    }
+    
+    
+    /// 将NSRange 转为 Range<String.Index>
+    ///
+    /// - Parameter nsRange: NSRange
+    /// - Returns: Range<String.Index>
+    func range(from nsRange: NSRange) -> Range<String.Index>? {
+        
+        guard
+            let fromUTFIndex = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
+            let toUTFIndex = utf16.index(fromUTFIndex, offsetBy: nsRange.length, limitedBy: utf16.endIndex),
+            let fromIndex = String.Index(fromUTFIndex, within: self),
+            let toIndex = String.Index(toUTFIndex, within: self)
+            else { return nil }
+        
+        return fromIndex ..< toIndex
     }
 }
 
