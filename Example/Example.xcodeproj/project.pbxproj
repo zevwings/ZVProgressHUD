@@ -15,6 +15,7 @@
 		4D5BDA541F146C6700E68CB6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D5BDA521F146C6700E68CB6 /* LaunchScreen.storyboard */; };
 		4D5BDA5F1F146C6700E68CB6 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BDA5E1F146C6700E68CB6 /* ExampleTests.swift */; };
 		4D5BDA6A1F146C6700E68CB6 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BDA691F146C6700E68CB6 /* ExampleUITests.swift */; };
+		4D695F801F4EDB3A00A8AFEB /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D695F7F1F4EDB3A00A8AFEB /* Reveal.framework */; };
 		4DF78A581F14E66500CA5657 /* ZVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8046F51F14CB690069F9F2 /* ZVProgressHUD.framework */; };
 		4DF78A591F14E66500CA5657 /* ZVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8046F51F14CB690069F9F2 /* ZVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -86,6 +87,7 @@
 		4D5BDA651F146C6700E68CB6 /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5BDA691F146C6700E68CB6 /* ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITests.swift; sourceTree = "<group>"; };
 		4D5BDA6B1F146C6700E68CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4D695F7F1F4EDB3A00A8AFEB /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		4D8046EF1F14CB690069F9F2 /* ZVProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZVProgressHUD.xcodeproj; path = ../../ZVProgressHUD.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DF78A581F14E66500CA5657 /* ZVProgressHUD.framework in Frameworks */,
+				4D695F801F4EDB3A00A8AFEB /* Reveal.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +121,7 @@
 		4D5BDA3D1F146C6700E68CB6 = {
 			isa = PBXGroup;
 			children = (
+				4D695F7F1F4EDB3A00A8AFEB /* Reveal.framework */,
 				4D5BDA481F146C6700E68CB6 /* Example */,
 				4D5BDA5D1F146C6700E68CB6 /* ExampleTests */,
 				4D5BDA681F146C6700E68CB6 /* ExampleUITests */,
@@ -507,7 +511,12 @@
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -527,7 +536,12 @@
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;

@@ -37,10 +37,15 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDDidReceiveTouchEvent, object: nil)
+
+//        let progressView = ZVProgressView(frame: .init(x: 0, y: 0, width: 200, height: 200))
+//        progressView.backgroundColor = .lightGray
+//        self.view.addSubview(progressView)
         
-        ZVProgressHUD.lineWidth = 1.5
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDDidReceiveTouchEvent, object: nil)
+//
+//        ZVProgressHUD.lineWidth = 1.5
         
     }
     

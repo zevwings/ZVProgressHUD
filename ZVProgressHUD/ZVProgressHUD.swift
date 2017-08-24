@@ -103,7 +103,7 @@ public extension ZVProgressHUD {
     /// - warning: 警告
     /// - progress: 进度
     /// - custom: 自定义图片
-    public enum StateType {
+    public enum StateType: Equatable {
 
         case error, success, warning
         case indicator
@@ -121,6 +121,31 @@ public extension ZVProgressHUD {
                 return "warning.png"
             default:
                 return ""
+            }
+        }
+        
+        var hashValue: Int {
+            switch self {
+            case .error:
+                return 0
+            case .success:
+                return 1
+            case .warning:
+                return 2
+            case .indicator:
+                return 3
+            case .progress:
+                return 4
+            case .custom(let image):
+                return image.hashValue
+            }
+        }
+        
+        public static func ==(lhs: ZVProgressHUD.StateType, rhs: ZVProgressHUD.StateType) -> Bool {
+            if lhs.hashValue == rhs.hashValue {
+                return true
+            } else {
+                return false
             }
         }
     }
@@ -365,7 +390,7 @@ extension ZVProgressHUD {
         
         let labelSize = self._stateLabel.textSize(with: .init(width: self.frame.width * 0.75,
                                                               height: self.frame.width * 0.75))
-
+        
         let labelWidth = labelSize.width + self.titleInsets.left + self.titleInsets.right
         let stateWidth = stateSize.width + self.stateInsets.left + self.stateInsets.right
         
@@ -391,24 +416,33 @@ extension ZVProgressHUD {
             self._baseView.frame = CGRect(x: baseX, y: baseY, width: labelWidth, height: height)
             self._stateLabel.frame = CGRect(x: self.titleInsets.left, y: self.titleInsets.top, width: labelSize.width, height: labelSize.height)
             break
-        case .state:
-            let baseW = labelWidth > stateWidth ? labelWidth : stateWidth
+        case .state(_, let state):
+            
+            var height = stateSize.height
+            var width  = stateSize.width
+
+            if state.hashValue == 3 || state.hashValue == 4 {
+                height += self.lineWidth * 2
+                width += self.lineWidth * 2
+            }
+            let baseW  = labelWidth > stateWidth ? labelWidth : stateWidth
             var baseH: CGFloat = 0
             
             if labelSize == .zero {
-                baseH = labelSize.height + stateSize.height + self.stateInsets.top + self.stateInsets.bottom
+                baseH = labelSize.height + height + self.stateInsets.top + self.stateInsets.bottom
             } else {
-                baseH = labelSize.height + self.titleInsets.top + self.titleInsets.bottom + stateSize.height + self.stateInsets.top + self.stateInsets.bottom * 0.25
+                baseH = labelSize.height + self.titleInsets.top + self.titleInsets.bottom + height + self.stateInsets.top + self.stateInsets.bottom * 0.25
             }
             let baseX = x - baseW * 0.5
             let baseY = y - baseH * (self.displayPosition == .center ? 0.5 : 1)
             self._baseView.frame = CGRect(x: baseX, y: baseY, width: baseW, height: baseH)
             
-            let stateX = baseW * 0.5 - stateSize.width * 0.5
-            self._stateView.frame = CGRect(x: stateX, y: self.stateInsets.top, width: stateSize.width, height: stateSize.height)
+            let stateX = baseW * 0.5 - width * 0.5
+            self._stateView.frame = CGRect(x: stateX, y: self.stateInsets.top, width: width, height: height)
             
-            let labelY = self.stateInsets.top + stateSize.height + self.titleInsets.top
-            let labelW = labelSize.width < stateSize.width ? stateSize.width : labelSize.width
+            let labelY = self.stateInsets.top + height + self.titleInsets.top
+            let labelM = self.titleInsets.left + self.titleInsets.right
+            let labelW = labelWidth < stateWidth ? stateWidth - labelM: labelWidth - labelM
             self._stateLabel.frame = CGRect(x: self.titleInsets.left, y: labelY, width: labelW, height: labelSize.height)
             break
         case .custom(let view):

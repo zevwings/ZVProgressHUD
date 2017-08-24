@@ -14,8 +14,13 @@ internal class ZVActivityIndicatorView: UIView {
     
     private lazy var _activityIndicatorLayer: CAShapeLayer = {
         let activityIndicatorLayer = CAShapeLayer()
+        activityIndicatorLayer.lineCap = kCALineCapRound
+        activityIndicatorLayer.lineWidth = self.lineWidth
+        activityIndicatorLayer.frame = self.bounds
         activityIndicatorLayer.fillColor = UIColor.clear.cgColor
-        activityIndicatorLayer.strokeColor = UIColor.white.cgColor
+        activityIndicatorLayer.strokeColor = UIColor.black.cgColor
+        activityIndicatorLayer.strokeStart = 0.0
+        activityIndicatorLayer.strokeEnd = 1.0
         return activityIndicatorLayer
     }()
     
@@ -71,16 +76,17 @@ internal class ZVActivityIndicatorView: UIView {
     
     func prepare() {
         
-        let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-        let radius = min(self.bounds.width / 2, self.bounds.height / 2) -
-            self._activityIndicatorLayer.lineWidth / 2
-        let startAngle: CGFloat = 0.0
-        let endAngle = CGFloat(2 * Double.pi)
-        let path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let arcCenter: CGPoint = .init(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
+        let radius: CGFloat = (min(self.bounds.width, self.bounds.height) - self.lineWidth * 2) / 2
+        let startAngle = CGFloat( -0.5 * Double.pi)
+        let endAngle = CGFloat(1.5 * Double.pi)
+        
+        let path = UIBezierPath(arcCenter: arcCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+
+        
         self._activityIndicatorLayer.path = path.cgPath
         self._activityIndicatorLayer.strokeStart = 0.0
         self._activityIndicatorLayer.strokeEnd = 0.0
-
     }
     
     internal func startAnimating() {
