@@ -11,12 +11,13 @@ import UIKit
 internal class ZVProgressView: UIView {
 
     private struct Default {
-        static let lineWidth: CGFloat = 2.5
+        static let lineWidth: CGFloat = 3
     }
     
     internal var lineWidth: CGFloat = Default.lineWidth {
         didSet {
             self._progressLayer.lineWidth = self.lineWidth
+            self.layer.borderWidth = 1.0
             self._prepare()
         }
     }
@@ -36,7 +37,7 @@ internal class ZVProgressView: UIView {
         }
         set {
             self._progressLayer.strokeColor = newValue?.cgColor
-            self.layer.borderColor = newValue?.withAlphaComponent(0.75).cgColor
+            self.layer.borderColor = newValue?.withAlphaComponent(0.5).cgColor
         }
     }
 
@@ -53,10 +54,11 @@ internal class ZVProgressView: UIView {
     
     internal override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.layer.addSublayer(_progressLayer)
-        self.layer.masksToBounds = true
+        self.layer.masksToBounds = false
         self.layer.borderWidth = 1.0
-        self.layer.borderColor = UIColor(white: 1.0, alpha: 0.75).cgColor
+        self.layer.borderColor = UIColor(white: 1.0, alpha: 0.5).cgColor
     }
     
     required internal init?(coder aDecoder: NSCoder) {
@@ -75,6 +77,7 @@ internal class ZVProgressView: UIView {
         let radius = min(self.bounds.width * 0.5, self.bounds.height * 0.5) - self.lineWidth * 0.5
         let startAngle = CGFloat( -0.5 * Double.pi)
         let endAngle = CGFloat(1.5 * Double.pi)
+        
         self._progressLayer.path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true).cgPath
     }
     

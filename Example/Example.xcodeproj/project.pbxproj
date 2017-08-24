@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D2221AC1F4EB30F005406E5 /* smile.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D2221AB1F4EB30F005406E5 /* smile.png */; };
 		4D5BDA4A1F146C6700E68CB6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BDA491F146C6700E68CB6 /* AppDelegate.swift */; };
 		4D5BDA4C1F146C6700E68CB6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BDA4B1F146C6700E68CB6 /* ViewController.swift */; };
 		4D5BDA4F1F146C6700E68CB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D5BDA4D1F146C6700E68CB6 /* Main.storyboard */; };
@@ -14,7 +15,6 @@
 		4D5BDA541F146C6700E68CB6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D5BDA521F146C6700E68CB6 /* LaunchScreen.storyboard */; };
 		4D5BDA5F1F146C6700E68CB6 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BDA5E1F146C6700E68CB6 /* ExampleTests.swift */; };
 		4D5BDA6A1F146C6700E68CB6 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BDA691F146C6700E68CB6 /* ExampleUITests.swift */; };
-		4DD3D3511F15166600C89E2A /* cost.png in Resources */ = {isa = PBXBuildFile; fileRef = 4DD3D3501F15166600C89E2A /* cost.png */; };
 		4DF78A581F14E66500CA5657 /* ZVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8046F51F14CB690069F9F2 /* ZVProgressHUD.framework */; };
 		4DF78A591F14E66500CA5657 /* ZVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8046F51F14CB690069F9F2 /* ZVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -72,6 +72,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D2221AB1F4EB30F005406E5 /* smile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smile.png; sourceTree = "<group>"; };
 		4D5BDA461F146C6700E68CB6 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5BDA491F146C6700E68CB6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D5BDA4B1F146C6700E68CB6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,7 +87,6 @@
 		4D5BDA691F146C6700E68CB6 /* ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITests.swift; sourceTree = "<group>"; };
 		4D5BDA6B1F146C6700E68CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D8046EF1F14CB690069F9F2 /* ZVProgressHUD.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZVProgressHUD.xcodeproj; path = ../../ZVProgressHUD.xcodeproj; sourceTree = "<group>"; };
-		4DD3D3501F15166600C89E2A /* cost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cost.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +141,7 @@
 				4D8046EF1F14CB690069F9F2 /* ZVProgressHUD.xcodeproj */,
 				4D5BDA491F146C6700E68CB6 /* AppDelegate.swift */,
 				4D5BDA4B1F146C6700E68CB6 /* ViewController.swift */,
-				4DD3D3501F15166600C89E2A /* cost.png */,
+				4D2221AB1F4EB30F005406E5 /* smile.png */,
 				4D5BDA4D1F146C6700E68CB6 /* Main.storyboard */,
 				4D5BDA501F146C6700E68CB6 /* Assets.xcassets */,
 				4D5BDA521F146C6700E68CB6 /* LaunchScreen.storyboard */,
@@ -312,8 +312,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DD3D3511F15166600C89E2A /* cost.png in Resources */,
 				4D5BDA541F146C6700E68CB6 /* LaunchScreen.storyboard in Resources */,
+				4D2221AC1F4EB30F005406E5 /* smile.png in Resources */,
 				4D5BDA511F146C6700E68CB6 /* Assets.xcassets in Resources */,
 				4D5BDA4F1F146C6700E68CB6 /* Main.storyboard in Resources */,
 			);

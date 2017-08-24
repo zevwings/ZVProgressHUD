@@ -158,7 +158,7 @@ public class ZVProgressHUD: UIView {
     internal var displayStyle: ZVProgressHUD.DisplayStyle = .dark
     
     /// 文本标题与其他空间边距
-    internal var titleInsets = UIEdgeInsets(top: 12, left: 24, bottom: 12, right: 24)
+    internal var titleInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     
     /// 状态视图与其他空间边距，如果状态视图和文本标题存在时，bottom 无效
     internal var stateInsets = UIEdgeInsets(top: 24 , left: 24, bottom: 24, right: 24)
@@ -184,6 +184,8 @@ public class ZVProgressHUD: UIView {
     /// 图片或指示器大小
     internal var stateSize: CGSize = CGSize(width: StateSize.width, height: StateSize.height)
     
+    internal var lineWidth: CGFloat = 2.5
+    
     // MARK: 基础控件
     
     fileprivate lazy var _overlayView: ZVBackgroundView = {
@@ -208,6 +210,7 @@ public class ZVProgressHUD: UIView {
         stateLabel.backgroundColor = .clear
         stateLabel.baselineAdjustment = .alignCenters
         stateLabel.textAlignment = .center
+        stateLabel.numberOfLines = 0
         return stateLabel
     }()
     
@@ -322,6 +325,7 @@ extension ZVProgressHUD {
             _stateView.color = self.displayStyle.foregroundColor
             _stateView.animationType = self.animationType
             _stateView.stateType = state
+            _stateView.lineWidth = self.lineWidth
             guard let titleValue = title, titleValue.isEmpty == false else {
                 self._stateLabel.text = nil
                 return
@@ -359,8 +363,8 @@ extension ZVProgressHUD {
         
         self._overlayView.frame = self.frame
         
-        let labelSize = self._stateLabel.textSize(with: .init(width: self.frame.width * 0.5,
-                                                              height: self.frame.width * 0.5))
+        let labelSize = self._stateLabel.textSize(with: .init(width: self.frame.width * 0.75,
+                                                              height: self.frame.width * 0.75))
 
         let labelWidth = labelSize.width + self.titleInsets.left + self.titleInsets.right
         let stateWidth = stateSize.width + self.stateInsets.left + self.stateInsets.right
@@ -522,6 +526,11 @@ extension ZVProgressHUD {
     public static var animationType: ZVProgressHUD.AnimationType {
         get { return self.shared.animationType }
         set { self.shared.animationType = newValue }
+    }
+    
+    public static var lineWidth: CGFloat {
+        get { return self.shared.lineWidth }
+        set { self.shared.lineWidth = newValue }
     }
     
     // MARK: 显示方法
@@ -697,10 +706,12 @@ fileprivate extension UILabel {
 
     func textSize(with maxSize: CGSize) -> CGSize {
         if let value = self.text as NSString? {
-            return value.boundingRect(with: maxSize,
-                                      options: .usesLineFragmentOrigin,
-                                      attributes: [NSFontAttributeName: self.font],
-                                      context: nil).size
+            let size = value.boundingRect(with: maxSize,
+                                          options: .usesLineFragmentOrigin,
+                                          attributes: [NSFontAttributeName: self.font],
+                                          context: nil).size
+            
+            return CGSize(width: size.width + 0.5, height: size.height + 0.5);
         }
         return .zero
     }

@@ -14,6 +14,12 @@ internal class ZVStateView: UIView {
     
     internal var color: UIColor?
     internal var animationType: ZVProgressHUD.AnimationType = .extended
+    internal var lineWidth: CGFloat = 2.5 {
+        didSet {
+            self._progressView.lineWidth = self.lineWidth
+            self._indicatorView.lineWidth = self.lineWidth
+        }
+    }
     
     override var frame: CGRect {
         didSet {
@@ -63,6 +69,7 @@ internal class ZVStateView: UIView {
                     if _indicatorView.superview == nil {
                         self.addSubview(_indicatorView)
                         _indicatorView.color = self.color
+                        _indicatorView.lineWidth = self.lineWidth
                     }
                     _indicatorView.startAnimating()
                 } else {
@@ -92,6 +99,7 @@ internal class ZVStateView: UIView {
                 if _progressView.superview == nil {
                     self.addSubview(_progressView)
                     _progressView.color = color
+                    _progressView.lineWidth = self.lineWidth
                 }
                 _progressView.update(progress: value)
                 break

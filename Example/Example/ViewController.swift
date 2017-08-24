@@ -40,6 +40,8 @@ class ViewController: UIViewController {
                 
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDDidReceiveTouchEvent, object: nil)
         
+        ZVProgressHUD.lineWidth = 1.5
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,13 +85,13 @@ extension ViewController {
     }
     
     func showCustomImage() {
-        let image = UIImage(named: "cost")
+        let image = UIImage(named: "smile")
         ZVProgressHUD.show(image: image!)
     }
     
     func showCustomImageWithLabel() {
-        let image = UIImage(named: "cost")
-        ZVProgressHUD.show(with: .state(title: "Cost", state: .custom(image: image!)))
+        let image = UIImage(named: "smile")
+        ZVProgressHUD.show(with: .state(title: "Check Smail", state: .custom(image: image!)))
     }
     
     func showProgress() {
@@ -125,7 +127,7 @@ extension ViewController {
     }
     
     func showLabel() {
-        ZVProgressHUD.show(label: "I'm a toast")
+        ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
     }
     
     func showLabelOnCenter() {
@@ -235,7 +237,7 @@ extension ViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        self.textField.resignFirstResponder()
+        textField.resignFirstResponder()
         
         return true
     }
@@ -258,6 +260,7 @@ extension ViewController: UITextFieldDelegate {
     }
     
 }
+
 extension String {
     
     
