@@ -69,37 +69,37 @@ extension ViewController {
 
 extension ViewController {
 
-    func showIndicator() {
+    @objc func showIndicator() {
         ZVProgressHUD.show()
     }
     
-    func showWithLabel() {
+    @objc func showWithLabel() {
         ZVProgressHUD.show(with: .state(title: "Loading...", state: .indicator))
     }
     
-    func showError() {
+    @objc func showError() {
         ZVProgressHUD.show(with: .state(title: "Error", state: .error))
     }
     
-    func showSuccess() {
+    @objc func showSuccess() {
         ZVProgressHUD.show(with: .state(title: "Success", state: .success))
     }
     
-    func showWarning() {
+    @objc func showWarning() {
         ZVProgressHUD.show(with: .state(title: "Warning", state: .warning))
     }
     
-    func showCustomImage() {
+    @objc func showCustomImage() {
         let image = UIImage(named: "smile")
         ZVProgressHUD.show(image: image!)
     }
     
-    func showCustomImageWithLabel() {
+    @objc func showCustomImageWithLabel() {
         let image = UIImage(named: "smile")
         ZVProgressHUD.show(with: .state(title: "Check Smail", state: .custom(image: image!)))
     }
     
-    func showProgress() {
+    @objc func showProgress() {
         self.progress = 0
         if  self.timer != nil {
             timer?.invalidate()
@@ -108,7 +108,7 @@ extension ViewController {
         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
     }
     
-    func showProgressWithLabel() {
+    @objc func showProgressWithLabel() {
         self.progress = 0
         if  self.timer != nil {
             timer?.invalidate()
@@ -118,7 +118,7 @@ extension ViewController {
     }
     
     
-    func showCustomView() {
+    @objc func showCustomView() {
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         customView.backgroundColor = UIColor.white
         let label = UILabel(frame: CGRect(x: 0, y: 30, width: 100, height: 40 ))
@@ -131,15 +131,15 @@ extension ViewController {
         ZVProgressHUD.show(with: .custom(view: customView))
     }
     
-    func showLabel() {
+    @objc func showLabel() {
         ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
     }
     
-    func showLabelOnCenter() {
+    @objc func showLabelOnCenter() {
         ZVProgressHUD.show(label: "I'm a toast", on: .center)
     }
     
-    func dismissHUD() {
+    @objc func dismissHUD() {
         if self.timer != nil {
             timer?.invalidate()
             timer = nil
@@ -200,7 +200,7 @@ extension ViewController {
         }
     }
     
-    func progressTimerAction(_ sender: Timer) {
+    @objc func progressTimerAction(_ sender: Timer) {
         
         let userInfo = sender.userInfo as? [String: String]
         let title = userInfo?["title"] ?? ""
