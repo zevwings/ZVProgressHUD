@@ -71,10 +71,6 @@ In your target’s General tab, click the ’+’ button under `Embedded Binarie
 
 Select the `ZVProgressHUD.framework` to Add to your platform.
 
-## Demo
-### Appetize
-You can use online demo on [Appetize](https://appetize.io/app/hkhybxa53yyw594zp8v5chee0r?device=iphone6s&scale=75&orientation=portrait&osVersion=10.0)
-
 ## Usage
 You can use `import ZVProgressHUD` when you needed to use `ZVProgressHUD`
 
