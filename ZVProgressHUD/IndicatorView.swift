@@ -18,7 +18,7 @@ public class IndicatorView: UIView {
         case error, success, warning
         case indicator(style: AnimationType)
         case progress(value: Float)
-        case custom(image: UIImage)
+        case custom(animationImages: [UIImage], duration: TimeInterval)
     }
     
     public enum AnimationType {
@@ -53,9 +53,17 @@ public class IndicatorView: UIView {
                 setProgressIndicatorView()
                 self.progressIndicatorView?.progress = value
                 break
-            case .custom(let image):
+            case .custom(let animationImages, let duration):
                 setImageIndicatorView()
-                imageIndicaotorView?.image = image
+                if animationImages.isEmpty {
+                    imageIndicaotorView?.image = nil
+                } else if animationImages.count == 1 {
+                    imageIndicaotorView?.image = animationImages[0]
+                } else {
+                    imageIndicaotorView?.animationImages = animationImages
+                    imageIndicaotorView?.animationDuration = duration
+                    imageIndicaotorView?.startAnimating()
+                }
                 break
             }
         }
@@ -117,6 +125,7 @@ extension IndicatorView {
         
         flatActivityIndicatorView?.stopAnimating()
         flatActivityIndicatorView?.removeFromSuperview()
+        imageIndicaotorView?.stopAnimating()
         imageIndicaotorView?.removeFromSuperview()
         progressIndicatorView?.removeFromSuperview()
     }
@@ -137,6 +146,7 @@ extension IndicatorView {
         
         nativeActivityIndicatorView?.stopAnimating()
         nativeActivityIndicatorView?.removeFromSuperview()
+        imageIndicaotorView?.stopAnimating()
         imageIndicaotorView?.removeFromSuperview()
         progressIndicatorView?.removeFromSuperview()
     }
@@ -201,8 +211,8 @@ extension IndicatorView.IndicatorType : Hashable {
             return 3
         case .progress:
             return 4
-        case .custom(let image):
-            return image.hashValue
+        case .custom:
+            return 5
         }
     }
 }

@@ -42,16 +42,9 @@ public class CoverView: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-        
-        if let superview = newSuperview {
-            self.frame = superview.frame
-            self.maskLayer?.frame = superview.frame
-        } else {
-            self.frame = .zero
-            self.maskLayer?.frame = .zero
-        }
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        self.maskLayer?.frame = frame
     }
 }
 
@@ -83,7 +76,7 @@ extension CoverView.MaskType {
     var backgroundColor: CGColor {
         switch self {
         case .none, .clear: return UIColor.clear.cgColor
-        case .black: return UIColor.init(white: 0.0, alpha: 0.35).cgColor
+        case .black: return UIColor.init(white: 0.0, alpha: 0.5).cgColor
         case .custom(let color): return color.cgColor
         }
     }

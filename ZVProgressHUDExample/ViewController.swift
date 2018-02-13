@@ -38,8 +38,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        let progressHUD = ZVProgressHUD(.indicator(title: "1111111", type: .success), displayStyle: .ligtht)
+        var animationImages = [UIImage]()
+        for idx in 1 ... 3 {
+            let image = UIImage(named: "loading_0\(idx)")
+            animationImages.append(image!)
+        }
+//        let display = ZVProgressHUD.DisplayType
+        let progressHUD = ZVProgressHUD(.text(title: "11231231231"))
+//            ZVProgressHUD(.indicator(title: "11", type: .progress(value: 0.7)))
+//            ZVProgressHUD(.indicator(title: "warning", type: .warning))
+//            ZVProgressHUD(.indicator(title: "success", type: .success))
+//            ZVProgressHUD(.indicator(title: "error", type: .error))
+//            ZVProgressHUD(.indicator(title: "loading", type: .indicator(style: .flat)))
+//            ZVProgressHUD(.indicator(title: "loading", type: .indicator(style: .native)))
+//            ZVProgressHUD(.indicator(title: "", type: .custom(animationImages: animationImages, duration: 0.3)), displayStyle: .light)
         progressHUD.setMaskType(.custom(color: .lightGray))
         view.addSubview(progressHUD)
         
