@@ -1,0 +1,11 @@
+framework module ZVActivityIndicatorView {
+  umbrella header "ZVActivityIndicatorView.h"
+
+  export *
+  module * { export * }
+}
+
+module ZVActivityIndicatorView.Swift {
+    header "ZVActivityIndicatorView-Swift.h"
+    requires objc
+}

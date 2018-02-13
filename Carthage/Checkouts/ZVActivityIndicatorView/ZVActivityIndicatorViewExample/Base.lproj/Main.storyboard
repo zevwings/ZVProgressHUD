@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ZVActivityIndicatorViewExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nf3-2o-rsD"/>
+                        <viewControllerLayoutGuide type="bottom" id="M9E-JE-Eh2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5W0-jP-se0" customClass="ZVActivityIndicatorView" customModule="ZVActivityIndicatorView">
+                                <rect key="frame" x="158.5" y="304" width="58" height="58"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="58" id="d6f-NX-I11"/>
+                                    <constraint firstAttribute="height" constant="58" id="fsq-RZ-Bmo"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H8j-9K-ADF">
+                                <rect key="frame" x="16" y="551" width="343" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="BiR-SK-NJs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Start Animating">
+                                    <color key="titleColor" red="0.8446832299" green="0.12998357420000001" blue="0.23033288120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="startAnimating:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nEE-P0-va4"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35Z-ZU-DhE">
+                                <rect key="frame" x="16" y="607" width="343" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="bNJ-ht-PYl"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Stop Animating">
+                                    <color key="titleColor" red="0.8446832299" green="0.12998357420000001" blue="0.23033288120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="stopAnimating:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cpO-7K-3wA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.8446832299" green="0.12998357420000001" blue="0.23033288120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="35Z-ZU-DhE" firstAttribute="top" secondItem="H8j-9K-ADF" secondAttribute="bottom" constant="12" id="ChJ-O8-9pO"/>
+                            <constraint firstItem="H8j-9K-ADF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="CvQ-oF-o8x"/>
+                            <constraint firstItem="35Z-ZU-DhE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="GF8-64-GSi"/>
+                            <constraint firstItem="5W0-jP-se0" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PVN-2z-xPg"/>
+                            <constraint firstAttribute="trailing" secondItem="H8j-9K-ADF" secondAttribute="trailing" constant="16" id="ams-5Q-Ero"/>
+                            <constraint firstAttribute="trailing" secondItem="35Z-ZU-DhE" secondAttribute="trailing" constant="16" id="dTf-oQ-Thh"/>
+                            <constraint firstItem="5W0-jP-se0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="frH-pr-Iwq"/>
+                            <constraint firstItem="M9E-JE-Eh2" firstAttribute="top" secondItem="35Z-ZU-DhE" secondAttribute="bottom" constant="16" id="hNE-KR-mpB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="innerActivityIndicatorView" destination="5W0-jP-se0" id="hQy-B0-eKZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

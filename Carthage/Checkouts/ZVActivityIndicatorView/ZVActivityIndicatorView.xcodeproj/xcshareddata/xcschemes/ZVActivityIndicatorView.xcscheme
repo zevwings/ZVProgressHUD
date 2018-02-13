@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D5BDA8C1F146CAC00E68CB6"
-               BuildableName = "ZVProgressHUD.framework"
-               BlueprintName = "ZVProgressHUD"
-               ReferencedContainer = "container:ZVProgressHUD.xcodeproj">
+               BlueprintIdentifier = "4D75A4C4201833AE00775C60"
+               BuildableName = "ZVActivityIndicatorView.framework"
+               BlueprintName = "ZVActivityIndicatorView"
+               ReferencedContainer = "container:ZVActivityIndicatorView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,26 +29,7 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D5BDA951F146CAC00E68CB6"
-               BuildableName = "ZVProgressHUDTests.xctest"
-               BlueprintName = "ZVProgressHUDTests"
-               ReferencedContainer = "container:ZVProgressHUD.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D5BDA8C1F146CAC00E68CB6"
-            BuildableName = "ZVProgressHUD.framework"
-            BlueprintName = "ZVProgressHUD"
-            ReferencedContainer = "container:ZVProgressHUD.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -66,10 +47,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D5BDA8C1F146CAC00E68CB6"
-            BuildableName = "ZVProgressHUD.framework"
-            BlueprintName = "ZVProgressHUD"
-            ReferencedContainer = "container:ZVProgressHUD.xcodeproj">
+            BlueprintIdentifier = "4D75A4C4201833AE00775C60"
+            BuildableName = "ZVActivityIndicatorView.framework"
+            BlueprintName = "ZVActivityIndicatorView"
+            ReferencedContainer = "container:ZVActivityIndicatorView.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -84,10 +65,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D5BDA8C1F146CAC00E68CB6"
-            BuildableName = "ZVProgressHUD.framework"
-            BlueprintName = "ZVProgressHUD"
-            ReferencedContainer = "container:ZVProgressHUD.xcodeproj">
+            BlueprintIdentifier = "4D75A4C4201833AE00775C60"
+            BuildableName = "ZVActivityIndicatorView.framework"
+            BlueprintName = "ZVActivityIndicatorView"
+            ReferencedContainer = "container:ZVActivityIndicatorView.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
