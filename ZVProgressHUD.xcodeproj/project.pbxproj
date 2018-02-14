@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D077121203290480021E496 /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFF5B6320318ED50098BA7D /* ZVActivityIndicatorView.framework */; };
-		4D1513612032961500624B42 /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFF5B6320318ED50098BA7D /* ZVActivityIndicatorView.framework */; };
-		4D1513622032961500624B42 /* ZVActivityIndicatorView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4DFF5B6320318ED50098BA7D /* ZVActivityIndicatorView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D1513642032BDA700624B42 /* Configration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1513632032BDA700624B42 /* Configration.swift */; };
 		4D3C7C161F1799AB00F39B30 /* ZVProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C7C151F1799AB00F39B30 /* ZVProgressView.swift */; };
 		4D5BDA9E1F146CAC00E68CB6 /* ZVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
 		4D8046F91F14CBFD0069F9F2 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D8046F81F14CBFD0069F9F2 /* Resource.bundle */; };
+		4D9349642033C6E70059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */; };
+		4D9349652033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */; };
+		4D9349662033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D99C8711F15DCC0009721FC /* ZVProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */; };
 		4DF2DC731F176DB90033B871 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF2DC721F176DB90033B871 /* IndicatorView.swift */; };
 		4DF2DC751F176DD00033B871 /* CoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF2DC741F176DD00033B871 /* CoverView.swift */; };
@@ -43,7 +43,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4D1513622032961500624B42 /* ZVActivityIndicatorView.framework in Embed Frameworks */,
+				4D9349662033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Embed Frameworks */,
 				4DFF5B5F20318DE90098BA7D /* ZVProgressHUD.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -59,6 +59,7 @@
 		4D5BDA911F146CAC00E68CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D60771520327D4F00474944 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4D8046F81F14CBFD0069F9F2 /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
+		4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZVActivityIndicatorView.framework; path = Carthage/Build/iOS/ZVActivityIndicatorView.framework; sourceTree = "<group>"; };
 		4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZVProgressHUD.swift; sourceTree = "<group>"; };
 		4DF2DC721F176DB90033B871 /* IndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
 		4DF2DC741F176DD00033B871 /* CoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverView.swift; sourceTree = "<group>"; };
@@ -68,7 +69,6 @@
 		4DFF5B5220318D7A0098BA7D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4DFF5B5520318D7A0098BA7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4DFF5B5720318D7A0098BA7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4DFF5B6320318ED50098BA7D /* ZVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZVActivityIndicatorView.framework; path = Carthage/Build/iOS/ZVActivityIndicatorView.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D077121203290480021E496 /* ZVActivityIndicatorView.framework in Frameworks */,
+				4D9349642033C6E70059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D1513612032961500624B42 /* ZVActivityIndicatorView.framework in Frameworks */,
+				4D9349652033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */,
 				4DFF5B5E20318DE90098BA7D /* ZVProgressHUD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,7 +95,6 @@
 		4D5BDA831F146CAC00E68CB6 = {
 			isa = PBXGroup;
 			children = (
-				4DFF5B6320318ED50098BA7D /* ZVActivityIndicatorView.framework */,
 				4D5BDA8F1F146CAC00E68CB6 /* ZVProgressHUD */,
 				4DFF5B4A20318D7A0098BA7D /* ZVProgressHUDExample */,
 				4D5BDA8E1F146CAC00E68CB6 /* Products */,
@@ -143,6 +142,7 @@
 		4DFF5B6620318F0B0098BA7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

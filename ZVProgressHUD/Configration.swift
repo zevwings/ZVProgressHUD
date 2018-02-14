@@ -23,3 +23,25 @@ extension UIImage {
     }
 }
 
+extension UILabel {
+    
+    class var `default`: UILabel {
+        let defaultLabel = UILabel()
+        defaultLabel.minimumScaleFactor = 0.5
+        defaultLabel.textAlignment = .center
+        defaultLabel.isUserInteractionEnabled = false
+        defaultLabel.font = .systemFont(ofSize: 16.0)
+        defaultLabel.backgroundColor = .clear
+        defaultLabel.lineBreakMode = .byTruncatingTail
+        defaultLabel.numberOfLines = 0
+        return defaultLabel
+    }
+    
+    func getTextWidth(with maxSize: CGSize) -> CGSize {
+        guard let text = self.text, !text.isEmpty else { return .zero }
+        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: self.font]
+        return (text as NSString).boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil).size
+    }
+    
+}
+

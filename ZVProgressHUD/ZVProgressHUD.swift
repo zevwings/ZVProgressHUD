@@ -30,8 +30,9 @@ public class ZVProgressHUD: UIView {
     public var maskType: CoverView.MaskType = .black
     public var cornerRadius: CGFloat = 8.0
     
-    public var titleEdgeInsets: UIEdgeInsets = .zero
-    public var indicatorEdgeInsets: UIEdgeInsets = .zero
+    public var titleEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+    // 同时存在titleLabele 与 indicatorView时 indicatorEdgeInsets.bottom 无效
+    public var indicatorEdgeInsets = UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
 
     public convenience init(_ displayType: DisplayType, displayStyle: DisplayStyle = .light) {
         self.init(frame: .zero)
@@ -43,19 +44,14 @@ public class ZVProgressHUD: UIView {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.backgroundColor = .clear
-        
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        self.placeSubviews()
-    }
+
     
     func prepare() {
         
@@ -129,31 +125,73 @@ public class ZVProgressHUD: UIView {
 
         coverView?.frame = frame
 
-        var textSize: CGSize = .zero
-        if let titleLabel = titleLabel {
-            let maxSize = CGSize(width: frame.width * 0.7, height: frame.width * 0.7)
-            textSize = titleLabel.getTextWidth(with: maxSize)
-            titleLabel.frame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
-        }
-        
+        var indicatorSize: CGSize = .zero
         if let indicatorView = indicatorView {
-            indicatorView.frame = CGRect(x: 0, y: 0, width: 38, height: 38)
+            indicatorSize = CGSize(width: 38, height: 38)
+            indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
         }
         
+        var titleSize: CGSize = .zero
+        if let titleLabel = titleLabel {
+            titleSize = titleLabel.getTextWidth(with: CGSize(width: frame.width * 0.7, height: frame.width * 0.7))
+            titleLabel.frame = CGRect(origin: .zero, size: titleSize)
+        }
         
-        baseView?.frame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
+        var size: CGSize = .zero
+        var titleCenter: CGPoint = .zero
+        var indicatorCenter: CGPoint = .zero
+        
+        if indicatorSize != .zero && titleSize != .zero {
+            
+            let titleWidth = titleSize.width + titleEdgeInsets.left + titleEdgeInsets.right
+            let titleHeight = titleSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom * 1.5
+            let indicatorWidth = indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right
+            let indicatorHeight = indicatorSize.height + indicatorEdgeInsets.top / 2.0
+            let width = max(titleWidth, indicatorWidth)
+            let height = titleHeight + indicatorHeight
+            size = CGSize(width: width, height: height)
+            indicatorCenter = CGPoint(x: width / 2.0, y: indicatorSize.height / 2.0 + indicatorEdgeInsets.top / 2.0)
+            titleCenter = CGPoint(x: width / 2.0, y: titleSize.height / 2.0  + titleEdgeInsets.top + indicatorSize.height + indicatorEdgeInsets.top / 2.0)
+        } else if indicatorSize == .zero && titleSize != .zero {
+            
+            let width = titleSize.width + titleEdgeInsets.left + titleEdgeInsets.right
+            let height = titleSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+            size = CGSize(width: width, height: height)
+            titleCenter = CGPoint(x: width / 2.0, y: height / 2.0)
+        } else if indicatorSize != .zero && titleSize == .zero {
+            
+            let width = indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right
+            let height = indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
+            size = CGSize(width: width, height: height)
+            indicatorCenter = CGPoint(x: width / 2.0, y: height / 2.0)
+        }
+
+        let origin = CGPoint(x: (coverView!.frame.width - size.width) / 2.0, y: (coverView!.frame.height - size.height) / 2.0 - 64)
+        
+        baseView?.frame = CGRect(origin: origin, size: size)
+        titleLabel?.center = titleCenter
+        indicatorView?.center = indicatorCenter
     }
+}
+
+extension ZVProgressHUD {
     
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.placeSubviews()
+        
+        print("self.frame : \(frame)")
+    }
+
     public override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-        
+
         if let sv = newSuperview {
             self.frame = sv.frame
         } else {
             self.frame = .zero
         }
     }
-    
 }
 
 public extension ZVProgressHUD {
@@ -179,7 +217,7 @@ extension ZVProgressHUD.DisplayStyle {
         case .dark:
             return .white
         case .light:
-            return .init(white: 0.2, alpha: 1)
+            return UIColor(white: 0.2, alpha: 1)
         case .custom(let color):
             return color.foregroundColor
         }
@@ -188,7 +226,7 @@ extension ZVProgressHUD.DisplayStyle {
     var backgroundColor: UIColor {
         switch self {
         case .dark:
-            return .init(white: 0, alpha: 0.75)
+            return UIColor(white: 0, alpha: 0.75)
         case .light:
             return .white
         case .custom(let color):
@@ -197,28 +235,3 @@ extension ZVProgressHUD.DisplayStyle {
     }
 }
 
-extension UIView {
-
-}
-
-extension UILabel {
-    
-    class var `default`: UILabel {
-        let label = UILabel()
-        label.minimumScaleFactor = 0.5
-        label.textAlignment = .center
-        label.isUserInteractionEnabled = false
-        label.font = .systemFont(ofSize: 16.0)
-        label.backgroundColor = .clear
-        label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        return label
-    }
-    
-    func getTextWidth(with maxSize: CGSize) -> CGSize {
-        guard let text = self.text, !text.isEmpty else { return .zero }
-        let options: NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics, .truncatesLastVisibleLine]
-        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: self.font]
-        return (text as NSString).boundingRect(with: maxSize, options: options, attributes: attributes, context: nil).size
-    }
-
-}

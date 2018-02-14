@@ -44,14 +44,15 @@ class ViewController: UIViewController {
             animationImages.append(image!)
         }
 //        let display = ZVProgressHUD.DisplayType
-        let progressHUD = ZVProgressHUD(.text(title: "11231231231"))
+        let progressHUD =
+//            ZVProgressHUD(.text(title: "测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测测"))
 //            ZVProgressHUD(.indicator(title: "11", type: .progress(value: 0.7)))
 //            ZVProgressHUD(.indicator(title: "warning", type: .warning))
 //            ZVProgressHUD(.indicator(title: "success", type: .success))
-//            ZVProgressHUD(.indicator(title: "error", type: .error))
+//            ZVProgressHUD(.indicator(title: "", type: .error))
 //            ZVProgressHUD(.indicator(title: "loading", type: .indicator(style: .flat)))
 //            ZVProgressHUD(.indicator(title: "loading", type: .indicator(style: .native)))
-//            ZVProgressHUD(.indicator(title: "", type: .custom(animationImages: animationImages, duration: 0.3)), displayStyle: .light)
+            ZVProgressHUD(.indicator(title: "正在加载", type: .custom(animationImages: animationImages, duration: 0.3)), displayStyle: .light)
         progressHUD.setMaskType(.custom(color: .lightGray))
         view.addSubview(progressHUD)
         
