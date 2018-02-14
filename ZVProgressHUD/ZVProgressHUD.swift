@@ -30,9 +30,10 @@ public class ZVProgressHUD: UIView {
     public var maskType: CoverView.MaskType = .black
     public var cornerRadius: CGFloat = 8.0
     
-    public var titleEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-    // 同时存在titleLabele 与 indicatorView时 indicatorEdgeInsets.bottom 无效
-    public var indicatorEdgeInsets = UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
+    public var contentInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
+    public var indicatorSize: CGSize = .zero
+    public var indicatorEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
 
     public convenience init(_ displayType: DisplayType, displayStyle: DisplayStyle = .light) {
         self.init(frame: .zero)
@@ -127,7 +128,11 @@ public class ZVProgressHUD: UIView {
 
         var indicatorSize: CGSize = .zero
         if let indicatorView = indicatorView {
-            indicatorSize = CGSize(width: 38, height: 38)
+            if indicatorSize != .zero {
+                indicatorSize = self.indicatorSize
+            } else {
+                indicatorSize = CGSize(width: 38, height: 38)
+            }
             indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
         }
         
@@ -137,38 +142,41 @@ public class ZVProgressHUD: UIView {
             titleLabel.frame = CGRect(origin: .zero, size: titleSize)
         }
         
-        var size: CGSize = .zero
+        var contentSize: CGSize = .zero
         var titleCenter: CGPoint = .zero
         var indicatorCenter: CGPoint = .zero
         
         if indicatorSize != .zero && titleSize != .zero {
             
             let titleWidth = titleSize.width + titleEdgeInsets.left + titleEdgeInsets.right
-            let titleHeight = titleSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom * 1.5
+            let titleHeight = titleSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
             let indicatorWidth = indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right
-            let indicatorHeight = indicatorSize.height + indicatorEdgeInsets.top / 2.0
-            let width = max(titleWidth, indicatorWidth)
-            let height = titleHeight + indicatorHeight
-            size = CGSize(width: width, height: height)
-            indicatorCenter = CGPoint(x: width / 2.0, y: indicatorSize.height / 2.0 + indicatorEdgeInsets.top / 2.0)
-            titleCenter = CGPoint(x: width / 2.0, y: titleSize.height / 2.0  + titleEdgeInsets.top + indicatorSize.height + indicatorEdgeInsets.top / 2.0)
+            let indicatorHeight = indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
+            let width = max(titleWidth, indicatorWidth) + contentInsets.left + contentInsets.right
+            let height = titleHeight + indicatorHeight + contentInsets.top + contentInsets.bottom
+            
+            indicatorCenter = CGPoint(x: width / 2.0, y: indicatorSize.height / 2.0 + contentInsets.top + indicatorEdgeInsets.top)
+            titleCenter = CGPoint(x: width / 2.0, y: titleSize.height / 2.0 + titleEdgeInsets.top + contentInsets.top + indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom)
+            contentSize = CGSize(width: width, height: height)
         } else if indicatorSize == .zero && titleSize != .zero {
             
-            let width = titleSize.width + titleEdgeInsets.left + titleEdgeInsets.right
-            let height = titleSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
-            size = CGSize(width: width, height: height)
+            let width = titleSize.width + titleEdgeInsets.left + titleEdgeInsets.right + contentInsets.left + contentInsets.right
+            let height = titleSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom + contentInsets.top + contentInsets.bottom
+            
             titleCenter = CGPoint(x: width / 2.0, y: height / 2.0)
+            contentSize = CGSize(width: width, height: height)
         } else if indicatorSize != .zero && titleSize == .zero {
             
-            let width = indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right
-            let height = indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
-            size = CGSize(width: width, height: height)
+            let width = indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right + contentInsets.left + contentInsets.right
+            let height = indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom + contentInsets.top + contentInsets.bottom
+            
             indicatorCenter = CGPoint(x: width / 2.0, y: height / 2.0)
+            contentSize = CGSize(width: width, height: height)
         }
 
-        let origin = CGPoint(x: (coverView!.frame.width - size.width) / 2.0, y: (coverView!.frame.height - size.height) / 2.0 - 64)
+        let origin = CGPoint(x: (coverView!.frame.width - contentSize.width) / 2.0, y: (coverView!.frame.height - contentSize.height) / 2.0 - 64)
         
-        baseView?.frame = CGRect(origin: origin, size: size)
+        baseView?.frame = CGRect(origin: origin, size: contentSize)
         titleLabel?.center = titleCenter
         indicatorView?.center = indicatorCenter
     }
