@@ -26,11 +26,11 @@ public class CoverView: UIControl {
         }
     }
     
-    internal convenience init() {
+    convenience init() {
         self.init(frame: .zero)
     }
     
-    internal override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
         maskLayer = CALayer()
@@ -85,9 +85,6 @@ extension CoverView.MaskType {
         switch self {
         case .none: return false
         default: return true
-//        , .clear: return UIColor.clear.cgColor
-//        case .black: return UIColor.init(white: 0.0, alpha: 0.35).cgColor
-//        case .custom(let color): return color.cgColor
         }
     }
 }

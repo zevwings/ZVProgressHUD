@@ -38,23 +38,32 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var animationImages = [UIImage]()
-        for idx in 1 ... 3 {
-            let image = UIImage(named: "loading_0\(idx)")
-            animationImages.append(image!)
-        }
-//        let display = ZVProgressHUD.DisplayType
-        let progressHUD =
-            ZVProgressHUD(.text(title: "网络加载错误，请重试"), displayStyle: .dark)
-//            ZVProgressHUD(.indicator(title: "11", type: .progress(value: 0.7)))
-//            ZVProgressHUD(.indicator(title: "参数错误", type: .warning))
-//            ZVProgressHUD(.indicator(title: "加载成功", type: .success))
-//            ZVProgressHUD(.indicator(title: "加载失败", type: .error))
-//            ZVProgressHUD(.indicator(title: "正在加载", type: .indicator(style: .flat)))
-//            ZVProgressHUD(.indicator(title: "正在加载", type: .indicator(style: .native)))
-//            ZVProgressHUD(.indicator(title: "正在加载", type: .custom(animationImages: animationImages, duration: 0.3)), displayStyle: .light)
-        progressHUD.setMaskType(.custom(color: .lightGray))
-        view.addSubview(progressHUD)
+//        var animationImages = [UIImage]()
+//        for idx in 1 ... 3 {
+//            let image = UIImage(named: "loading_0\(idx)")
+//            animationImages.append(image!)
+//        }
+//        let indicatorView = IndicatorView(frame: .init(x: 0, y: 0, width: 50, height: 50))
+//        indicatorView.indcatorType = .custom(animationImages: animationImages, duration: 0.4)
+//        view.addSubview(indicatorView)
+        
+//        var animationImages = [UIImage]()
+//        for idx in 1 ... 3 {
+//            let image = UIImage(named: "loading_0\(idx)")
+//            animationImages.append(image!)
+//        }
+////        let display = ZVProgressHUD.DisplayType
+//        let progressHUD =
+////            ZVProgressHUD(.text(title: "网络加载错误，请重试"), displayStyle: .dark)
+////            ZVProgressHUD(.indicator(title: "11", type: .progress(value: 0.7)))
+////            ZVProgressHUD(.indicator(title: "参数错误", type: .warning))
+////            ZVProgressHUD(.indicator(title: "加载成功", type: .success))
+////            ZVProgressHUD(.indicator(title: "加载失败", type: .error))
+////            ZVProgressHUD(.indicator(title: "正在加载", type: .indicator(style: .flat)))
+////            ZVProgressHUD(.indicator(title: "正在加载", type: .indicator(style: .native)))
+//            ZVProgressHUD(.indicator(title: "正在加载", type: .custom(animationImages: animationImages, duration: 0.4)), displayStyle: .light)
+//        progressHUD.setMaskType(.custom(color: .lightGray))
+//        view.addSubview(progressHUD)
         
 //        let baseView = UIView(frame: self.view.frame)
 //        baseView.backgroundColor = .lightGray

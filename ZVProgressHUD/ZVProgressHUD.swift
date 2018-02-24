@@ -20,30 +20,22 @@ public class ZVProgressHUD: UIView {
         case custom(backgroundColor: UIColor, foregroundColor: UIColor)
     }
     
+    var displayType: DisplayType = .indicator(title: "", type: .success)
+    var displayStyle: DisplayStyle = .light
+    var maskType: CoverView.MaskType = .black
+    var cornerRadius: CGFloat = 8.0
+    
+    var contentInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+    var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
+    var indicatorSize: CGSize = .zero
+    var indicatorEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+
     private var indicatorView: IndicatorView?
     private var titleLabel: UILabel?
     private var baseView: UIControl?
     private var coverView: CoverView?
     
-    public var displayType: DisplayType = .indicator(title: "", type: .success)
-    public var displayStyle: DisplayStyle = .light
-    public var maskType: CoverView.MaskType = .black
-    public var cornerRadius: CGFloat = 8.0
-    
-    public var contentInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-    public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
-    public var indicatorSize: CGSize = .zero
-    public var indicatorEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-
-    public convenience init(_ displayType: DisplayType, displayStyle: DisplayStyle = .light) {
-        self.init(frame: .zero)
-        
-        self.displayType = displayType
-        self.displayStyle = displayStyle
-        prepare()
-    }
-    
-    override public init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .clear
     }
@@ -51,9 +43,7 @@ public class ZVProgressHUD: UIView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 
-    
     func prepare() {
         
         if coverView == nil {
@@ -203,18 +193,6 @@ extension ZVProgressHUD {
 }
 
 public extension ZVProgressHUD {
-    
-    func setMaskType(_ maskType: CoverView.MaskType) {
-        coverView?.maskType = maskType
-//        self.maskType = maskType;
-    }
-    
-    func setDisplayType(_ displayType: DisplayStyle) {
-        
-    }
-}
-
-public extension ZVProgressHUD.DisplayType {
     
 }
 

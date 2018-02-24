@@ -9,8 +9,6 @@
 import UIKit
 import ZVActivityIndicatorView
 
-// MARK: - 状态指示
-
 public class IndicatorView: UIView {
 
     public enum IndicatorType {
@@ -26,12 +24,7 @@ public class IndicatorView: UIView {
         case native
     }
     
-    private var imageIndicaotorView: UIImageView?
-    private var nativeActivityIndicatorView: UIActivityIndicatorView?
-    private var flatActivityIndicatorView: ZVActivityIndicatorView?
-    private var progressIndicatorView: UIProgressView?
-    
-    internal var indcatorType: IndicatorType = .success {
+    var indcatorType: IndicatorType = .success {
         didSet {
             switch indcatorType {
             case .error, .success, .warning:
@@ -68,7 +61,16 @@ public class IndicatorView: UIView {
             }
         }
     }
+    
+    private var imageIndicaotorView: UIImageView?
+    private var nativeActivityIndicatorView: UIActivityIndicatorView?
+    private var flatActivityIndicatorView: ZVActivityIndicatorView?
+    private var progressIndicatorView: UIProgressView?
 
+    convenience init() {
+        self.init(frame: .zero)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
@@ -77,6 +79,32 @@ public class IndicatorView: UIView {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Override
+
+extension IndicatorView {
+    
+    override public var tintColor: UIColor! {
+        didSet {
+            imageIndicaotorView?.tintColor = tintColor
+            nativeActivityIndicatorView?.color = tintColor
+            flatActivityIndicatorView?.tintColor = tintColor
+            progressIndicatorView?.tintColor = tintColor
+        }
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let size = CGSize(width: frame.width, height: frame.height)
+        let subViewFrame = CGRect(origin: .zero, size: size)
+        
+        imageIndicaotorView?.frame = subViewFrame
+        flatActivityIndicatorView?.frame = subViewFrame
+        nativeActivityIndicatorView?.frame = subViewFrame
+        progressIndicatorView?.frame = subViewFrame
     }
 }
 
@@ -150,45 +178,25 @@ extension IndicatorView {
         imageIndicaotorView?.removeFromSuperview()
         progressIndicatorView?.removeFromSuperview()
     }
-    
-}
-
-// MARK: - Override
-
-extension IndicatorView {
-    
-    override public var tintColor: UIColor! {
-        didSet {
-            imageIndicaotorView?.tintColor = tintColor
-            nativeActivityIndicatorView?.color = tintColor
-            flatActivityIndicatorView?.tintColor = tintColor
-            progressIndicatorView?.tintColor = tintColor
-        }
-    }
-    
-//    override public func willMove(toSuperview newSuperview: UIView?) {
-//        super.willMove(toSuperview: newSuperview)
-//
-//        guard newSuperview != nil else { return }
-//
-//    }
-//
-    
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        let size = CGSize(width: frame.width, height: frame.height)
-        let subViewFrame = CGRect(origin: .zero, size: size)
-        
-        imageIndicaotorView?.frame = subViewFrame
-        flatActivityIndicatorView?.frame = subViewFrame
-        nativeActivityIndicatorView?.frame = subViewFrame
-        progressIndicatorView?.frame = subViewFrame
-
-    }
 }
 
 // MARK: - IndicatorView.IndicatorType
+
+extension IndicatorView.IndicatorType {
+    
+    var resource: String {
+        switch self {
+        case .error:
+            return "error"
+        case .success:
+            return "success"
+        case .warning:
+            return "warning"
+        default:
+            return ""
+        }
+    }
+}
 
 extension IndicatorView.IndicatorType : Equatable {
     
@@ -213,22 +221,6 @@ extension IndicatorView.IndicatorType : Hashable {
             return 4
         case .custom:
             return 5
-        }
-    }
-}
-
-extension IndicatorView.IndicatorType {
-    
-    var resource: String {
-        switch self {
-        case .error:
-            return "error"
-        case .success:
-            return "success"
-        case .warning:
-            return "warning"
-        default:
-            return ""
         }
     }
 }
