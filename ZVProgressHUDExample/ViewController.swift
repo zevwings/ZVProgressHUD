@@ -11,147 +11,124 @@ import ZVProgressHUD
 
 class ViewController: UIViewController {
 
-//    var rows = [
-//        ("show", #selector(ViewController.showIndicator)),
-//        ("showWithLabel", #selector(ViewController.showWithLabel)),
-//        ("showProgress", #selector(ViewController.showProgress)),
-//        ("showProgressWithLabel", #selector(ViewController.showProgressWithLabel)),
-//        ("showError", #selector(ViewController.showError)),
-//        ("showSuccess", #selector(ViewController.showSuccess)),
-//        ("showWarning", #selector(ViewController.showWarning)),
-//        ("showCustomImage", #selector(ViewController.showCustomImage)),
-//        ("showCustomImageWithLabel", #selector(ViewController.showCustomImageWithLabel)),
-//        ("showCustomView", #selector(ViewController.showCustomView)),
-//        ("showLabel", #selector(ViewController.showLabel)),
-//        ("showLabelOnCenter", #selector(ViewController.showLabelOnCenter)),
-//        ("dismiss", #selector(ViewController.dismissHUD))]
-//
-//    @IBOutlet weak var stateSizeTextField: UITextField!
-//
-//    @IBOutlet weak var tableView: UITableView!
-//
-//    @IBOutlet weak var textField: UITextField!
-//
-//    var progress: Float = 0.0
-//    var timer: Timer?
-//
+    var rows = [
+        ("show", #selector(ViewController.showIndicator)),
+        ("showWithLabel", #selector(ViewController.showWithLabel)),
+        ("showProgress", #selector(ViewController.showProgress)),
+        ("showProgressWithLabel", #selector(ViewController.showProgressWithLabel)),
+        ("showError", #selector(ViewController.showError)),
+        ("showSuccess", #selector(ViewController.showSuccess)),
+        ("showWarning", #selector(ViewController.showWarning)),
+        ("showCustomImage", #selector(ViewController.showCustomImage)),
+        ("showCustomImageWithLabel", #selector(ViewController.showCustomImageWithLabel)),
+        ("showCustomView", #selector(ViewController.showCustomView)),
+        ("showLabel", #selector(ViewController.showLabel)),
+        ("showLabelOnCenter", #selector(ViewController.showLabelOnCenter)),
+        ("dismiss", #selector(ViewController.dismissHUD))]
+
+    @IBOutlet weak var stateSizeTextField: UITextField!
+
+    @IBOutlet weak var tableView: UITableView!
+
+    @IBOutlet weak var textField: UITextField!
+
+    var progress: Float = 0.0
+    var timer: Timer?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        var animationImages = [UIImage]()
-//        for idx in 1 ... 3 {
-//            let image = UIImage(named: "loading_0\(idx)")
-//            animationImages.append(image!)
-//        }
-//        let indicatorView = IndicatorView(frame: .init(x: 0, y: 0, width: 50, height: 50))
-//        indicatorView.indcatorType = .custom(animationImages: animationImages, duration: 0.4)
-//        view.addSubview(indicatorView)
-        
-//        var animationImages = [UIImage]()
-//        for idx in 1 ... 3 {
-//            let image = UIImage(named: "loading_0\(idx)")
-//            animationImages.append(image!)
-//        }
-////        let display = ZVProgressHUD.DisplayType
-//        let progressHUD =
-////            ZVProgressHUD(.text(title: "网络加载错误，请重试"), displayStyle: .dark)
-////            ZVProgressHUD(.indicator(title: "11", type: .progress(value: 0.7)))
-////            ZVProgressHUD(.indicator(title: "参数错误", type: .warning))
-////            ZVProgressHUD(.indicator(title: "加载成功", type: .success))
-////            ZVProgressHUD(.indicator(title: "加载失败", type: .error))
-////            ZVProgressHUD(.indicator(title: "正在加载", type: .indicator(style: .flat)))
-////            ZVProgressHUD(.indicator(title: "正在加载", type: .indicator(style: .native)))
-//            ZVProgressHUD(.indicator(title: "正在加载", type: .custom(animationImages: animationImages, duration: 0.4)), displayStyle: .light)
-//        progressHUD.setMaskType(.custom(color: .lightGray))
-//        view.addSubview(progressHUD)
-        
-//        let baseView = UIView(frame: self.view.frame)
-//        baseView.backgroundColor = .lightGray
-//        view.addSubview(baseView)
-//        let frame = view.frame
-//        let indicatorView = IndicatorView(frame: .init(x: (frame.width - 38) / 2, y: (frame.height - 38) / 2, width: 38, height: 38))
-//        indicatorView.indcatorType = .success
-//        let progressView = ZVProgressView(frame: .init(x: 0, y: 0, width: 200, height: 200))
-//        progressView.backgroundColor = .lightGray
-//        baseView.addSubview(indicatorView)
+        ZVProgressHUD.maskType = .none
+//            .custom(color: .brown)
+        ZVProgressHUD.displayStyle = .dark
 
-
-//        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.progressHUDTouchEvent(notification:)), name: .ZVProgressHUDDidReceiveTouchEvent, object: nil)
-//
-//        ZVProgressHUD.lineWidth = 1.5
-
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(progressHUDTouchEvent(_:)),
+                                               name: .ZVProgressHUDReceivedEventTouchUpInside,
+                                               object: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
     }
-    
 }
+
+// MARK: - ZVProgressHUD Notification
+
+extension ViewController {
+
+    @objc func progressHUDTouchEvent(_ notification: Notification) {
 //
-//// MARK: - ZVProgressHUD Notification
-//
-//extension ViewController {
-//
-//    func progressHUDTouchEvent(notification: Notification) {
-//        self.dismissHUD()
-//    }
-//}
-//
-//// MARK: - ZVProgressHUD
-//
-//extension ViewController {
-//
-//    @objc func showIndicator() {
-//        ZVProgressHUD.show()
-//    }
-//
-//    @objc func showWithLabel() {
+//        ZVProgressHUD.dismiss()
+        showLabel()
+        
+        self.textField.resignFirstResponder()
+    }
+}
+
+// MARK: - ZVProgressHUD
+
+extension ViewController {
+
+    @objc func showIndicator() {
+        
+        
+        ZVProgressHUD.show()
+    }
+
+    @objc func showWithLabel() {
+
 //        ZVProgressHUD.show(with: .state(title: "Loading...", state: .indicator))
-//    }
-//
-//    @objc func showError() {
-//        ZVProgressHUD.show(with: .state(title: "Error", state: .error))
-//    }
-//
-//    @objc func showSuccess() {
+    }
+
+    @objc func showError() {
+        ZVProgressHUD.showError(with: "保存失败")
+//            .show(with: .state(title: "Error", state: .error))
+    }
+
+    @objc func showSuccess() {
+        ZVProgressHUD.showSuccess(with: "保存成功")
 //        ZVProgressHUD.show(with: .state(title: "Success", state: .success))
-//    }
-//
-//    @objc func showWarning() {
-//        ZVProgressHUD.show(with: .state(title: "Warning", state: .warning))
-//    }
-//
-//    @objc func showCustomImage() {
+    }
+
+    @objc func showWarning() {
+        ZVProgressHUD.showWarning()
+//            .show(with: .state(title: "", state: .warning))
+    }
+
+    @objc func showCustomImage() {
+        
+        
 //        let image = UIImage(named: "smile")
 //        ZVProgressHUD.show(image: image!)
-//    }
-//
-//    @objc func showCustomImageWithLabel() {
+    }
+
+    @objc func showCustomImageWithLabel() {
 //        let image = UIImage(named: "smile")
 //        ZVProgressHUD.show(with: .state(title: "Check Smail", state: .custom(image: image!)))
-//    }
-//
-//    @objc func showProgress() {
+    }
+
+    @objc func showProgress() {
 //        self.progress = 0
 //        if  self.timer != nil {
 //            timer?.invalidate()
 //            timer = nil
 //        }
 //        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
-//    }
-//
-//    @objc func showProgressWithLabel() {
+    }
+
+    @objc func showProgressWithLabel() {
 //        self.progress = 0
 //        if  self.timer != nil {
 //            timer?.invalidate()
 //            timer = nil
 //        }
 //        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
-//    }
-//
-//
-//    @objc func showCustomView() {
+    }
+
+
+    @objc func showCustomView() {
 //        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 //        customView.backgroundColor = UIColor.white
 //        let label = UILabel(frame: CGRect(x: 0, y: 30, width: 100, height: 40 ))
@@ -162,26 +139,30 @@ class ViewController: UIViewController {
 //        customView.addSubview(label)
 //        ZVProgressHUD.customInsets = .init(top: 10, left: 10, bottom: 10, right: 10)
 //        ZVProgressHUD.show(with: .custom(view: customView))
-//    }
-//
-//    @objc func showLabel() {
+    }
+
+    @objc func showLabel() {
+        ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
+
 //        ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
-//    }
-//
-//    @objc func showLabelOnCenter() {
+    }
+
+    @objc func showLabelOnCenter() {
 //        ZVProgressHUD.show(label: "I'm a toast", on: .center)
-//    }
-//
-//    @objc func dismissHUD() {
+    }
+
+    @objc func dismissHUD() {
 //        if self.timer != nil {
 //            timer?.invalidate()
 //            timer = nil
 //        }
-//        ZVProgressHUD.dismiss()
-//    }
-//
-//    @IBAction func setDisplayStyle(_ sender: UISegmentedControl) {
-//
+        ZVProgressHUD.dismiss(delay: 3) {
+            print("dimiss")
+        }
+    }
+
+    @IBAction func setDisplayStyle(_ sender: UISegmentedControl) {
+
 //        switch sender.selectedSegmentIndex {
 //        case 0:
 //            ZVProgressHUD.displayStyle = .dark
@@ -198,10 +179,10 @@ class ViewController: UIViewController {
 //        default:
 //            break
 //        }
-//    }
-//
-//    @IBAction func setMaskType(_ sender: UISegmentedControl) {
-//
+    }
+
+    @IBAction func setMaskType(_ sender: UISegmentedControl) {
+
 //        switch sender.selectedSegmentIndex {
 //        case 0:
 //            ZVProgressHUD.maskType = .clear
@@ -218,9 +199,9 @@ class ViewController: UIViewController {
 //        default:
 //            break
 //        }
-//    }
-//
-//    @IBAction func setAnimationType(_ sender: UISegmentedControl) {
+    }
+
+    @IBAction func setAnimationType(_ sender: UISegmentedControl) {
 //        switch sender.selectedSegmentIndex {
 //        case 0:
 //            ZVProgressHUD.animationType = .extended
@@ -231,10 +212,10 @@ class ViewController: UIViewController {
 //        default:
 //            break
 //        }
-//    }
-//
-//    @objc func progressTimerAction(_ sender: Timer) {
-//
+    }
+
+    @objc func progressTimerAction(_ sender: Timer) {
+
 //        let userInfo = sender.userInfo as? [String: String]
 //        let title = userInfo?["title"] ?? ""
 //        self.progress += 0.05
@@ -244,33 +225,33 @@ class ViewController: UIViewController {
 //            ZVProgressHUD.dismiss()
 //            sender.invalidate()
 //        }
-//    }
-//}
-//
-//extension ViewController: UITableViewDataSource {
-//
-//    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return self.rows.count
-//    }
-//
-//    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseIdentifier")
-//        cell?.textLabel?.text = self.rows[indexPath.row].0
-//        cell?.textLabel?.font = UIFont.systemFont(ofSize: 14.0)
-//        cell?.textLabel?.textColor = UIColor(white: 0.2, alpha: 1.0)
-//        return cell!
-//    }
-//}
-//
-//extension ViewController: UITableViewDelegate {
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let selector = self.rows[indexPath.row].1
-//        self.perform(selector)
-//    }
-//}
-//
+    }
+}
+
+extension ViewController: UITableViewDataSource {
+
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.rows.count
+    }
+
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseIdentifier")
+        cell?.textLabel?.text = self.rows[indexPath.row].0
+        cell?.textLabel?.font = UIFont.systemFont(ofSize: 14.0)
+        cell?.textLabel?.textColor = UIColor(white: 0.2, alpha: 1.0)
+        return cell!
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selector = self.rows[indexPath.row].1
+        self.perform(selector)
+    }
+}
+
 //extension ViewController: UITextFieldDelegate {
 //
 //    func textFieldShouldReturn(_ textField: UITextField) -> Bool {

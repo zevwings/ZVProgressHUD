@@ -16,12 +16,19 @@ public class IndicatorView: UIView {
         case error, success, warning
         case indicator(style: AnimationType)
         case progress(value: Float)
+        case image(value: UIImage, dismissAtomically: Bool)
         case custom(animationImages: [UIImage], duration: TimeInterval)
     }
     
     public enum AnimationType {
         case flat
         case native
+    }
+    
+    var strokeWidth: CGFloat = 3.0 {
+        didSet {
+            flatActivityIndicatorView?.strokeWidth = strokeWidth
+        }
     }
     
     var indcatorType: IndicatorType = .success {
@@ -36,15 +43,21 @@ public class IndicatorView: UIView {
                 switch (style) {
                 case .native:
                     setNativeActivityIndicatorView()
+                    nativeActivityIndicatorView?.startAnimating()
                     break
                 case .flat:
                     setFlatActivityIndicatorView()
+                    flatActivityIndicatorView?.startAnimating()
                     break
                 }
                 break
             case .progress(let value):
                 setProgressIndicatorView()
-                self.progressIndicatorView?.progress = value
+                progressIndicatorView?.progress = value
+                break
+            case .image(let value, _):
+                setImageIndicatorView()
+                imageIndicaotorView?.image = value
                 break
             case .custom(let animationImages, let duration):
                 setImageIndicatorView()
@@ -164,7 +177,7 @@ extension IndicatorView {
             flatActivityIndicatorView = ZVActivityIndicatorView()
             flatActivityIndicatorView?.tintColor = tintColor
             flatActivityIndicatorView?.hidesWhenStopped = true
-            flatActivityIndicatorView?.strokeWidth = 3.0
+            flatActivityIndicatorView?.strokeWidth = strokeWidth
             flatActivityIndicatorView?.startAnimating()
         }
         
@@ -195,18 +208,18 @@ extension IndicatorView.IndicatorType {
         default:
             return ""
         }
-    }
+    }    
 }
 
 extension IndicatorView.IndicatorType : Equatable {
-    
+
     public static func ==(lhs: IndicatorView.IndicatorType, rhs: IndicatorView.IndicatorType) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
 }
 
 extension IndicatorView.IndicatorType : Hashable {
-    
+
     public var hashValue: Int {
         switch self {
         case .error:
@@ -219,8 +232,10 @@ extension IndicatorView.IndicatorType : Hashable {
             return 3
         case .progress:
             return 4
-        case .custom:
+        case .image:
             return 5
+        case .custom:
+            return 6
         }
     }
 }

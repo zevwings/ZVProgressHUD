@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4D1513642032BDA700624B42 /* Configration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1513632032BDA700624B42 /* Configration.swift */; };
+		4D35A9E82044462900452A5A /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; };
+		4D35A9E92044463F00452A5A /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; };
+		4D35A9EA2044463F00452A5A /* RevealServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D3C7C161F1799AB00F39B30 /* ZVProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C7C151F1799AB00F39B30 /* ZVProgressView.swift */; };
 		4D5BDA9E1F146CAC00E68CB6 /* ZVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
@@ -16,8 +19,9 @@
 		4D9349652033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */; };
 		4D9349662033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D99C8711F15DCC0009721FC /* ZVProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */; };
+		4DEC197A2042FC3100ACAA5B /* ZVProgressHUD+Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEC19792042FC3100ACAA5B /* ZVProgressHUD+Enum.swift */; };
+		4DEC197C2042FC8200ACAA5B /* ZVProgressHUD+Public.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+Public.swift */; };
 		4DF2DC731F176DB90033B871 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF2DC721F176DB90033B871 /* IndicatorView.swift */; };
-		4DF2DC751F176DD00033B871 /* CoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF2DC741F176DD00033B871 /* CoverView.swift */; };
 		4DFF5B4C20318D7A0098BA7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4B20318D7A0098BA7D /* AppDelegate.swift */; };
 		4DFF5B5120318D7A0098BA7D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4F20318D7A0098BA7D /* Main.storyboard */; };
 		4DFF5B5320318D7A0098BA7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B5220318D7A0098BA7D /* Assets.xcassets */; };
@@ -44,6 +48,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4D9349662033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Embed Frameworks */,
+				4D35A9EA2044463F00452A5A /* RevealServer.framework in Embed Frameworks */,
 				4DFF5B5F20318DE90098BA7D /* ZVProgressHUD.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -53,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		4D1513632032BDA700624B42 /* Configration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configration.swift; sourceTree = "<group>"; };
+		4D35A9E72044462900452A5A /* RevealServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RevealServer.framework; sourceTree = "<group>"; };
 		4D3C7C151F1799AB00F39B30 /* ZVProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZVProgressView.swift; sourceTree = "<group>"; };
 		4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZVProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZVProgressHUD.h; sourceTree = "<group>"; };
@@ -61,8 +67,9 @@
 		4D8046F81F14CBFD0069F9F2 /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
 		4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZVActivityIndicatorView.framework; path = Carthage/Build/iOS/ZVActivityIndicatorView.framework; sourceTree = "<group>"; };
 		4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZVProgressHUD.swift; sourceTree = "<group>"; };
+		4DEC19792042FC3100ACAA5B /* ZVProgressHUD+Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZVProgressHUD+Enum.swift"; sourceTree = "<group>"; };
+		4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+Public.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZVProgressHUD+Public.swift"; sourceTree = "<group>"; };
 		4DF2DC721F176DB90033B871 /* IndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
-		4DF2DC741F176DD00033B871 /* CoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverView.swift; sourceTree = "<group>"; };
 		4DFF5B4920318D7A0098BA7D /* ZVProgressHUDExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZVProgressHUDExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DFF5B4B20318D7A0098BA7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DFF5B5020318D7A0098BA7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -76,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D35A9E82044462900452A5A /* RevealServer.framework in Frameworks */,
 				4D9349642033C6E70059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +93,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D9349652033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */,
+				4D35A9E92044463F00452A5A /* RevealServer.framework in Frameworks */,
 				4DFF5B5E20318DE90098BA7D /* ZVProgressHUD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,8 +125,9 @@
 			children = (
 				4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */,
 				4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */,
+				4DEC19792042FC3100ACAA5B /* ZVProgressHUD+Enum.swift */,
+				4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+Public.swift */,
 				4D1513632032BDA700624B42 /* Configration.swift */,
-				4DF2DC741F176DD00033B871 /* CoverView.swift */,
 				4DF2DC721F176DB90033B871 /* IndicatorView.swift */,
 				4D5BDA911F146CAC00E68CB6 /* Info.plist */,
 				4D8046F81F14CBFD0069F9F2 /* Resource.bundle */,
@@ -142,6 +152,7 @@
 		4DFF5B6620318F0B0098BA7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D35A9E72044462900452A5A /* RevealServer.framework */,
 				4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */,
 			);
 			name = Frameworks;
@@ -187,6 +198,7 @@
 				4DFF5B4620318D7A0098BA7D /* Frameworks */,
 				4DFF5B4720318D7A0098BA7D /* Resources */,
 				4DFF5B6220318DE90098BA7D /* Embed Frameworks */,
+				4D35A9E62044455300452A5A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -211,7 +223,7 @@
 					4D5BDA8C1F146CAC00E68CB6 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 4D95EGYA4V;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					4DFF5B4820318D7A0098BA7D = {
@@ -261,15 +273,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4D35A9E62044455300452A5A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "export REVEAL_SERVER_FILENAME=\"RevealServer.framework\"\n\n# Update this path to point to the location of RevealServer.framework in your project.\nexport REVEAL_SERVER_PATH=\"${SRCROOT}/${REVEAL_SERVER_FILENAME}\"\n\n# If configuration is not Debug, skip this script.\n[ \"${CONFIGURATION}\" != \"Debug\" ] && exit 0\n\n# If RevealServer.framework exists at the specified path, run code signing script.\nif [ -d \"${REVEAL_SERVER_PATH}\" ]; then\n\"${REVEAL_SERVER_PATH}/Scripts/copy_and_codesign_revealserver.sh\"\nelse\necho \"Reveal Server not loaded: RevealServer.framework could not be found.\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4D5BDA881F146CAC00E68CB6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4D3C7C161F1799AB00F39B30 /* ZVProgressView.swift in Sources */,
-				4DF2DC751F176DD00033B871 /* CoverView.swift in Sources */,
 				4D1513642032BDA700624B42 /* Configration.swift in Sources */,
 				4D99C8711F15DCC0009721FC /* ZVProgressHUD.swift in Sources */,
+				4DEC197C2042FC8200ACAA5B /* ZVProgressHUD+Public.swift in Sources */,
+				4DEC197A2042FC3100ACAA5B /* ZVProgressHUD+Enum.swift in Sources */,
 				4DF2DC731F176DB90033B871 /* IndicatorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,6 +469,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = ZVProgressHUD/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -468,6 +498,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = ZVProgressHUD/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -494,11 +525,19 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ZVProgressHUDExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-weak_framework",
+					RevealServer,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUDExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -519,11 +558,19 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Frameworks",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ZVProgressHUDExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-weak_framework",
+					RevealServer,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUDExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

@@ -9,9 +9,13 @@
 import UIKit
 
 public extension Notification.Name {
-    struct ZVProgressHUD {
-        public static let ReceivedTouchEvent = Notification.Name(rawValue: "com.zevwings.progresshud.touchup.inside")
-    }
+    static let ZVProgressHUDReceivedEventTouchUpInside = Notification.Name(rawValue: "com.zevwings.progresshud.touchup.inside")
+    
+    static let ZVProgressHUDWillAppear = Notification.Name("com.zevwings.progresshud.willAppear")
+    static let ZVProgressHUDDidAppear = Notification.Name("com.zevwings.progresshud.didAppear")
+    
+    static let ZVProgressHUDWillDisappear = Notification.Name("com.zevwings.progresshud.willDisappear")
+    static let ZVProgressHUDDidDisappear = Notification.Name("com.zevwings.progresshud.didDisappear")
 }
 
 extension UIImage {
@@ -25,21 +29,9 @@ extension UIImage {
 
 extension UILabel {
     
-    class var `default`: UILabel {
-        let defaultLabel = UILabel()
-        defaultLabel.minimumScaleFactor = 0.5
-        defaultLabel.textAlignment = .center
-        defaultLabel.isUserInteractionEnabled = false
-        defaultLabel.font = .systemFont(ofSize: 16.0)
-        defaultLabel.backgroundColor = .clear
-        defaultLabel.lineBreakMode = .byTruncatingTail
-        defaultLabel.numberOfLines = 0
-        return defaultLabel
-    }
-    
     func getTextWidth(with maxSize: CGSize) -> CGSize {
-        guard let text = self.text, !text.isEmpty else { return .zero }
-        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: self.font]
+        guard let text = text, !text.isEmpty else { return .zero }
+        let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: font]
         return (text as NSString).boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil).size
     }
     

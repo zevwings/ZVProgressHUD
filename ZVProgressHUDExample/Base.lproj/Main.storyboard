@@ -16,6 +16,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="2dk-C5-tAG">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.84313725490000002" green="0.12941176469999999" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
@@ -39,7 +40,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fRL-Mv-oJj">
@@ -55,6 +56,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="qLD-Z3-E5C"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="QMv-mu-0Ya"/>
+                                </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zdR-fL-ctk">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
@@ -177,6 +182,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="ZVProgressHUD" id="6x1-7Q-jEP"/>
+                    <connections>
+                        <outlet property="stateSizeTextField" destination="VjK-5A-CO8" id="4BN-er-GNX"/>
+                        <outlet property="tableView" destination="fRL-Mv-oJj" id="mHA-oU-kwo"/>
+                        <outlet property="textField" destination="EOH-2M-oms" id="ewq-Pu-hXa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
