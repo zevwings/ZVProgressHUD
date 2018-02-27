@@ -12,6 +12,7 @@ import ZVActivityIndicatorView
 public class IndicatorView: UIView {
 
     public enum IndicatorType {
+        case none
         case error, success, warning
         case indicator(style: AnimationType)
         case progress(value: Float)
@@ -30,10 +31,9 @@ public class IndicatorView: UIView {
         }
     }
     
-    var indcatorType: IndicatorType? {
+    var indcatorType: IndicatorType = .none {
         didSet {
-            guard let indcator = indcatorType else { return }
-            switch indcator {
+            switch indcatorType {
             case .indicator(let style):
                 switch (style) {
                 case .native:
@@ -48,7 +48,7 @@ public class IndicatorView: UIView {
                 configProgressIndicatorView(with: value)
                 break
             case .error, .success, .warning:
-                configImageIndicatorView(indcator.resource)
+                configImageIndicatorView(indcatorType.resource)
                 break
             case .image(let value, _):
                 configImageIndicatorView(value)
@@ -56,7 +56,10 @@ public class IndicatorView: UIView {
             case .animation(let value, let duration):
                 configImageIndicatorView(value, animationDuration: duration)
                 break
+            default:
+                break
             }
+            isHidden = indcatorType.shouldHidden
         }
     }
     
@@ -181,7 +184,6 @@ private extension IndicatorView {
             addSubview(progressIndicatorView!)
         }
 
-        print("progress : \(value)")
         progressIndicatorView?.updateProgress(value)
     }
     
@@ -254,43 +256,22 @@ extension IndicatorView.IndicatorType {
         }
     }
     
-    var progress: Float {
+    var shouldHidden: Bool {
+        switch self {
+        case .none:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var progressValueChecker: (Bool, Float) {
         switch self {
         case .progress(let value):
-            return value
+            return (true, value)
         default:
-            return 0
+            return (false, 0.0)
         }
     }
 }
 
-
-extension IndicatorView.IndicatorType: Equatable {
-    
-    public static func ==(lhs: IndicatorView.IndicatorType, rhs: IndicatorView.IndicatorType) -> Bool {
-        return lhs.hashValue == rhs.hashValue
-    }
-}
-
-extension IndicatorView.IndicatorType: Hashable {
-    public var hashValue: Int {
-        switch self {
-        case .success:
-            return 0
-        case .error:
-            return 1
-        case .warning:
-            return 2
-        case .indicator:
-            return 3
-        case .progress:
-            return 4
-        case .image:
-            return 5
-        case .animation:
-            return 6
-        }
-    }
-    
-    
-}

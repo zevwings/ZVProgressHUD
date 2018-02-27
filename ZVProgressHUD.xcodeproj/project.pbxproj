@@ -123,9 +123,9 @@
 				4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */,
 				4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+PF.swift */,
 				4DF2DC721F176DB90033B871 /* IndicatorView.swift */,
+				4D3C7C151F1799AB00F39B30 /* ProgressView.swift */,
 				4D5BDA911F146CAC00E68CB6 /* Info.plist */,
 				4D8046F81F14CBFD0069F9F2 /* Resource.bundle */,
-				4D3C7C151F1799AB00F39B30 /* ProgressView.swift */,
 			);
 			path = ZVProgressHUD;
 			sourceTree = "<group>";

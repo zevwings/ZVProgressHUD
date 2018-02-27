@@ -78,9 +78,6 @@ class ProgressView: UIView {
     
     private func prepare() {
         
-//        transform = CGAffineTransformMakeRotation(angle)
-//        layer.transform = CGAffineTransform(rotationAngle: 1.5)
-        
         let arcCenter: CGPoint = .init(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
         let radius: CGFloat = (min(self.bounds.width, self.bounds.height) - self.strokeWidth * 2) / 2
         let startAngle = CGFloat( -0.5 * Double.pi)
@@ -93,10 +90,6 @@ class ProgressView: UIView {
     
     func updateProgress(_ progress: Float) {
         
-//        var v = value
-//        if value > 1.0 { v = 1.0 }
-//        if value < 0.0 { v = 0.0 }
-    
         CATransaction.begin()
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         CATransaction.setAnimationDuration(0.15)

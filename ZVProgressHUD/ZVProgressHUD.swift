@@ -70,6 +70,8 @@ open class ZVProgressHUD: UIControl {
     internal var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
     internal var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
+    private var displayType: DisplayType = .text(value: "")
+    
     private var containerView: UIView?
     
     private var _fadeOutTimer: Timer?
@@ -131,11 +133,6 @@ extension ZVProgressHUD {
             
             guard let strongSelf = self else { return }
             
-            if let indicatorType = displayType.indicatorType, indicatorType.hashValue == 4, indicatorType.progress > 1.0 {
-                strongSelf.dismiss()
-                return
-            }
-
             strongSelf.fadeOutTimer = nil
             
             if let sv = superview {
@@ -160,12 +157,10 @@ extension ZVProgressHUD {
             strongSelf.indicatorView.tintColor = strongSelf.displayStyle.foregroundColor
             
             // set property form displayType
+            strongSelf.displayType = displayType
             strongSelf.titleLabel.text = displayType.title
             strongSelf.titleLabel.isHidden = displayType.title.isEmpty
             strongSelf.indicatorView.indcatorType = displayType.indicatorType
-            strongSelf.indicatorView.isHidden = displayType.indicatorType == nil
-            
-    
             
             // display
             let displayTimeInterval = strongSelf.displayTimeInterval(for: displayType)
@@ -176,7 +171,6 @@ extension ZVProgressHUD {
             }
         }
     }
-    
     
     func dismiss(with delayTimeInterval: TimeInterval = 0, completion: ZVProgressHUDCompletionHandler? = nil) {
         
@@ -231,6 +225,12 @@ extension ZVProgressHUD {
                 if displayTimeInterval > 0 {
                     self.fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.dismiss(_:)), userInfo: nil, repeats: false)
                     RunLoop.main.add(self.fadeOutTimer!, forMode: .commonModes)
+                } else {
+
+                    if self.displayType.indicatorType.progressValueChecker.0 &&
+                        self.displayType.indicatorType.progressValueChecker.1 >= 1.0 {
+                        self.dismiss()
+                    }
                 }
             }
             
@@ -252,6 +252,11 @@ extension ZVProgressHUD {
             if displayTimeInterval > 0 {
                 fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.dismiss(_:)), userInfo: nil, repeats: false)
                 RunLoop.main.add(fadeOutTimer!, forMode: .commonModes)
+            } else {
+                if displayType.indicatorType.progressValueChecker.0 &&
+                    displayType.indicatorType.progressValueChecker.1 >= 1.0 {
+                    dismiss()
+                }
             }
         }
     }
@@ -643,14 +648,15 @@ extension ZVProgressHUD.DisplayType {
         }
     }
     
-    var indicatorType: IndicatorView.IndicatorType? {
+    var indicatorType: IndicatorView.IndicatorType {
+        
         switch self {
         case .text:
-            return nil
+            return .none
         case .indicator(_, let type):
             return type
         }
-    }
+    }    
 }
 
 // MARK: - ZVProgressHUD.DisplayStyle
