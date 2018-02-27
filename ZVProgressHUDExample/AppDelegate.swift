@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  ZVProgressHUDExample
 //
-//  Created by 张伟 on 12/02/2018.
+//  Created by zevwings on 12/02/2018.
 //  Copyright © 2018 zevwings. All rights reserved.
 //
 

@@ -17,7 +17,7 @@ public class IndicatorView: UIView {
         case indicator(style: AnimationType)
         case progress(value: Float)
         case image(value: UIImage, dismissAtomically: Bool)
-        case custom(animationImages: [UIImage], duration: TimeInterval)
+        case animation(value: [UIImage], duration: TimeInterval)
     }
     
     public enum AnimationType {
@@ -31,12 +31,16 @@ public class IndicatorView: UIView {
         }
     }
     
-    var indcatorType: IndicatorType = .success {
+    var indcatorType: IndicatorType? {
         didSet {
-            switch indcatorType {
+            guard let indcator = indcatorType else { return }
+            switch indcator {
             case .error, .success, .warning:
                 setImageIndicatorView()
-                let image = UIImage(resource: indcatorType.resource)?.withRenderingMode(.alwaysTemplate)
+                guard let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") else { break }
+                let bundle = Bundle(path: path)
+                guard let fileName = bundle?.path(forResource: indcator.resource, ofType: "png") else { break }
+                let image = UIImage(contentsOfFile: fileName)?.withRenderingMode(.alwaysTemplate)
                 imageIndicaotorView?.image = image;
                 break
             case .indicator(let style):
@@ -59,14 +63,14 @@ public class IndicatorView: UIView {
                 setImageIndicatorView()
                 imageIndicaotorView?.image = value
                 break
-            case .custom(let animationImages, let duration):
+            case .animation(let value, let duration):
                 setImageIndicatorView()
-                if animationImages.isEmpty {
+                if value.isEmpty {
                     imageIndicaotorView?.image = nil
-                } else if animationImages.count == 1 {
-                    imageIndicaotorView?.image = animationImages[0]
+                } else if value.count == 1 {
+                    imageIndicaotorView?.image = value[0]
                 } else {
-                    imageIndicaotorView?.animationImages = animationImages
+                    imageIndicaotorView?.animationImages = value
                     imageIndicaotorView?.animationDuration = duration
                     imageIndicaotorView?.startAnimating()
                 }
@@ -79,7 +83,7 @@ public class IndicatorView: UIView {
     private var nativeActivityIndicatorView: UIActivityIndicatorView?
     private var flatActivityIndicatorView: ZVActivityIndicatorView?
     private var progressIndicatorView: UIProgressView?
-
+    
     convenience init() {
         self.init(frame: .zero)
     }
@@ -111,8 +115,7 @@ extension IndicatorView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        let size = CGSize(width: frame.width, height: frame.height)
-        let subViewFrame = CGRect(origin: .zero, size: size)
+        let subViewFrame = CGRect(origin: .zero, size: frame.size)
         
         imageIndicaotorView?.frame = subViewFrame
         flatActivityIndicatorView?.frame = subViewFrame
@@ -123,9 +126,9 @@ extension IndicatorView {
 
 // MARK: - Private Method
 
-extension IndicatorView {
+private extension IndicatorView {
     
-    private func setImageIndicatorView() {
+    func setImageIndicatorView() {
         
         if imageIndicaotorView == nil {
             imageIndicaotorView = UIImageView(frame: .zero)
@@ -144,7 +147,7 @@ extension IndicatorView {
         progressIndicatorView?.removeFromSuperview()
     }
     
-    private func setProgressIndicatorView() {
+    func setProgressIndicatorView() {
         
         if progressIndicatorView == nil {
             
@@ -209,34 +212,5 @@ extension IndicatorView.IndicatorType {
             return ""
         }
     }    
-}
-
-extension IndicatorView.IndicatorType : Equatable {
-
-    public static func ==(lhs: IndicatorView.IndicatorType, rhs: IndicatorView.IndicatorType) -> Bool {
-        return lhs.hashValue == rhs.hashValue
-    }
-}
-
-extension IndicatorView.IndicatorType : Hashable {
-
-    public var hashValue: Int {
-        switch self {
-        case .error:
-            return 0
-        case .success:
-            return 1
-        case .warning:
-            return 2
-        case .indicator:
-            return 3
-        case .progress:
-            return 4
-        case .image:
-            return 5
-        case .custom:
-            return 6
-        }
-    }
 }
 

@@ -38,13 +38,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ZVProgressHUD.maskType = .none
-//            .custom(color: .brown)
+        ZVProgressHUD.maskType = .black
         ZVProgressHUD.displayStyle = .dark
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),
-                                               name: .ZVProgressHUDReceivedEventTouchUpInside,
+                                               name: .ZVProgressHUDReceivedTouchUpInsideEvent,
                                                object: nil)
     }
 
@@ -142,8 +141,8 @@ extension ViewController {
     }
 
     @objc func showLabel() {
-        ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
-
+//        ZVProgressHUD.show(labelwith: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
+        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
 //        ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
     }
 
