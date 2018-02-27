@@ -58,11 +58,8 @@ class ViewController: UIViewController {
 extension ViewController {
 
     @objc func progressHUDTouchEvent(_ notification: Notification) {
-//
-//        ZVProgressHUD.dismiss()
-        showLabel()
-        
         self.textField.resignFirstResponder()
+        ZVProgressHUD.dismiss()
     }
 }
 
@@ -71,41 +68,35 @@ extension ViewController {
 extension ViewController {
 
     @objc func showIndicator() {
-        
-        
         ZVProgressHUD.show()
     }
 
     @objc func showWithLabel() {
-
-//        ZVProgressHUD.show(with: .state(title: "Loading...", state: .indicator))
+        ZVProgressHUD.show(with: "正在保存 ... ", delay: 3.0)
     }
 
     @objc func showError() {
         ZVProgressHUD.showError(with: "保存失败")
-//            .show(with: .state(title: "Error", state: .error))
     }
 
     @objc func showSuccess() {
         ZVProgressHUD.showSuccess(with: "保存成功")
-//        ZVProgressHUD.show(with: .state(title: "Success", state: .success))
     }
 
     @objc func showWarning() {
-        ZVProgressHUD.showWarning()
-//            .show(with: .state(title: "", state: .warning))
+        ZVProgressHUD.showWarning(with: "存储信息有误")
     }
 
     @objc func showCustomImage() {
         
-        
-//        let image = UIImage(named: "smile")
-//        ZVProgressHUD.show(image: image!)
+        let image = UIImage(named: "smile")
+        ZVProgressHUD.showImage(image!)
     }
 
     @objc func showCustomImageWithLabel() {
-//        let image = UIImage(named: "smile")
-//        ZVProgressHUD.show(with: .state(title: "Check Smail", state: .custom(image: image!)))
+        
+        let image = UIImage(named: "smile")
+        ZVProgressHUD.showImage(image!, title: "微笑每一天")
     }
 
     @objc func showProgress() {
@@ -128,22 +119,17 @@ extension ViewController {
 
 
     @objc func showCustomView() {
-//        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-//        customView.backgroundColor = UIColor.white
-//        let label = UILabel(frame: CGRect(x: 0, y: 30, width: 100, height: 40 ))
-//        label.textAlignment = .center
-//        label.font = UIFont.systemFont(ofSize: 14.0)
-//        label.textColor = UIColor(red: 215.0 / 255.0, green: 22.0 / 255.0, blue: 59.0 / 255.0, alpha: 1.0)
-//        label.text = "custom view"
-//        customView.addSubview(label)
-//        ZVProgressHUD.customInsets = .init(top: 10, left: 10, bottom: 10, right: 10)
-//        ZVProgressHUD.show(with: .custom(view: customView))
+        
+        var images = [UIImage]()
+        for index in 1 ... 3 {
+            let image = UIImage(named: "loading_0\(index)")
+            images.append(image!)
+        }
+        ZVProgressHUD.showAnimation(images)
     }
 
     @objc func showLabel() {
-//        ZVProgressHUD.show(labelwith: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
         ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
-//        ZVProgressHUD.show(label: "我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
     }
 
     @objc func showLabelOnCenter() {
@@ -151,10 +137,7 @@ extension ViewController {
     }
 
     @objc func dismissHUD() {
-//        if self.timer != nil {
-//            timer?.invalidate()
-//            timer = nil
-//        }
+
         ZVProgressHUD.dismiss(delay: 3) {
             print("dimiss")
         }

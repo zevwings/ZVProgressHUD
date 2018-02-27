@@ -35,45 +35,27 @@ public class IndicatorView: UIView {
         didSet {
             guard let indcator = indcatorType else { return }
             switch indcator {
-            case .error, .success, .warning:
-                setImageIndicatorView()
-                guard let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") else { break }
-                let bundle = Bundle(path: path)
-                guard let fileName = bundle?.path(forResource: indcator.resource, ofType: "png") else { break }
-                let image = UIImage(contentsOfFile: fileName)?.withRenderingMode(.alwaysTemplate)
-                imageIndicaotorView?.image = image;
-                break
             case .indicator(let style):
                 switch (style) {
                 case .native:
-                    setNativeActivityIndicatorView()
-                    nativeActivityIndicatorView?.startAnimating()
+                    configNativeActivityIndicatorView()
                     break
                 case .flat:
-                    setFlatActivityIndicatorView()
-                    flatActivityIndicatorView?.startAnimating()
+                    configFlatActivityIndicatorView()
                     break
                 }
                 break
             case .progress(let value):
-                setProgressIndicatorView()
-                progressIndicatorView?.progress = value
+                configProgressIndicatorView(with: value)
+                break
+            case .error, .success, .warning:
+                configImageIndicatorView(indcator.resource)
                 break
             case .image(let value, _):
-                setImageIndicatorView()
-                imageIndicaotorView?.image = value
+                configImageIndicatorView(value)
                 break
             case .animation(let value, let duration):
-                setImageIndicatorView()
-                if value.isEmpty {
-                    imageIndicaotorView?.image = nil
-                } else if value.count == 1 {
-                    imageIndicaotorView?.image = value[0]
-                } else {
-                    imageIndicaotorView?.animationImages = value
-                    imageIndicaotorView?.animationDuration = duration
-                    imageIndicaotorView?.startAnimating()
-                }
+                configImageIndicatorView(value, animationDuration: duration)
                 break
             }
         }
@@ -132,7 +114,6 @@ private extension IndicatorView {
         
         if imageIndicaotorView == nil {
             imageIndicaotorView = UIImageView(frame: .zero)
-            imageIndicaotorView?.tintColor = tintColor
             imageIndicaotorView?.isUserInteractionEnabled = false
         }
         
@@ -147,52 +128,124 @@ private extension IndicatorView {
         progressIndicatorView?.removeFromSuperview()
     }
     
-    func setProgressIndicatorView() {
+    func configImageIndicatorView(_ value: Any, animationDuration: TimeInterval = 0.0) {
+
+        flatActivityIndicatorView?.stopAnimating()
+        flatActivityIndicatorView?.removeFromSuperview()
         
+        nativeActivityIndicatorView?.stopAnimating()
+        nativeActivityIndicatorView?.removeFromSuperview()
+        
+        imageIndicaotorView?.stopAnimating()
+        imageIndicaotorView?.animationImages = nil
+        imageIndicaotorView?.image = nil
+        
+        progressIndicatorView?.removeFromSuperview()
+        
+        if imageIndicaotorView == nil {
+            imageIndicaotorView = UIImageView(frame: .zero)
+            imageIndicaotorView?.isUserInteractionEnabled = false
+        }
+
+        if imageIndicaotorView?.superview == nil {
+            addSubview(imageIndicaotorView!)
+        }
+        
+        if let resource = value as? String {
+            
+            guard let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") else { return }
+            let bundle = Bundle(path: path)
+            guard let fileName = bundle?.path(forResource: resource, ofType: "png") else { return }
+            let image = UIImage(contentsOfFile: fileName)?.withRenderingMode(.alwaysTemplate)
+            imageIndicaotorView?.tintColor = tintColor
+            imageIndicaotorView?.image = image
+        } else if let image = value as? UIImage {
+            
+            imageIndicaotorView?.image = image
+        } else if let animationImages = value as? [UIImage] {
+            
+            if animationImages.isEmpty {
+                imageIndicaotorView?.image = nil
+            } else if animationImages.count == 1 {
+                imageIndicaotorView?.image = animationImages[0]
+            } else {
+                imageIndicaotorView?.animationImages = animationImages
+                imageIndicaotorView?.animationDuration = animationDuration
+                imageIndicaotorView?.startAnimating()
+            }
+
+            imageIndicaotorView?.animationImages = animationImages
+            imageIndicaotorView?.startAnimating()
+        }
+    }
+    
+    func configProgressIndicatorView(with value: Float) {
+        
+        flatActivityIndicatorView?.stopAnimating()
+        flatActivityIndicatorView?.removeFromSuperview()
+        
+        imageIndicaotorView?.animationImages = nil
+        imageIndicaotorView?.image = nil
+        imageIndicaotorView?.stopAnimating()
+        imageIndicaotorView?.removeFromSuperview()
+        
+        nativeActivityIndicatorView?.stopAnimating()
+        nativeActivityIndicatorView?.removeFromSuperview()
+
         if progressIndicatorView == nil {
             
         }
     }
     
-    private func setNativeActivityIndicatorView() {
+    private func configNativeActivityIndicatorView() {
         
+        flatActivityIndicatorView?.stopAnimating()
+        flatActivityIndicatorView?.removeFromSuperview()
+        
+        imageIndicaotorView?.animationImages = nil
+        imageIndicaotorView?.image = nil
+        imageIndicaotorView?.stopAnimating()
+        imageIndicaotorView?.removeFromSuperview()
+
+        progressIndicatorView?.removeFromSuperview()
+
         if nativeActivityIndicatorView == nil {
             nativeActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
             nativeActivityIndicatorView?.color = tintColor
             nativeActivityIndicatorView?.hidesWhenStopped = true
-            nativeActivityIndicatorView?.startAnimating()
         }
         
         if nativeActivityIndicatorView?.superview == nil {
             addSubview(nativeActivityIndicatorView!)
         }
         
-        flatActivityIndicatorView?.stopAnimating()
-        flatActivityIndicatorView?.removeFromSuperview()
-        imageIndicaotorView?.stopAnimating()
-        imageIndicaotorView?.removeFromSuperview()
-        progressIndicatorView?.removeFromSuperview()
+        nativeActivityIndicatorView?.startAnimating()
     }
     
-    private func setFlatActivityIndicatorView() {
+    private func configFlatActivityIndicatorView() {
         
+        nativeActivityIndicatorView?.stopAnimating()
+        nativeActivityIndicatorView?.removeFromSuperview()
+        
+        imageIndicaotorView?.image = nil
+        imageIndicaotorView?.animationImages = nil
+        imageIndicaotorView?.stopAnimating()
+        imageIndicaotorView?.removeFromSuperview()
+        
+        progressIndicatorView?.removeFromSuperview()
+
         if flatActivityIndicatorView == nil {
             flatActivityIndicatorView = ZVActivityIndicatorView()
             flatActivityIndicatorView?.tintColor = tintColor
             flatActivityIndicatorView?.hidesWhenStopped = true
             flatActivityIndicatorView?.strokeWidth = strokeWidth
-            flatActivityIndicatorView?.startAnimating()
         }
         
         if flatActivityIndicatorView?.superview == nil {
             addSubview(flatActivityIndicatorView!)
         }
         
-        nativeActivityIndicatorView?.stopAnimating()
-        nativeActivityIndicatorView?.removeFromSuperview()
-        imageIndicaotorView?.stopAnimating()
-        imageIndicaotorView?.removeFromSuperview()
-        progressIndicatorView?.removeFromSuperview()
+        flatActivityIndicatorView?.startAnimating()
     }
 }
 
