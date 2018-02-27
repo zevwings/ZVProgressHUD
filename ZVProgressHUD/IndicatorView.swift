@@ -12,7 +12,6 @@ import ZVActivityIndicatorView
 public class IndicatorView: UIView {
 
     public enum IndicatorType {
-
         case error, success, warning
         case indicator(style: AnimationType)
         case progress(value: Float)
@@ -64,7 +63,7 @@ public class IndicatorView: UIView {
     private var imageIndicaotorView: UIImageView?
     private var nativeActivityIndicatorView: UIActivityIndicatorView?
     private var flatActivityIndicatorView: ZVActivityIndicatorView?
-    private var progressIndicatorView: UIProgressView?
+    private var progressIndicatorView: ProgressView?
     
     convenience init() {
         self.init(frame: .zero)
@@ -109,24 +108,6 @@ extension IndicatorView {
 // MARK: - Private Method
 
 private extension IndicatorView {
-    
-    func setImageIndicatorView() {
-        
-        if imageIndicaotorView == nil {
-            imageIndicaotorView = UIImageView(frame: .zero)
-            imageIndicaotorView?.isUserInteractionEnabled = false
-        }
-        
-        if imageIndicaotorView?.superview == nil {
-            addSubview(imageIndicaotorView!)
-        }
-        
-        flatActivityIndicatorView?.stopAnimating()
-        flatActivityIndicatorView?.removeFromSuperview()
-        nativeActivityIndicatorView?.stopAnimating()
-        nativeActivityIndicatorView?.removeFromSuperview()
-        progressIndicatorView?.removeFromSuperview()
-    }
     
     func configImageIndicatorView(_ value: Any, animationDuration: TimeInterval = 0.0) {
 
@@ -193,8 +174,15 @@ private extension IndicatorView {
         nativeActivityIndicatorView?.removeFromSuperview()
 
         if progressIndicatorView == nil {
-            
+            progressIndicatorView = ProgressView(frame: .zero)
         }
+        
+        if progressIndicatorView?.superview == nil {
+            addSubview(progressIndicatorView!)
+        }
+
+        print("progress : \(value)")
+        progressIndicatorView?.updateProgress(value)
     }
     
     private func configNativeActivityIndicatorView() {
@@ -264,6 +252,45 @@ extension IndicatorView.IndicatorType {
         default:
             return ""
         }
-    }    
+    }
+    
+    var progress: Float {
+        switch self {
+        case .progress(let value):
+            return value
+        default:
+            return 0
+        }
+    }
 }
 
+
+extension IndicatorView.IndicatorType: Equatable {
+    
+    public static func ==(lhs: IndicatorView.IndicatorType, rhs: IndicatorView.IndicatorType) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension IndicatorView.IndicatorType: Hashable {
+    public var hashValue: Int {
+        switch self {
+        case .success:
+            return 0
+        case .error:
+            return 1
+        case .warning:
+            return 2
+        case .indicator:
+            return 3
+        case .progress:
+            return 4
+        case .image:
+            return 5
+        case .animation:
+            return 6
+        }
+    }
+    
+    
+}

@@ -12,19 +12,19 @@ import ZVProgressHUD
 class ViewController: UIViewController {
 
     var rows = [
-        ("show", #selector(ViewController.showIndicator)),
-        ("showWithLabel", #selector(ViewController.showWithLabel)),
-        ("showProgress", #selector(ViewController.showProgress)),
-        ("showProgressWithLabel", #selector(ViewController.showProgressWithLabel)),
-        ("showError", #selector(ViewController.showError)),
-        ("showSuccess", #selector(ViewController.showSuccess)),
-        ("showWarning", #selector(ViewController.showWarning)),
-        ("showCustomImage", #selector(ViewController.showCustomImage)),
-        ("showCustomImageWithLabel", #selector(ViewController.showCustomImageWithLabel)),
-        ("showCustomView", #selector(ViewController.showCustomView)),
-        ("showLabel", #selector(ViewController.showLabel)),
-        ("showLabelOnCenter", #selector(ViewController.showLabelOnCenter)),
-        ("dismiss", #selector(ViewController.dismissHUD))]
+        ("show", #selector(showIndicator)),
+        ("showWithLabel", #selector(showWithLabel)),
+        ("showProgress", #selector(showProgress)),
+        ("showProgressWithLabel", #selector(showProgressWithLabel)),
+        ("showError", #selector(showError)),
+        ("showSuccess", #selector(showSuccess)),
+        ("showWarning", #selector(showWarning)),
+        ("showCustomImage", #selector(showCustomImage)),
+        ("showCustomImageWithLabel", #selector(showCustomImageWithLabel)),
+        ("showAnimation", #selector(showCustomView)),
+        ("showLabel", #selector(showLabel)),
+        ("dismiss", #selector(dismissHUD))
+    ]
 
     @IBOutlet weak var stateSizeTextField: UITextField!
 
@@ -100,21 +100,21 @@ extension ViewController {
     }
 
     @objc func showProgress() {
-//        self.progress = 0
-//        if  self.timer != nil {
-//            timer?.invalidate()
-//            timer = nil
-//        }
-//        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
+        self.progress = 0
+        if  self.timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
     }
 
     @objc func showProgressWithLabel() {
-//        self.progress = 0
-//        if  self.timer != nil {
-//            timer?.invalidate()
-//            timer = nil
-//        }
-//        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
+        self.progress = 0
+        if  self.timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
     }
 
 
@@ -132,10 +132,6 @@ extension ViewController {
         ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
     }
 
-    @objc func showLabelOnCenter() {
-//        ZVProgressHUD.show(label: "I'm a toast", on: .center)
-    }
-
     @objc func dismissHUD() {
 
         ZVProgressHUD.dismiss(delay: 3) {
@@ -145,68 +141,68 @@ extension ViewController {
 
     @IBAction func setDisplayStyle(_ sender: UISegmentedControl) {
 
-//        switch sender.selectedSegmentIndex {
-//        case 0:
-//            ZVProgressHUD.displayStyle = .dark
-//            break
-//        case 1:
-//            ZVProgressHUD.displayStyle = .ligtht
-//            break
-//        case 2:
-//            let backgroundColor = UIColor(red: 86.0 / 255.0, green: 75.0 / 255.0, blue: 151.0 / 255.0, alpha: 1.0)
-//            let foregroundColor = UIColor(red: 239.0 / 255.0, green: 83.0 / 255.0, blue: 64.0 / 255.0, alpha: 1.0)
-//            ZVProgressHUD.displayStyle = .custom(backgroundColor: backgroundColor,
-//                                                 foregroundColor: foregroundColor)
-//            break
-//        default:
-//            break
-//        }
+        switch sender.selectedSegmentIndex {
+        case 0:
+            ZVProgressHUD.displayStyle = .dark
+            break
+        case 1:
+            ZVProgressHUD.displayStyle = .light
+            break
+        case 2:
+            let backgroundColor = UIColor(red: 86.0 / 255.0, green: 75.0 / 255.0, blue: 151.0 / 255.0, alpha: 1.0)
+            let foregroundColor = UIColor(red: 239.0 / 255.0, green: 83.0 / 255.0, blue: 64.0 / 255.0, alpha: 1.0)
+            ZVProgressHUD.displayStyle = .custom(backgroundColor: backgroundColor,
+                                                 foregroundColor: foregroundColor)
+            break
+        default:
+            break
+        }
     }
 
     @IBAction func setMaskType(_ sender: UISegmentedControl) {
 
-//        switch sender.selectedSegmentIndex {
-//        case 0:
-//            ZVProgressHUD.maskType = .clear
-//            break
-//        case 1:
-//            ZVProgressHUD.maskType = .none
-//            break
-//        case 2:
-//            ZVProgressHUD.maskType = .black
-//            break
-//        case 3:
-//            let color = UIColor(red: 215.0 / 255.0, green: 22.0 / 255.0, blue: 59.0 / 255.0, alpha: 0.35)
-//            ZVProgressHUD.maskType = .custom(color: color)
-//        default:
-//            break
-//        }
+        switch sender.selectedSegmentIndex {
+        case 0:
+            ZVProgressHUD.maskType = .clear
+            break
+        case 1:
+            ZVProgressHUD.maskType = .none
+            break
+        case 2:
+            ZVProgressHUD.maskType = .black
+            break
+        case 3:
+            let color = UIColor(red: 215.0 / 255.0, green: 22.0 / 255.0, blue: 59.0 / 255.0, alpha: 0.35)
+            ZVProgressHUD.maskType = .custom(color: color)
+        default:
+            break
+        }
     }
 
     @IBAction func setAnimationType(_ sender: UISegmentedControl) {
-//        switch sender.selectedSegmentIndex {
-//        case 0:
-//            ZVProgressHUD.animationType = .extended
-//            break
-//        case 1:
-//            ZVProgressHUD.animationType = .native
-//            break
-//        default:
-//            break
-//        }
+        switch sender.selectedSegmentIndex {
+        case 0:
+            ZVProgressHUD.animationType = .flat
+            break
+        case 1:
+            ZVProgressHUD.animationType = .native
+            break
+        default:
+            break
+        }
     }
 
-    @objc func progressTimerAction(_ sender: Timer) {
+    @objc func progressTimerAction(_ sender: Timer?) {
 
-//        let userInfo = sender.userInfo as? [String: String]
-//        let title = userInfo?["title"] ?? ""
-//        self.progress += 0.05
-//        ZVProgressHUD.show(title: title, progress: progress)
-//
-//        if self.progress > 1.0 {
-//            ZVProgressHUD.dismiss()
-//            sender.invalidate()
-//        }
+        let userInfo = sender?.userInfo as? [String: String]
+        let title = userInfo?["title"] ?? ""
+        progress += 0.05
+        ZVProgressHUD.showProgress(progress, title: title)
+
+        if progress > 1.0 {
+            timer?.invalidate()
+            timer = nil
+        }
     }
 }
 
@@ -234,66 +230,15 @@ extension ViewController: UITableViewDelegate {
     }
 }
 
-//extension ViewController: UITextFieldDelegate {
-//
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//
-//        textField.resignFirstResponder()
-//
-//        return true
-//    }
-//
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//
-////        guard textField == self.stateSizeTextField else { return true }
-////
-////        var text = textField.text ?? ""
-////        let range = text.range(from: range)
-////        text.replaceSubrange(range!, with: string)
-////
-////        let value = Int(text)
-////        guard let size = value, size > 0 else { return true }
-////
-////        ZVProgressHUD.stateSize = .init(width: size, height: size)
-////        print(size)
-//
-//        return true
-//    }
-//
-//}
-//
-//extension String {
-//
-//
-////    /// 将 Range<String.Index> 转为 NSRange
-////    ///
-////    /// - Parameter range: Range<String.Index>
-////    /// - Returns: NSRange
-////    func nsRange(from range: Range<String.Index>) -> NSRange {
-////        let fromIndex = range.lowerBound.samePosition(in: utf16)
-////        let toIndex = range.upperBound.samePosition(in: utf16)
-////        return NSRange(location: utf16.distance(from: utf16.startIndex, to: fromIndex),
-////                       length: utf16.distance(from: fromIndex, to: toIndex))
-////    }
-////
-////
-////    /// 将NSRange 转为 Range<String.Index>
-////    ///
-////    /// - Parameter nsRange: NSRange
-////    /// - Returns: Range<String.Index>
-////    func range(from nsRange: NSRange) -> Range<String.Index>? {
-////
-////        guard
-////            let fromUTFIndex = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
-////            let toUTFIndex = utf16.index(fromUTFIndex, offsetBy: nsRange.length, limitedBy: utf16.endIndex),
-////            let fromIndex = String.Index(fromUTFIndex, within: self),
-////            let toIndex = String.Index(toUTFIndex, within: self)
-////            else { return nil }
-////
-////        return fromIndex ..< toIndex
-////    }
-//}
+extension ViewController: UITextFieldDelegate {
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+
+        textField.resignFirstResponder()
+
+        return true
+    }
+}
 
 extension ViewController {
     

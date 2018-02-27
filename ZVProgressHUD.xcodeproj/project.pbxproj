@@ -10,7 +10,7 @@
 		4D35A9E82044462900452A5A /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; };
 		4D35A9E92044463F00452A5A /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; };
 		4D35A9EA2044463F00452A5A /* RevealServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4D3C7C161F1799AB00F39B30 /* ZVProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C7C151F1799AB00F39B30 /* ZVProgressView.swift */; };
+		4D3C7C161F1799AB00F39B30 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C7C151F1799AB00F39B30 /* ProgressView.swift */; };
 		4D5BDA9E1F146CAC00E68CB6 /* ZVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
 		4D8046F91F14CBFD0069F9F2 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D8046F81F14CBFD0069F9F2 /* Resource.bundle */; };
@@ -56,7 +56,7 @@
 
 /* Begin PBXFileReference section */
 		4D35A9E72044462900452A5A /* RevealServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RevealServer.framework; sourceTree = "<group>"; };
-		4D3C7C151F1799AB00F39B30 /* ZVProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZVProgressView.swift; sourceTree = "<group>"; };
+		4D3C7C151F1799AB00F39B30 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZVProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZVProgressHUD.h; sourceTree = "<group>"; };
 		4D5BDA911F146CAC00E68CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 				4DF2DC721F176DB90033B871 /* IndicatorView.swift */,
 				4D5BDA911F146CAC00E68CB6 /* Info.plist */,
 				4D8046F81F14CBFD0069F9F2 /* Resource.bundle */,
-				4D3C7C151F1799AB00F39B30 /* ZVProgressView.swift */,
+				4D3C7C151F1799AB00F39B30 /* ProgressView.swift */,
 			);
 			path = ZVProgressHUD;
 			sourceTree = "<group>";
@@ -288,7 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D3C7C161F1799AB00F39B30 /* ZVProgressView.swift in Sources */,
+				4D3C7C161F1799AB00F39B30 /* ProgressView.swift in Sources */,
 				4D99C8711F15DCC0009721FC /* ZVProgressHUD.swift in Sources */,
 				4DEC197C2042FC8200ACAA5B /* ZVProgressHUD+PF.swift in Sources */,
 				4DF2DC731F176DB90033B871 /* IndicatorView.swift in Sources */,

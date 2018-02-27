@@ -70,6 +70,8 @@ open class ZVProgressHUD: UIControl {
     internal var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
     internal var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
+    private var containerView: UIView?
+    
     private var _fadeOutTimer: Timer?
     private var _fadeInDeleyTimer: Timer?
     private var _fadeOutDelayTimer: Timer?
@@ -123,13 +125,24 @@ open class ZVProgressHUD: UIControl {
 
 extension ZVProgressHUD {
     
-    func show(with displayType: DisplayType, delay delayTimeInterval: TimeInterval = 0) {
+    func show(in superview: UIView? = nil, with displayType: DisplayType, delay delayTimeInterval: TimeInterval = 0) {
         
         OperationQueue.main.addOperation { [weak self] in
             
             guard let strongSelf = self else { return }
             
+            if let indicatorType = displayType.indicatorType, indicatorType.hashValue == 4, indicatorType.progress > 1.0 {
+                strongSelf.dismiss()
+                return
+            }
+
             strongSelf.fadeOutTimer = nil
+            
+            if let sv = superview {
+                strongSelf.containerView = sv
+            } else {
+                strongSelf.containerView = strongSelf.keyWindow
+            }
             
             strongSelf.updateViewHierarchy()
 
@@ -151,6 +164,8 @@ extension ZVProgressHUD {
             strongSelf.titleLabel.isHidden = displayType.title.isEmpty
             strongSelf.indicatorView.indcatorType = displayType.indicatorType
             strongSelf.indicatorView.isHidden = displayType.indicatorType == nil
+            
+    
             
             // display
             let displayTimeInterval = strongSelf.displayTimeInterval(for: displayType)
@@ -273,8 +288,12 @@ extension ZVProgressHUD {
                 strongSelf.fadeOutDelayTimer = nil
                 
                 // update view hierarchy
+                strongSelf.indicatorView.removeFromSuperview()
+                strongSelf.titleLabel.removeFromSuperview()
                 strongSelf.baseView.removeFromSuperview()
                 strongSelf.removeFromSuperview()
+
+                strongSelf.containerView = nil
                 
                 // remove notifications from self
                 NotificationCenter.default.removeObserver(strongSelf)
@@ -305,12 +324,11 @@ extension ZVProgressHUD {
     }
     
     private func updateViewHierarchy() {
-        
+
         if superview == nil {
-            guard let sv = keyWindow else { return }
-            sv.addSubview(self)
+            containerView?.addSubview(self)
         } else {
-            superview?.bringSubview(toFront: self)
+            containerView?.bringSubview(toFront: self)
         }
         
         if maskLayer.superlayer == nil {
@@ -388,14 +406,15 @@ private extension ZVProgressHUD {
     
     func updateSubviews() {
         
+        guard let containerView = containerView else { return }
+        
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
-        maskLayer.frame = frame
+        frame = containerView.frame
+        maskLayer.frame = containerView.frame
         
-        var indicatorSize: CGSize = .zero
         if !indicatorView.isHidden {
-            indicatorSize = self.indicatorSize
             indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
         }
         
@@ -408,8 +427,8 @@ private extension ZVProgressHUD {
             titleLabel.frame = CGRect(origin: .zero, size: labelSize)
         }
         
-        let labelHeight = labelSize.height > 0 ? labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom : 0
-        let indicatorHeight = indicatorSize.height > 0 ? indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom : 0
+        let labelHeight = titleLabel.isHidden ? 0 : labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+        let indicatorHeight = indicatorView.isHidden ? 0 : indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
         
         let contentHeight = labelHeight + indicatorHeight + contentInsets.top + contentInsets.bottom
         let contetnWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right, indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right) + contentInsets.left + contentInsets.right
@@ -437,14 +456,14 @@ private extension ZVProgressHUD {
     
     @objc func placeSubviews(_ notification: Notification? = nil) {
         
-        guard let keyWindow = keyWindow else { return }
+        guard let containerView = containerView else { return }
 
+        frame = containerView.frame
+        maskLayer.frame = containerView.frame
+        
         var keybordHeight: CGFloat = 0
         var animationDuration: TimeInterval = 0
         
-        frame = keyWindow.frame
-        maskLayer.frame = keyWindow.frame
-
         let orientation = UIApplication.shared.statusBarOrientation
         let statusBarFrame = UIApplication.shared.statusBarFrame
         let orenitationFrame = frame
