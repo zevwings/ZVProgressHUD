@@ -92,7 +92,7 @@ extension IndicatorView {
             imageIndicaotorView?.tintColor = tintColor
             nativeActivityIndicatorView?.color = tintColor
             flatActivityIndicatorView?.tintColor = tintColor
-            progressIndicatorView?.color = tintColor
+            progressIndicatorView?.strokeColor = tintColor
         }
     }
     
@@ -178,7 +178,7 @@ private extension IndicatorView {
 
         if progressIndicatorView == nil {
             progressIndicatorView = ProgressView(frame: .zero)
-            progressIndicatorView?.color = tintColor
+            progressIndicatorView?.strokeColor = tintColor
         }
         
         if progressIndicatorView?.superview == nil {

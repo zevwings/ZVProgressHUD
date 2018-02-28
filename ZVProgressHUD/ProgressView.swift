@@ -17,6 +17,18 @@ class ProgressView: UIView {
         }
     }
     
+    var _strokeColor: UIColor = .black
+    var strokeColor: UIColor {
+        get {
+            return _strokeColor
+        }
+        set {
+            _strokeColor = newValue
+            foregroundLayer.strokeColor = newValue.cgColor
+            backgroundLayer.strokeColor = newValue.withAlphaComponent(0.5).cgColor
+        }
+    }
+    
     var progress: Float = 0.0 {
         didSet {
             foregroundLayer.strokeEnd = CGFloat(progress)
@@ -31,7 +43,6 @@ class ProgressView: UIView {
         foregroundLayer.lineWidth = self.strokeWidth
         foregroundLayer.frame = self.bounds
         foregroundLayer.fillColor = UIColor.clear.cgColor
-//        foregroundLayer.strokeColor = UIColor.white.cgColor
         foregroundLayer.strokeStart = 0.0
         foregroundLayer.strokeEnd = 0.0
 
@@ -45,25 +56,11 @@ class ProgressView: UIView {
         backgroundLayer.lineWidth = self.strokeWidth
         backgroundLayer.frame = self.bounds
         backgroundLayer.fillColor = UIColor.clear.cgColor
-//        backgroundLayer.strokeColor = UIColor.black.cgColor
         backgroundLayer.strokeStart = 0.0
         backgroundLayer.strokeEnd = 1.0
         
         return backgroundLayer
     }()
-    
-    private var _color: UIColor?
-    
-    var color: UIColor? {
-        get {
-            return _color
-        }
-        set {
-            _color = newValue
-            foregroundLayer.strokeColor = newValue?.cgColor
-            backgroundLayer.strokeColor = newValue?.withAlphaComponent(0.5).cgColor
-        }
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
