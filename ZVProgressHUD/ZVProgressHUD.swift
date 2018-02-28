@@ -127,11 +127,18 @@ open class ZVProgressHUD: UIControl {
 
 extension ZVProgressHUD {
     
-    func show(in superview: UIView? = nil, with displayType: DisplayType, delay delayTimeInterval: TimeInterval = 0) {
+    func show(with displayType: DisplayType, in superview: UIView? = nil, delay delayTimeInterval: TimeInterval = 0) {
         
         OperationQueue.main.addOperation { [weak self] in
             
             guard let strongSelf = self else { return }
+            
+            if strongSelf.superview != superview {
+                strongSelf.indicatorView.removeFromSuperview()
+                strongSelf.titleLabel.removeFromSuperview()
+                strongSelf.baseView.removeFromSuperview()
+                strongSelf.removeFromSuperview()
+            }
             
             strongSelf.fadeOutTimer = nil
             
@@ -163,11 +170,10 @@ extension ZVProgressHUD {
             strongSelf.indicatorView.indcatorType = displayType.indicatorType
             
             // display
-            let displayTimeInterval = strongSelf.displayTimeInterval(for: displayType)
             if delayTimeInterval > 0 {
-                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: strongSelf, selector: #selector(strongSelf.fadeIn(with:)), userInfo: displayTimeInterval, repeats: false)
+                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: strongSelf, selector: #selector(strongSelf.fadeIn), userInfo: nil, repeats: false)
             } else {
-                strongSelf.fadeIn(with: displayTimeInterval)
+                strongSelf.fadeIn()
             }
         }
     }
@@ -185,15 +191,9 @@ extension ZVProgressHUD {
         dismiss()
     }
     
-    @objc private func fadeIn(with data: Any?) {
+    @objc private func fadeIn() {
         
-        var displayTimeInterval: TimeInterval = 0
-        
-        if let timer = data as? Timer {
-            displayTimeInterval = timer.userInfo as? TimeInterval ?? 0
-        } else {
-            displayTimeInterval = data as? TimeInterval ?? 0
-        }
+        let displayTimeInterval = getDisplayTimeInterval(for: displayType)
         
         updateSubviews()
         placeSubviews()
@@ -306,7 +306,7 @@ extension ZVProgressHUD {
                 // send the notification HUD did disAppear
                 NotificationCenter.default.post(name: .ZVProgressHUDDidDisappear, object: self, userInfo: nil)
                 
-                // execute completion handler if exist
+                // execute completion handler
                 completion?()
             }
             
@@ -315,9 +315,9 @@ extension ZVProgressHUD {
                                delay: 0,
                                options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
                                animations: {
-                                    animationBlock()
+                                   animationBlock()
                                }, completion: { _ in
-                                    completionBlock()
+                                   completionBlock()
                                })
             } else {
                 animationBlock()
@@ -359,7 +359,7 @@ extension ZVProgressHUD {
         }
     }
     
-    private func displayTimeInterval(for displayType: DisplayType) -> TimeInterval {
+    private func getDisplayTimeInterval(for displayType: DisplayType) -> TimeInterval {
         
         var displayTimeInterval: TimeInterval = displayType.dismissAtomically ? 3.0 : 0
         
@@ -413,11 +413,8 @@ private extension ZVProgressHUD {
         
         guard let containerView = containerView else { return }
         
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        
-        frame = containerView.frame
-        maskLayer.frame = containerView.frame
+        frame = .init(origin: .zero, size: containerView.frame.size)
+        maskLayer.frame = .init(origin: .zero, size: containerView.frame.size)
         
         if !indicatorView.isHidden {
             indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
@@ -425,7 +422,7 @@ private extension ZVProgressHUD {
         
         var labelSize: CGSize = .zero
         if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
-            let maxSize = CGSize(width: frame.width * 0.618, height: frame.width * 0.618)
+            let maxSize: CGSize = .init(width: frame.width * 0.618, height: frame.width * 0.618)
             let attributes: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: font]
             let options: NSStringDrawingOptions = [.usesFontLeading, .truncatesLastVisibleLine, .usesLineFragmentOrigin]
             labelSize = title.boundingRect(with: maxSize, options: options, attributes: attributes, context: nil).size
@@ -439,7 +436,11 @@ private extension ZVProgressHUD {
         let contetnWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right, indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right) + contentInsets.left + contentInsets.right
 
         let contentSize: CGSize = .init(width: contetnWidth, height: contentHeight)
-        baseView.frame = .init(origin: .zero, size: contentSize)
+        let oldOrigin = self.baseView.frame.origin
+        baseView.frame = .init(origin: oldOrigin, size: contentSize)
+        
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
         
         let centerX: CGFloat = contetnWidth / 2.0
         var centerY: CGFloat = contentHeight / 2.0
@@ -463,17 +464,16 @@ private extension ZVProgressHUD {
         
         guard let containerView = containerView else { return }
 
-        frame = containerView.frame
-        maskLayer.frame = containerView.frame
+        frame = .init(origin: .zero, size: containerView.frame.size)
+        maskLayer.frame = .init(origin: .zero, size: containerView.frame.size)
         
         var keybordHeight: CGFloat = 0
         var animationDuration: TimeInterval = 0
         
         let orientation = UIApplication.shared.statusBarOrientation
-        let statusBarFrame = UIApplication.shared.statusBarFrame
-        let orenitationFrame = frame
         
         if let notification = notification, let keyboardInfo = notification.userInfo {
+
             let keyboardFrame = keyboardInfo[UIKeyboardFrameBeginUserInfoKey] as? CGRect
             animationDuration = keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
             if notification.name == .UIKeyboardWillShow || notification.name == .UIKeyboardDidShow {
@@ -484,18 +484,32 @@ private extension ZVProgressHUD {
         } else {
             keybordHeight = visibleKeyboardHeight
         }
-
+        
+        let orenitationFrame = frame
+        var statusBarFrame: CGRect = .zero
+        if containerView == self.keyWindow {
+            statusBarFrame = UIApplication.shared.statusBarFrame
+        }
+        
+        var activeHeight = orenitationFrame.height
+        if keybordHeight > 0 {
+            activeHeight += statusBarFrame.height * 2
+        }
+        
+        activeHeight -= keybordHeight
+        
         let posX = orenitationFrame.width / 2.0 + offset.horizontal
-        let posY = (orenitationFrame.height - keybordHeight - statusBarFrame.height) / 2.0 + offset.vertical
+        let posY = activeHeight * 0.45 + offset.vertical
         let center: CGPoint = .init(x: posX, y: posY)
-
+        
         if notification != nil {
-            UIView.animateKeyframes(withDuration: animationDuration, delay: 0,
-                                    options: [.allowUserInteraction, .beginFromCurrentState],
-                                    animations: { [unowned self] in
-                                        self.baseView.center = center
-                                        self.baseView.setNeedsDisplay()
-                                    }, completion: nil)
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0,
+                           options: [.allowUserInteraction, .beginFromCurrentState],
+                           animations: {
+                               self.baseView.center = center
+                               self.baseView.setNeedsDisplay()
+                           })
         } else {
             baseView.center = center
         }
@@ -565,55 +579,58 @@ private extension ZVProgressHUD {
     
     var keyWindow: UIWindow? {
         var keyWindow: UIWindow?
-        for window in UIApplication.shared.windows {
-            guard
-                window.screen == UIScreen.main,
+        UIApplication.shared.windows.forEach { (window) in
+            if  window.screen == UIScreen.main,
                 window.isHidden == false,
                 window.alpha > 0,
                 window.windowLevel >= UIWindowLevelNormal,
-                window.windowLevel <= maxSupportedWindowLevel
-            else { continue }
-            
-            keyWindow = window
-            break
+                window.windowLevel <= maxSupportedWindowLevel {
+                keyWindow = window
+                return
+            }
         }
         return keyWindow
     }
     
     var visibleKeyboardHeight: CGFloat {
         
-        let windows = UIApplication.shared.windows
-        var keyboardWindow: UIWindow!
-        for window in windows.reversed() {
+        var visibleKeyboardHeight: CGFloat = 0.0
+        var keyboardWindow: UIWindow?
+        UIApplication.shared.windows.reversed().forEach { window in
+            let windowName = NSStringFromClass(window.classForCoder)
             if #available(iOS 9.0, *) {
-                if NSStringFromClass(window.classForCoder) == "UIRemoteKeyboardWindow" {
+                if windowName == "UIRemoteKeyboardWindow" {
                     keyboardWindow = window
+                    return
                 }
             } else {
-                if NSStringFromClass(window.classForCoder) == "UITextEffectWindow" {
+                if windowName == "UITextEffectsWindow" {
                     keyboardWindow = window
+                    return
                 }
             }
         }
         
-        guard keyboardWindow != nil, !keyboardWindow.isHidden else { return 0 }
-        
-        var containerView: UIView!
-        for subview in keyboardWindow.subviews {
-            if NSStringFromClass(subview.classForCoder) == "UIInputSetContainerView" {
-                containerView = subview
+        var possibleKeyboard: UIView?
+        keyboardWindow?.subviews.forEach({ subview in
+            let viewClassName = NSStringFromClass(subview.classForCoder)
+            if viewClassName.hasPrefix("UI") && viewClassName.hasSuffix("InputSetContainerView") {
+                possibleKeyboard = subview
+                return
             }
-        }
+        })
         
-        guard containerView != nil else { return 0 }
-        
-        for subview in containerView.subviews {
-            if NSStringFromClass(subview.classForCoder) == "UIInputSetHostView" {
-                return subview.frame.height
+        possibleKeyboard?.subviews.forEach({ subview in
+            let viewClassName = NSStringFromClass(subview.classForCoder)
+            if viewClassName.hasPrefix("UI") && viewClassName.hasSuffix("InputSetHostView") {
+                let convertedRect = possibleKeyboard?.convert(subview.frame, to: self)
+                let intersectedRect = convertedRect?.intersection(self.bounds)
+                visibleKeyboardHeight = intersectedRect?.height ?? 0.0
+                return
             }
-        }
-
-        return 0
+        })
+        
+        return visibleKeyboardHeight
     }
 }
 

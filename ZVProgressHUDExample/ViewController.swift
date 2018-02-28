@@ -58,8 +58,9 @@ class ViewController: UIViewController {
 extension ViewController {
 
     @objc func progressHUDTouchEvent(_ notification: Notification) {
-        self.textField.resignFirstResponder()
-        ZVProgressHUD.dismiss()
+//        ZVProgressHUD.dismiss()
+        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有", in: self.view)
+//        self.textField.resignFirstResponder()
     }
 }
 
@@ -129,7 +130,11 @@ extension ViewController {
     }
 
     @objc func showLabel() {
-        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
+        
+        
+        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有", in: self.view)
+
+//        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
     }
 
     @objc func dismissHUD() {

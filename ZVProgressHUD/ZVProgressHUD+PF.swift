@@ -55,7 +55,6 @@ public extension ZVProgressHUD {
         }
     }
     
-    
     class var minimumDismissTimeInterval: TimeInterval {
         get {
             return shared.minimumDismissTimeInterval
@@ -158,41 +157,69 @@ public extension ZVProgressHUD {
 
 public extension ZVProgressHUD {
     
-    class func showText(_ text: String, delay delayTimeInterval: TimeInterval = 0.0) {
-        show(with: .text(value: text), delay: delayTimeInterval)
+    class func showText(_ text: String,
+                        in superview: UIView? = nil,
+                        delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        show(with: .text(value: text), in: superview, delay: delayTimeInterval)
     }
     
-    class func showSuccess(with title: String = "", delay delayTimeInterval: TimeInterval = 0.0) {
+    class func showSuccess(with title: String = "",
+                           in superview: UIView? = nil,
+                           delay delayTimeInterval: TimeInterval = 0.0) {
+        
         let displayType: DisplayType = .indicator(title: title, type: .success)
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func showError(with title: String = "", delay delayTimeInterval: TimeInterval = 0.0) {
+    class func showError(with title: String = "",
+                         in superview: UIView? = nil,
+                         delay delayTimeInterval: TimeInterval = 0.0) {
+        
         let displayType: DisplayType = .indicator(title: title, type: .error)
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func showWarning(with title: String = "", delay delayTimeInterval: TimeInterval = 0.0) {
+    class func showWarning(with title: String = "",
+                           in superview: UIView? = nil,
+                           delay delayTimeInterval: TimeInterval = 0.0) {
+        
         let displayType: DisplayType = .indicator(title: title, type: .warning)
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func show(with title: String = "", delay delayTimeInterval: TimeInterval = 0.0) {
+    class func show(with title: String = "",
+                    in superview: UIView? = nil,
+                    delay delayTimeInterval: TimeInterval = 0.0) {
+        
         let displayType: DisplayType = .indicator(title: title, type: .indicator(style: animationType))
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func showProgress(_ progress: Float, title: String = "", delay delayTimeInterval: TimeInterval = 0.0) {
+    class func showProgress(_ progress: Float,
+                            title: String = "",
+                            in superview: UIView? = nil,
+                            delay delayTimeInterval: TimeInterval = 0.0) {
+        
         let displayType: DisplayType = .indicator(title: title, type: .progress(value: progress))
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func showImage(_ image: UIImage, title: String = "", dismissAtomically: Bool = true, delay delayTimeInterval: TimeInterval = 0.0) {
+    class func showImage(_ image: UIImage,
+                         title: String = "",
+                         in superview: UIView? = nil,
+                         dismissAtomically: Bool = true,
+                         delay delayTimeInterval: TimeInterval = 0.0) {
+        
         let displayType: DisplayType = .indicator(title: title, type: .image(value: image, dismissAtomically: dismissAtomically))
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func showAnimation(_ images: [UIImage], duration: TimeInterval = 0.0, title: String = "", delay delayTimeInterval: TimeInterval = 0.0) {
+    class func showAnimation(_ images: [UIImage],
+                             duration: TimeInterval = 0.0,
+                             title: String = "",
+                             in superview: UIView? = nil,
+                             delay delayTimeInterval: TimeInterval = 0.0) {
         
         guard images.count > 0 else { return }
         var animationDuration = duration
@@ -200,11 +227,14 @@ public extension ZVProgressHUD {
             animationDuration = Double(images.count) * 0.1
         }
         let displayType: DisplayType = .indicator(title: title, type: .animation(value: images, duration: animationDuration))
-        show(with: displayType, delay: delayTimeInterval)
+        show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
-    class func show(with displayType: DisplayType, delay delayTimeInterval: TimeInterval = 0.0) {
-        shared.show(with: displayType, delay: delayTimeInterval)
+    class func show(with displayType: DisplayType,
+                    in superview: UIView? = nil,
+                    delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        shared.show(with: displayType, in: superview, delay: delayTimeInterval)
     }
     
     class func dismiss(delay: TimeInterval = 0.0, completion: ZVProgressHUDCompletionHandler? = nil) {
