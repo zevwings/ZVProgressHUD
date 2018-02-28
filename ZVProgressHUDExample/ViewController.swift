@@ -58,9 +58,7 @@ class ViewController: UIViewController {
 extension ViewController {
 
     @objc func progressHUDTouchEvent(_ notification: Notification) {
-//        ZVProgressHUD.dismiss()
-        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有", in: self.view)
-//        self.textField.resignFirstResponder()
+        ZVProgressHUD.dismiss()
     }
 }
 
@@ -106,7 +104,9 @@ extension ViewController {
             timer?.invalidate()
             timer = nil
         }
-        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
+        
+        ZVProgressHUD.showProgress(0.0)
+        self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
     }
 
     @objc func showProgressWithLabel() {
@@ -115,7 +115,8 @@ extension ViewController {
             timer?.invalidate()
             timer = nil
         }
-        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
+        ZVProgressHUD.showProgress(0.0, title: "Progress")
+        self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
     }
 
 
