@@ -70,7 +70,7 @@ open class ZVProgressHUD: UIControl {
     internal var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
     internal var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
-    private var displayType: DisplayType = .text(value: "")
+    private var displayType: DisplayType?
     
     private var containerView: UIView?
     
@@ -141,6 +141,8 @@ extension ZVProgressHUD {
             }
             
             strongSelf.fadeOutTimer = nil
+            strongSelf.fadeInDeleyTimer = nil
+            strongSelf.fadeOutDelayTimer = nil
             
             if let sv = superview {
                 strongSelf.containerView = sv
@@ -193,6 +195,8 @@ extension ZVProgressHUD {
     
     @objc private func fadeIn() {
         
+        guard let displayType = displayType else { return }
+        
         let displayTimeInterval = getDisplayTimeInterval(for: displayType)
         
         updateSubviews()
@@ -227,8 +231,8 @@ extension ZVProgressHUD {
                     RunLoop.main.add(self.fadeOutTimer!, forMode: .commonModes)
                 } else {
 
-                    if self.displayType.indicatorType.progressValueChecker.0 &&
-                        self.displayType.indicatorType.progressValueChecker.1 >= 1.0 {
+                    if displayType.indicatorType.progressValueChecker.0 &&
+                        displayType.indicatorType.progressValueChecker.1 >= 1.0 {
                         self.dismiss()
                     }
                 }
