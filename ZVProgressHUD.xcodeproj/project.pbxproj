@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D35A9E82044462900452A5A /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; };
-		4D35A9E92044463F00452A5A /* RevealServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; };
-		4D35A9EA2044463F00452A5A /* RevealServer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D35A9E72044462900452A5A /* RevealServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D3C7C161F1799AB00F39B30 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C7C151F1799AB00F39B30 /* ProgressView.swift */; };
 		4D5BDA9E1F146CAC00E68CB6 /* ZVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
@@ -46,7 +43,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4D9349662033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Embed Frameworks */,
-				4D35A9EA2044463F00452A5A /* RevealServer.framework in Embed Frameworks */,
 				4DFF5B5F20318DE90098BA7D /* ZVProgressHUD.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -55,7 +51,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4D35A9E72044462900452A5A /* RevealServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RevealServer.framework; sourceTree = "<group>"; };
 		4D3C7C151F1799AB00F39B30 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZVProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZVProgressHUD.h; sourceTree = "<group>"; };
@@ -79,7 +74,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D35A9E82044462900452A5A /* RevealServer.framework in Frameworks */,
 				4D9349642033C6E70059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,7 +83,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D9349652033C6EC0059E6F0 /* ZVActivityIndicatorView.framework in Frameworks */,
-				4D35A9E92044463F00452A5A /* RevealServer.framework in Frameworks */,
 				4DFF5B5E20318DE90098BA7D /* ZVProgressHUD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,7 +139,6 @@
 		4DFF5B6620318F0B0098BA7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4D35A9E72044462900452A5A /* RevealServer.framework */,
 				4D9349632033C6E70059E6F0 /* ZVActivityIndicatorView.framework */,
 			);
 			name = Frameworks;
@@ -192,7 +184,6 @@
 				4DFF5B4620318D7A0098BA7D /* Frameworks */,
 				4DFF5B4720318D7A0098BA7D /* Resources */,
 				4DFF5B6220318DE90098BA7D /* Embed Frameworks */,
-				4D35A9E62044455300452A5A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -266,22 +257,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4D35A9E62044455300452A5A /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "export REVEAL_SERVER_FILENAME=\"RevealServer.framework\"\n\n# Update this path to point to the location of RevealServer.framework in your project.\nexport REVEAL_SERVER_PATH=\"${SRCROOT}/${REVEAL_SERVER_FILENAME}\"\n\n# If configuration is not Debug, skip this script.\n[ \"${CONFIGURATION}\" != \"Debug\" ] && exit 0\n\n# If RevealServer.framework exists at the specified path, run code signing script.\nif [ -d \"${REVEAL_SERVER_PATH}\" ]; then\n\"${REVEAL_SERVER_PATH}/Scripts/copy_and_codesign_revealserver.sh\"\nelse\necho \"Reveal Server not loaded: RevealServer.framework could not be found.\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4D5BDA881F146CAC00E68CB6 /* Sources */ = {
@@ -525,11 +500,7 @@
 				INFOPLIST_FILE = ZVProgressHUDExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-weak_framework",
-					RevealServer,
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUDExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -558,11 +529,7 @@
 				INFOPLIST_FILE = ZVProgressHUDExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-weak_framework",
-					RevealServer,
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUDExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
