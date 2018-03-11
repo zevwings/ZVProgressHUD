@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ZVProgressHUD"
-  s.version      = "1.1"
+  s.version      = "2.0.0"
   s.summary      = "A pure-swift and wieldy HUD "
 
   s.description  = <<-DESC
@@ -24,5 +24,7 @@ Pod::Spec.new do |s|
   s.source_files = "ZVProgressHUD/**/*.swift", "ZVProgressHUD/ZVProgressHUD.h"
   s.resources    = "ZVProgressHUD/Resource.bundle"
   s.requires_arc = true
+
+  s.dependency 'ZVActivityIndicatorView'
 
 end
