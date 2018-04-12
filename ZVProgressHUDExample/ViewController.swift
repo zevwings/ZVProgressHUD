@@ -41,6 +41,8 @@ class ViewController: UIViewController {
         ZVProgressHUD.maskType = .black
         ZVProgressHUD.displayStyle = .dark
 
+        ZVProgressHUD.showProgress(0.5, title: "<#T##String#>", in: <#T##UIView?#>, delay: <#T##TimeInterval#>)
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),
                                                name: .ZVProgressHUDReceivedTouchUpInsideEvent,
