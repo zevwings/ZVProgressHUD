@@ -223,9 +223,7 @@ public extension ZVProgressHUD {
         
         guard images.count > 0 else { return }
         var animationDuration = duration
-        if animationDuration == 0 {
-            animationDuration = Double(images.count) * 0.1
-        }
+        if animationDuration == 0 { animationDuration = Double(images.count) * 0.1 }
         let displayType: DisplayType = .indicator(title: title, type: .animation(value: images, duration: animationDuration))
         show(with: displayType, in: superview, delay: delayTimeInterval)
     }
