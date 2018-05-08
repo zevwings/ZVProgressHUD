@@ -3,19 +3,17 @@
 ![CocoaPods Compatible](https://img.shields.io/badge/pod-1.0.0-4BC51D.svg?style=flat)[](https://cocoapods.org)
 ![Platform](https://img.shields.io/badge/platform-ios-9F9F9F.svg)[](http://cocoadocs.org/docsets/Alamofire)
 
-<br/>
 
-ZVProgressHUD is a pure-swift and wieldy HUD.
+`ZVProgressHUD` 是用纯`swift`开发，简单易用的提示工具。
 
-## Requirements
+## 版本支持
 
-- iOS 8.0+
-- Swift 3.0
+- iOS 8.0+ 
+- Swift 4.0
 
-## Installation
+## 安装
 ### Cocoapod
 [CocoaPods](https://cocoapods.org) is a dependency manager for Swift and Objective-C Cocoa projects.
-<br/>
 
 You can install Cocoapod with the following command
 
@@ -30,7 +28,7 @@ platform :ios, '8.0'
 
 target 'TargetName' do
     use_frameworks!
-    pod 'ZVProgressHUD', '~> 2.0.0'
+    pod 'ZVProgressHUD', :git => 'https://github.com/zevwings/ZVProgressHUD.git'
 end
 ```
 
@@ -39,7 +37,7 @@ Then，install your dependencies with [CocoaPods](https://cocoapods.org).
 ```
 $ pod install
 ```
-### Carthage
+### Carthage 
 
 [Carthage](https://github.com/Carthage/Carthage) is intended to be the simplest way to add frameworks to your application.
 
@@ -62,93 +60,145 @@ using `carthage update` and drag `ZVProgressHUD.framework` into your project.
 #### Note:
 The framework is under the Carthage/Build, and you should drag it into  `Target` -> `Genral` -> `Embedded Binaries`
 
-## Usage
-You can use `import ZVProgressHUD` when you needed to use `ZVProgressHUD`
+## 使用方法
+当你在需要使用`ZVProgressHUD `使用`import ZVProgressHUD`导入即可。
 
-当你进行一个任务时，你可以使用如下步骤进行
+### 任务提示
+当你需要任务提示时，使用如下代码即可
 
 ```
 ZVProgressHUD.show()
-DispatchQueue.global().async {
-    ZVProgressHUD.dismiss()
+```
+
+通过如下代码自定义动画类型
+
+```
+/// 动画类型，默认为 .flat
+public enum AnimationType {
+	//使用自定义`ZVActivityIndicator`
+	case flat		
+	//使用系统自带`UIActivityIndicator`
+	case native	
+}
+
+/// 你可以通过类属性修改动画类型
+ZVProgressHUD.animationType = .flat
+```
+
+当你需要改变`ZVProgressHUD`的显示父视图时，只需要在调用`show`方法时，指定父视图即可
+
+```
+// 你也可以延迟视图显示，通过`delay`参数
+ZVProgressHUD.show(with: "正在加载", in: superview, delay: 0.0)
+```
+
+### 关闭提示
+当你需要关闭任务提示时，使用如下代码即可
+
+```
+ZVProgressHUD.dismiss()
+```
+
+### 展示一个确认信息
+当需要展示任务确认信息时，调用如下方法
+
+```
+ZVProgressHUD.showError(with: "保存失败")
+ZVProgressHUD.showSuccess(with: "保存成功")
+ZVProgressHUD.showWarning(with: "存储信息有误")
+```
+
+### 展示自定义图片
+当你需要展示自定义图片时，可以使用如下方法
+
+```
+let image = UIImage(named: "smile")
+ZVProgressHUD.showImage(image!)
+// 或者
+ZVProgressHUD.showImage(image!, title: "微笑每一天")
+```
+
+### 展示自定义动画
+当你需要展示自定义动画时，可以使用如下方法
+
+```
+var images = [UIImage]()
+for index in 1 ... 3 {
+    let image = UIImage(named: "loading_0\(index)")
+    images.append(image!)
+}
+
+ZVProgressHUD.showAnimation(images)
+```
+
+### 展示任务进度
+
+```
+ZVProgressHUD.showProgress(0.0, title: "任务进度")
+```
+
+### 自定义属性
+
+```
+// 设置显示前景色、背景色
+class var displayStyle: DisplayStyle 
+
+// 设置遮罩类型
+class var maskType: MaskType 
+
+// 基础视图圆角    
+class var cornerRadius: CGFloat 
+
+// 基础视图的偏移量
+class var offset: UIOffset 
+
+// 字体
+class var font: UIFont 
+
+// 当动画类型为`flat`时，改变圆环宽度
+class var strokeWith: CGFloat 
+
+// 指示视图大小
+class var indicatorSize: CGSize 
+
+// 设置动画类型，默认为`flat`
+class var animationType: IndicatorView.AnimationType 
+
+```
+
+### 自定义边距
+
+```
+// 设置整体内容边距
+class var contentInsets: UIEdgeInsets 
+
+// 设置文本边距
+class var titleEdgeInsets: UIEdgeInsets 
+
+// 设置指示器边距
+class var indicatorEdgeInsets: UIEdgeInsets 
+```
+
+### 通知
+
+你可以使用对应类型的通知，自定义相关操作。
+
+```
+extension NSNotification.Name {
+	
+	 // 接受到点击时间
+    public static let ZVProgressHUDReceivedTouchUpInsideEvent: Notification.Name
+
+	 // 视图将要展示
+    public static let ZVProgressHUDWillAppear: Notification.Name
+
+	 // 视图完成展示
+    public static let ZVProgressHUDDidAppear: Notification.Name
+
+	 // 视图将要消失
+    public static let ZVProgressHUDWillDisappear: Notification.Name
+
+	 // 视图完成消失
+    public static let ZVProgressHUDDidDisappear: Notification.Name
 }
 ```
-*备注：* 不需要去指定隐藏`HUD`的线程，它一定是在主线程中完成。
-
-#### Showing the HUD
-你可以在开启一个任务时，使用如下代码，来展示等待的`HUD`
-
-```
-ZVProgressHUD.show(with: "do something", in: someview, delay: 0.0)
-```
-
-#### Dismiss the HUD
-
-```
-ZVProgressHUD.dismiss(delay: 0.0) { // do somthing on hud dismiss}
-```
-
-#### Showing the confirmation
-
-```
-ZVProgressHUD.showWarning(with: "warning" in: someview, delay: 0.0)
-ZVProgressHUD.showError(with: "error", in: someview, delay: 0.0)
-ZVProgressHUD.showSuccess(with: "success", in: someview, delay: 0.0)
-```
-
-#### Showing the toast
-
-```
-ZVProgressHUD.showText("text", in: someview, delay: 0.0)
-```
-
-#### Showing the custom image
-
-```
-ZVProgressHUD.showImage(customImege, title: "custom image", in: someview, dismissAtomically: false, delay: 0.0)
-```
-
-#### Showing the progress
-
-```
-ZVProgressHUD.showProgress(0.5, title: "show progress", in: someview, delay: 0.0)
-```
-
-#### Showing the animation
-
-```
-ZVProgressHUD.showAnimation(imageArray, duration: duration, title: "show animation", in: someview, delay: 0.0)
-```
-
-#### Custom HUD Properties
-
-```
-class var displayStyle: DisplayStyle
-
-class var maskType: MaskType
-
-class var maxSupportedWindowLevel: UIWindowLevel
-class var fadeInAnimationTimeInterval: TimeInterval
-
-class var fadeOutAnimationTImeInterval: TimeInterval
-
-class var minimumDismissTimeInterval: TimeInterval
-
-class var maximumDismissTimeInterval: TimeInterval
-
-class var cornerRadius: CGFloat
-
-class var offset: UIOffset
-
-class var font: UIFont
-
-class var strokeWith: CGFloat
-class var indicatorSize: CGSize
-class var animationType: IndicatorView.AnimationType
-class var contentInsets: UIEdgeInsets
-class var titleEdgeInsets: UIEdgeInsets
-class var indicatorEdgeInsets: UIEdgeInsets
-```
-
-#### Notifications
-当 `ZVProgressHUD.maskType` 不为 `ZVProgressHUD.MaskType.none` 时，点击`ZVProgressHUD._overlayView`会发送一个全局的 `.ZVProgressHUDDidReceiveTouchEvent` 通知，你可以使用这个通知自定义操作
