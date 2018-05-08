@@ -40,8 +40,6 @@ class ViewController: UIViewController {
         
         ZVProgressHUD.maskType = .black
         ZVProgressHUD.displayStyle = .dark
-
-        ZVProgressHUD.showProgress(0.5, title: "<#T##String#>", in: <#T##UIView?#>, delay: <#T##TimeInterval#>)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),
@@ -73,19 +71,19 @@ extension ViewController {
     }
 
     @objc func showWithLabel() {
-        ZVProgressHUD.show(with: "正在保存 ... ", delay: 3.0)
+        ZVProgressHUD.show(with: "loading", delay: 3.0)
     }
 
     @objc func showError() {
-        ZVProgressHUD.showError(with: "保存失败")
+        ZVProgressHUD.showError(with: "error")
     }
 
     @objc func showSuccess() {
-        ZVProgressHUD.showSuccess(with: "保存成功")
+        ZVProgressHUD.showSuccess(with: "success")
     }
 
     @objc func showWarning() {
-        ZVProgressHUD.showWarning(with: "存储信息有误")
+        ZVProgressHUD.showWarning(with: "warning")
     }
 
     @objc func showCustomImage() {
@@ -97,7 +95,7 @@ extension ViewController {
     @objc func showCustomImageWithLabel() {
         
         let image = UIImage(named: "smile")
-        ZVProgressHUD.showImage(image!, title: "微笑每一天")
+        ZVProgressHUD.showImage(image!, title: "smile everyday")
     }
 
     @objc func showProgress() {
@@ -134,10 +132,7 @@ extension ViewController {
 
     @objc func showLabel() {
         
-        
-        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有", in: self.view)
-
-//        ZVProgressHUD.showText("我是一个挺长挺长的土豆肉丝加餐吃掉饱了没有")
+        ZVProgressHUD.showText("pure text", in: self.view)
     }
 
     @objc func dismissHUD() {

@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4D3C7C161F1799AB00F39B30 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3C7C151F1799AB00F39B30 /* ProgressView.swift */; };
+		4D4445FC20A17185006FCEEC /* ZVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; };
+		4D4445FD20A17185006FCEEC /* ZVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4D44460120A1719D006FCEEC /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */; };
+		4D44460220A1719D006FCEEC /* ZVActivityIndicatorView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D5BDA9E1F146CAC00E68CB6 /* ZVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
 		4D8046F91F14CBFD0069F9F2 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D8046F81F14CBFD0069F9F2 /* Resource.bundle */; };
@@ -19,12 +23,10 @@
 		4DFF5B5120318D7A0098BA7D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4F20318D7A0098BA7D /* Main.storyboard */; };
 		4DFF5B5320318D7A0098BA7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B5220318D7A0098BA7D /* Assets.xcassets */; };
 		4DFF5B5620318D7A0098BA7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B5420318D7A0098BA7D /* LaunchScreen.storyboard */; };
-		4DFF5B5E20318DE90098BA7D /* ZVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; };
-		4DFF5B5F20318DE90098BA7D /* ZVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4DFF5B6020318DE90098BA7D /* PBXContainerItemProxy */ = {
+		4D4445FE20A17185006FCEEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4D5BDA841F146CAC00E68CB6 /* Project object */;
 			proxyType = 1;
@@ -34,13 +36,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4DFF5B6220318DE90098BA7D /* Embed Frameworks */ = {
+		4D44460020A17185006FCEEC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4DFF5B5F20318DE90098BA7D /* ZVProgressHUD.framework in Embed Frameworks */,
+				4D44460220A1719D006FCEEC /* ZVActivityIndicatorView.framework in Embed Frameworks */,
+				4D4445FD20A17185006FCEEC /* ZVProgressHUD.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,7 +82,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DFF5B5E20318DE90098BA7D /* ZVProgressHUD.framework in Frameworks */,
+				4D44460120A1719D006FCEEC /* ZVActivityIndicatorView.framework in Frameworks */,
+				4D4445FC20A17185006FCEEC /* ZVProgressHUD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,12 +183,12 @@
 				4DFF5B4520318D7A0098BA7D /* Sources */,
 				4DFF5B4620318D7A0098BA7D /* Frameworks */,
 				4DFF5B4720318D7A0098BA7D /* Resources */,
-				4DFF5B6220318DE90098BA7D /* Embed Frameworks */,
+				4D44460020A17185006FCEEC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4DFF5B6120318DE90098BA7D /* PBXTargetDependency */,
+				4D4445FF20A17185006FCEEC /* PBXTargetDependency */,
 			);
 			name = ZVProgressHUDExample;
 			productName = ZVProgressHUDExample;
@@ -276,10 +280,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4DFF5B6120318DE90098BA7D /* PBXTargetDependency */ = {
+		4D4445FF20A17185006FCEEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4D5BDA8C1F146CAC00E68CB6 /* ZVProgressHUD */;
-			targetProxy = 4DFF5B6020318DE90098BA7D /* PBXContainerItemProxy */;
+			targetProxy = 4D4445FE20A17185006FCEEC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
