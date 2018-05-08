@@ -186,19 +186,19 @@ class var indicatorEdgeInsets: UIEdgeInsets
 ```
 extension NSNotification.Name {
 	
-	 // 接受到点击时间
+    // 接受到点击时间
     public static let ZVProgressHUDReceivedTouchUpInsideEvent: Notification.Name
 
-	 // 视图将要展示
+    // 视图将要展示
     public static let ZVProgressHUDWillAppear: Notification.Name
 
-	 // 视图完成展示
+    // 视图完成展示
     public static let ZVProgressHUDDidAppear: Notification.Name
 
-	 // 视图将要消失
+    // 视图将要消失
     public static let ZVProgressHUDWillDisappear: Notification.Name
 
-	 // 视图完成消失
+    // 视图完成消失
     public static let ZVProgressHUDDidDisappear: Notification.Name
 }
 ```
