@@ -28,7 +28,7 @@ public extension ZVProgressHUD {
         }
     }
     
-    class var maxSupportedWindowLevel: UIWindowLevel {
+    class var maxSupportedWindowLevel: UIWindow.Level {
         get {
             return shared.maxSupportedWindowLevel
         }
