@@ -140,12 +140,12 @@ open class ZVProgressHUD: UIControl {
 
 extension ZVProgressHUD {
     
-    func show(with displayType: DisplayType, in superview: UIView? = nil, delay delayTimeInterval: TimeInterval = 0) {
+    func show(with displayType: DisplayType, in superview: UIView? = nil, on position: ZVProgressHUD.Position, delay delayTimeInterval: TimeInterval = 0) {
         
         OperationQueue.main.addOperation { [weak self] in
             
             guard let strongSelf = self else { return }
-            
+
             if strongSelf.superview != superview {
                 strongSelf.indicatorView.removeFromSuperview()
                 strongSelf.titleLabel.removeFromSuperview()
@@ -157,6 +157,8 @@ extension ZVProgressHUD {
             strongSelf.fadeInDeleyTimer = nil
             strongSelf.fadeOutDelayTimer = nil
             
+            strongSelf.position = position
+
             if let sv = superview {
                 strongSelf.containerView = sv
             } else {

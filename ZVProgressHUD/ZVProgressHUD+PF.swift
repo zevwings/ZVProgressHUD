@@ -28,14 +28,14 @@ public extension ZVProgressHUD {
         }
     }
     
-    class var position: Position {
-        get {
-            return shared.position
-        }
-        set {
-            shared.position = newValue
-        }
-    }
+//    class var position: Position {
+//        get {
+//            return shared.position
+//        }
+//        set {
+//            shared.position = newValue
+//        }
+//    }
     
     class var maxSupportedWindowLevel: UIWindow.Level {
         get {
@@ -174,9 +174,10 @@ public extension ZVProgressHUD {
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     class func showText(_ text: String,
                         in superview: UIView? = nil,
+                        on position: ZVProgressHUD.Position = .bottom,
                         delay delayTimeInterval: TimeInterval = 0.0) {
         
-        show(with: .text(value: text), in: superview, delay: delayTimeInterval)
+        show(with: .text(value: text), in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a success message
@@ -187,10 +188,11 @@ public extension ZVProgressHUD {
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     class func showSuccess(with title: String = "",
                            in superview: UIView? = nil,
+                           on position: ZVProgressHUD.Position = .center,
                            delay delayTimeInterval: TimeInterval = 0.0) {
         
         let displayType: DisplayType = .indicator(title: title, type: .success)
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     
@@ -202,10 +204,11 @@ public extension ZVProgressHUD {
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     class func showError(with title: String = "",
                          in superview: UIView? = nil,
+                         on position: ZVProgressHUD.Position = .center,
                          delay delayTimeInterval: TimeInterval = 0.0) {
         
         let displayType: DisplayType = .indicator(title: title, type: .error)
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a warning message
@@ -216,10 +219,11 @@ public extension ZVProgressHUD {
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     class func showWarning(with title: String = "",
                            in superview: UIView? = nil,
+                           on position: ZVProgressHUD.Position = .center,
                            delay delayTimeInterval: TimeInterval = 0.0) {
         
         let displayType: DisplayType = .indicator(title: title, type: .warning)
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a waiting alert
@@ -230,10 +234,11 @@ public extension ZVProgressHUD {
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     class func show(with title: String = "",
                     in superview: UIView? = nil,
+                    on position: ZVProgressHUD.Position = .center,
                     delay delayTimeInterval: TimeInterval = 0.0) {
         
         let displayType: DisplayType = .indicator(title: title, type: .indicator(style: animationType))
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show the progress of some task
@@ -246,10 +251,11 @@ public extension ZVProgressHUD {
     class func showProgress(_ progress: Float,
                             title: String = "",
                             in superview: UIView? = nil,
+                            on position: ZVProgressHUD.Position = .center,
                             delay delayTimeInterval: TimeInterval = 0.0) {
         
         let displayType: DisplayType = .indicator(title: title, type: .progress(value: progress))
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a custom image
@@ -263,11 +269,12 @@ public extension ZVProgressHUD {
     class func showImage(_ image: UIImage,
                          title: String = "",
                          in superview: UIView? = nil,
+                         on position: ZVProgressHUD.Position = .center,
                          dismissAtomically: Bool = true,
                          delay delayTimeInterval: TimeInterval = 0.0) {
         
         let displayType: DisplayType = .indicator(title: title, type: .image(value: image, dismissAtomically: dismissAtomically))
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show the animation waiting alert
@@ -282,13 +289,14 @@ public extension ZVProgressHUD {
                              duration: TimeInterval = 0.0,
                              title: String = "",
                              in superview: UIView? = nil,
+                             on position: ZVProgressHUD.Position = .center,
                              delay delayTimeInterval: TimeInterval = 0.0) {
         
         guard images.count > 0 else { return }
         var animationDuration = duration
         if animationDuration == 0 { animationDuration = Double(images.count) * 0.1 }
         let displayType: DisplayType = .indicator(title: title, type: .animation(value: images, duration: animationDuration))
-        show(with: displayType, in: superview, delay: delayTimeInterval)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show custom display type @see ZVProgressHUD.DisplayType
@@ -299,9 +307,10 @@ public extension ZVProgressHUD {
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     class func show(with displayType: DisplayType,
                     in superview: UIView? = nil,
+                    on position: ZVProgressHUD.Position = .center,
                     delay delayTimeInterval: TimeInterval = 0.0) {
         
-        shared.show(with: displayType, in: superview, delay: delayTimeInterval)
+        shared.show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// dismiss the hud

@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         
         ZVProgressHUD.maskType = .black
         ZVProgressHUD.displayStyle = .dark
-        ZVProgressHUD.position = .bottom
+//        ZVProgressHUD.position = .bottom
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),
