@@ -700,7 +700,7 @@ extension ZVProgressHUD.DisplayType {
     var dismissAtomically: Bool {
         switch self {
         case .text:
-            return false
+            return true
         case .indicator(_, let type):
             switch type {
             case .success, .error, .warning:
