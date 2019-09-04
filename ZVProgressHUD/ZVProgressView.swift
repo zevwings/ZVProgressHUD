@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProgressView: UIView {
+class ZVProgressView: UIView {
     
     var strokeWidth: CGFloat = 3.0 {
         didSet {

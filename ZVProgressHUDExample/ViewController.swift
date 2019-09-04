@@ -40,6 +40,7 @@ class ViewController: UIViewController {
         
         ZVProgressHUD.maskType = .black
         ZVProgressHUD.displayStyle = .dark
+        ZVProgressHUD.position = .bottom
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),
@@ -58,6 +59,8 @@ class ViewController: UIViewController {
 extension ViewController {
 
     @objc func progressHUDTouchEvent(_ notification: Notification) {
+        timer?.invalidate()
+        timer = nil
         ZVProgressHUD.dismiss()
     }
 }
@@ -137,7 +140,7 @@ extension ViewController {
 
     @objc func dismissHUD() {
 
-        ZVProgressHUD.dismiss(delay: 3) {
+        ZVProgressHUD.dismiss() {
             print("dimiss")
         }
     }
@@ -252,7 +255,7 @@ extension ViewController {
 
 extension UINavigationController {
     
-    open override var childViewControllerForStatusBarStyle: UIViewController? {
+    open override var childForStatusBarStyle: UIViewController? {
         return self.topViewController
     }
 }

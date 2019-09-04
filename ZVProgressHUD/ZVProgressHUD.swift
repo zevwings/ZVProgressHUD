@@ -28,7 +28,7 @@ open class ZVProgressHUD: UIControl {
     }
     
     public enum DisplayType {
-        case indicator(title: String?, type: IndicatorView.IndicatorType)
+        case indicator(title: String?, type: ZVIndicatorView.IndicatorType)
         case text(value: String)
     }
     
@@ -45,12 +45,21 @@ open class ZVProgressHUD: UIControl {
         case custom(color: UIColor)
     }
     
+    public enum Position {
+        case top
+        case center
+        case bottom
+    }
+
+    //MARK: - Internal
+    
     internal static let shared = ZVProgressHUD(frame: .zero)
     
-    internal var displayStyle: DisplayStyle = .light
-    internal var maskType: MaskType = .none
+    internal var displayStyle: ZVProgressHUD.DisplayStyle = .light
+    internal var maskType: ZVProgressHUD.MaskType = .none
+    internal var position:ZVProgressHUD.Position = .center
     
-    internal var maxSupportedWindowLevel: UIWindow.Level = UIWindow.Level.normal
+    internal var maxSupportedWindowLevel: UIWindow.Level = .normal
     internal var fadeInAnimationTimeInterval: TimeInterval = AnimationDuration.fadeIn
     internal var fadeOutAnimationTImeInterval: TimeInterval = AnimationDuration.fadeOut
     
@@ -64,13 +73,15 @@ open class ZVProgressHUD: UIControl {
     
     internal var strokeWith: CGFloat = 3.0
     internal var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
-    internal var animationType: IndicatorView.AnimationType = .flat
+    internal var animationType: ZVIndicatorView.AnimationType = .flat
 
     internal var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
     internal var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
     internal var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
-    private var displayType: DisplayType?
+    // MARK: - Private
+    
+    private var displayType: ZVProgressHUD.DisplayType?
     
     private var containerView: UIView?
     
@@ -90,8 +101,8 @@ open class ZVProgressHUD: UIControl {
         return baseView
     }()
     
-    private lazy var indicatorView: IndicatorView = {
-        let indicatorView = IndicatorView()
+    private lazy var indicatorView: ZVIndicatorView = {
+        let indicatorView = ZVIndicatorView()
         indicatorView.isUserInteractionEnabled = false
         indicatorView.alpha = 0
         return indicatorView
@@ -110,6 +121,8 @@ open class ZVProgressHUD: UIControl {
         titleLabel.alpha = 0
         return titleLabel
     }()
+    
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -478,7 +491,7 @@ private extension ZVProgressHUD {
         
         if let notification = notification, let keyboardInfo = notification.userInfo {
 
-            let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? CGRect
+            let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
             animationDuration = keyboardInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
             if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardDidShowNotification {
                 if orientation == .portrait {
@@ -495,15 +508,55 @@ private extension ZVProgressHUD {
             statusBarFrame = UIApplication.shared.statusBarFrame
         }
         
+        // safe area bottom height
+        let bottomInset: CGFloat
+        if #available(iOS 11.0, *) {
+            bottomInset = self.keyWindow?.safeAreaInsets.bottom ?? 0.0
+        } else {
+            bottomInset = 0
+        }
+        
+        // if tabBar is hidden, bottom instantce is 24.0 + 12.0
+        // otherwise, if keyboard is show, ignore tabBar height.
+        let  defaultBottomInset: CGFloat
+        if visibleKeyboardHeight > 0 {
+            defaultBottomInset = 0
+        } else {
+            let tabBarHeight = self.keyWindow?.rootViewController?.tabBarController?.tabBar.frame.height ?? 24.0
+            defaultBottomInset = tabBarHeight + bottomInset
+        }
+        
+        print("visibleKeyboardHeight : \(visibleKeyboardHeight)")
+        print("keybordHeight : \(keybordHeight)")
+
+        // if navigationBar is hidden, top instantce is 24.0
+        let defaultTopInset: CGFloat = self.keyWindow?.rootViewController?.navigationController?.navigationBar.frame.height ?? 24.0
+        
         var activeHeight = orenitationFrame.height
+        
         if keybordHeight > 0 {
             activeHeight += statusBarFrame.height * 2
         }
         
         activeHeight -= keybordHeight
         
+        let distanceOfNavigationBarOrTabBar: CGFloat = 12
+        
+        let posY: CGFloat
+        switch position {
+        case .top:
+            posY = defaultTopInset + statusBarFrame.height + distanceOfNavigationBarOrTabBar + baseView.frame.height * 0.5 + offset.vertical
+            break
+        case .center:
+            posY = activeHeight * 0.45 + offset.vertical
+            break
+        case .bottom:
+            posY = activeHeight - defaultBottomInset - distanceOfNavigationBarOrTabBar - baseView.frame.height * 0.5 + offset.vertical
+            break
+        }
+        
         let posX = orenitationFrame.width / 2.0 + offset.horizontal
-        let posY = activeHeight * 0.45 + offset.vertical
+
         let center: CGPoint = .init(x: posX, y: posY)
         
         if notification != nil {
@@ -643,10 +696,9 @@ private extension ZVProgressHUD {
 extension ZVProgressHUD.DisplayType {
 
     var dismissAtomically: Bool {
-
         switch self {
         case .text:
-            return true
+            return false
         case .indicator(_, let type):
             switch type {
             case .success, .error, .warning:
@@ -660,22 +712,16 @@ extension ZVProgressHUD.DisplayType {
     }
     
     var title: String {
-        
         switch self {
-        case .text(let value):
-            return value
-        case .indicator(let title, _):
-            return title ?? ""
+        case .text(let value): return value
+        case .indicator(let title, _): return title ?? ""
         }
     }
     
-    var indicatorType: IndicatorView.IndicatorType {
-        
+    var indicatorType: ZVIndicatorView.IndicatorType {
         switch self {
-        case .text:
-            return .none
-        case .indicator(_, let type):
-            return type
+        case .text: return .none
+        case .indicator(_, let type): return type
         }
     }    
 }
@@ -686,23 +732,17 @@ extension ZVProgressHUD.DisplayStyle {
     
     var foregroundColor: UIColor {
         switch self {
-        case .dark:
-            return .white
-        case .light:
-            return UIColor(white: 0.2, alpha: 1)
-        case .custom(let color):
-            return color.foregroundColor
+        case .dark: return .white
+        case .light: return UIColor(white: 0.2, alpha: 1)
+        case .custom(let color): return color.foregroundColor
         }
     }
     
     var backgroundColor: UIColor {
         switch self {
-        case .dark:
-            return UIColor(white: 0, alpha: 0.75)
-        case .light:
-            return .white
-        case .custom(let color):
-            return color.backgroundColor
+        case .dark: return UIColor(white: 0, alpha: 0.75)
+        case .light: return .white
+        case .custom(let color): return color.backgroundColor
         }
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import ZVActivityIndicatorView
 
-public class IndicatorView: UIView {
+public class ZVIndicatorView: UIView {
 
     public enum IndicatorType {
         case none
@@ -66,7 +66,7 @@ public class IndicatorView: UIView {
     private var imageIndicaotorView: UIImageView?
     private var nativeActivityIndicatorView: UIActivityIndicatorView?
     private var flatActivityIndicatorView: ZVActivityIndicatorView?
-    private var progressIndicatorView: ProgressView?
+    private var progressIndicatorView: ZVProgressView?
     
     convenience init() {
         self.init(frame: .zero)
@@ -85,7 +85,7 @@ public class IndicatorView: UIView {
 
 // MARK: - Override
 
-extension IndicatorView {
+extension ZVIndicatorView {
     
     override public var tintColor: UIColor! {
         didSet {
@@ -110,7 +110,7 @@ extension IndicatorView {
 
 // MARK: - Private Method
 
-private extension IndicatorView {
+private extension ZVIndicatorView {
     
     func configImageIndicatorView(_ value: Any, animationDuration: TimeInterval = 0.0) {
 
@@ -177,7 +177,7 @@ private extension IndicatorView {
         nativeActivityIndicatorView?.removeFromSuperview()
 
         if progressIndicatorView == nil {
-            progressIndicatorView = ProgressView(frame: .zero)
+            progressIndicatorView = ZVProgressView(frame: .zero)
             progressIndicatorView?.strokeColor = tintColor
         }
         
@@ -240,9 +240,9 @@ private extension IndicatorView {
     }
 }
 
-// MARK: - IndicatorView.IndicatorType
+// MARK: - ZVIndicatorView.IndicatorType
 
-extension IndicatorView.IndicatorType {
+extension ZVIndicatorView.IndicatorType {
     
     var resource: String {
         switch self {

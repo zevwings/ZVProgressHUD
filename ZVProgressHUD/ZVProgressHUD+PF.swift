@@ -28,6 +28,15 @@ public extension ZVProgressHUD {
         }
     }
     
+    class var position: Position {
+        get {
+            return shared.position
+        }
+        set {
+            shared.position = newValue
+        }
+    }
+    
     class var maxSupportedWindowLevel: UIWindow.Level {
         get {
             return shared.maxSupportedWindowLevel
@@ -118,7 +127,7 @@ public extension ZVProgressHUD {
         }
     }
     
-    class var animationType: IndicatorView.AnimationType {
+    class var animationType: ZVIndicatorView.AnimationType {
         get {
             return shared.animationType
         }
