@@ -528,9 +528,6 @@ private extension ZVProgressHUD {
             defaultBottomInset = tabBarHeight + bottomInset
         }
         
-        print("visibleKeyboardHeight : \(visibleKeyboardHeight)")
-        print("keybordHeight : \(keybordHeight)")
-
         // if navigationBar is hidden, top instantce is 24.0
         let defaultTopInset: CGFloat = self.keyWindow?.rootViewController?.navigationController?.navigationBar.frame.height ?? 24.0
         
