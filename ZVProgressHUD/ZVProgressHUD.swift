@@ -55,9 +55,9 @@ open class ZVProgressHUD: UIControl {
     
     internal static let shared = ZVProgressHUD(frame: .zero)
     
-    internal var displayStyle: ZVProgressHUD.DisplayStyle = .light
-    internal var maskType: ZVProgressHUD.MaskType = .none
-    internal var position:ZVProgressHUD.Position = .center
+    internal var displayStyle: DisplayStyle = .light
+    internal var maskType: MaskType = .none
+    internal var position:Position = .center
     
     internal var maxSupportedWindowLevel: UIWindow.Level = .normal
     internal var fadeInAnimationTimeInterval: TimeInterval = AnimationDuration.fadeIn
@@ -81,7 +81,7 @@ open class ZVProgressHUD: UIControl {
 
     // MARK: - Private
     
-    private var displayType: ZVProgressHUD.DisplayType?
+    private var displayType: DisplayType?
     
     private var containerView: UIView?
     
@@ -140,7 +140,7 @@ open class ZVProgressHUD: UIControl {
 
 extension ZVProgressHUD {
     
-    func show(with displayType: DisplayType, in superview: UIView? = nil, on position: ZVProgressHUD.Position, delay delayTimeInterval: TimeInterval = 0) {
+    func show(with displayType: DisplayType, in superview: UIView? = nil, on position: Position, delay delayTimeInterval: TimeInterval = 0) {
         
         OperationQueue.main.addOperation { [weak self] in
             
