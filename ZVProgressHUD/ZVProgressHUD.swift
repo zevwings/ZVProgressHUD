@@ -73,7 +73,7 @@ open class ZVProgressHUD: UIControl {
     
     public var strokeWith: CGFloat = 3.0
     public var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
-    public var logoSize: CGSize = .init(width: 36.0, height: 36.0)
+    public var logoSize: CGSize = .init(width: 30.0, height: 30.0)
     public var animationType: ZVIndicatorView.AnimationType = .flat
 
     public var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
