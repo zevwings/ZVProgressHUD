@@ -274,5 +274,13 @@ extension ZVIndicatorView.IndicatorType {
             return (false, 0.0)
         }
     }
+    
+    var showLogo: Bool {
+        switch self {
+        case .progress, .indicator:
+            return true
+        default:
+            return false
+        }
+    }
 }
-

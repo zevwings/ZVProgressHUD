@@ -116,9 +116,9 @@
 		4D5BDA8F1F146CAC00E68CB6 /* ZVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
+				4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */,
 				4DC8B6962306A61900170426 /* ZVIndicatorView.swift */,
 				4DC8B6952306A61900170426 /* ZVProgressView.swift */,
-				4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */,
 				4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */,
 				4D0B071123262E5E00EB28B6 /* ZVProgressHUD+IF.swift */,
 				4D0B070D23262BCC00EB28B6 /* ZVProgressHUD+CF.swift */,

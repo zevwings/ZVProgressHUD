@@ -46,6 +46,8 @@ class ViewController: UIViewController {
         
         ZVProgressHUD.maskType = .black
         ZVProgressHUD.displayStyle = .dark
+        ZVProgressHUD.logoSize = CGSize(width: 30, height: 30)
+        ZVProgressHUD.logo = UIImage(named: "logo_crown")?.withRenderingMode(.alwaysTemplate)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),

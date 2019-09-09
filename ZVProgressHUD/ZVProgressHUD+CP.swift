@@ -154,4 +154,22 @@ public extension ZVProgressHUD {
         }
     }
     
+    class var logo: UIImage? {
+        get {
+            return shared.logo
+        }
+        set {
+            shared.logo = newValue
+        }
+    }
+
+    class var logoSize: CGSize {
+        get {
+            return shared.logoSize
+        }
+        set {
+            shared.logoSize = newValue
+        }
+    }
 }
+

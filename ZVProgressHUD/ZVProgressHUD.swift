@@ -73,12 +73,15 @@ open class ZVProgressHUD: UIControl {
     
     public var strokeWith: CGFloat = 3.0
     public var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
+    public var logoSize: CGSize = .init(width: 36.0, height: 36.0)
     public var animationType: ZVIndicatorView.AnimationType = .flat
 
     public var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
     public var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
     public var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
+    public var logo: UIImage?
+    
     // MARK: Private
     
     private var _fadeOutTimer: Timer?
@@ -99,6 +102,7 @@ open class ZVProgressHUD: UIControl {
         let baseView = UIControl()
         baseView.backgroundColor = .clear
         baseView.alpha = 0
+        baseView.layer.masksToBounds = true
         return baseView
     }()
     
@@ -123,6 +127,15 @@ open class ZVProgressHUD: UIControl {
         return titleLabel
     }()
     
+    private lazy var logoView: UIImageView = { [unowned self] in
+        
+        let logoView = UIImageView(frame: .zero)
+        logoView.tintColor = self.displayStyle.foregroundColor
+        logoView.contentMode = .scaleAspectFit
+        logoView.layer.masksToBounds = true
+        return logoView
+    }()
+    
     // MARK: Init
     
     deinit {
@@ -145,9 +158,9 @@ open class ZVProgressHUD: UIControl {
     //MARK: Internal Operations
 
     func internalShow(with displayType: DisplayType,
-              in superview: UIView? = nil,
-              on position: Position,
-              delay delayTimeInterval: TimeInterval = 0) {
+                      in superview: UIView? = nil,
+                      on position: Position,
+                      delay delayTimeInterval: TimeInterval = 0) {
         
         OperationQueue.main.addOperation { [weak self] in
             
@@ -157,6 +170,7 @@ open class ZVProgressHUD: UIControl {
                 strongSelf.indicatorView.removeFromSuperview()
                 strongSelf.titleLabel.removeFromSuperview()
                 strongSelf.baseView.removeFromSuperview()
+                strongSelf.logoView.removeFromSuperview()
                 strongSelf.removeFromSuperview()
             }
             
@@ -172,13 +186,20 @@ open class ZVProgressHUD: UIControl {
                 strongSelf.containerView = strongSelf.keyWindow
             }
             
+            // set property form displayType
+            strongSelf.displayType = displayType
+            strongSelf.titleLabel.text = displayType.title
+            strongSelf.titleLabel.isHidden = displayType.title.isEmpty
+            strongSelf.indicatorView.indcatorType = displayType.indicatorType
+            
             strongSelf.updateViewHierarchy()
 
             strongSelf.titleLabel.font = strongSelf.font
             strongSelf.indicatorView.strokeWidth = strongSelf.strokeWith
             strongSelf.baseView.layer.cornerRadius = strongSelf.cornerRadius
             strongSelf.baseView.backgroundColor = strongSelf.displayStyle.backgroundColor
-
+            strongSelf.logoView.image = strongSelf.logo
+            
             // set property form maskType
             strongSelf.isUserInteractionEnabled = strongSelf.maskType.isUserInteractionEnabled
             strongSelf.maskLayer.backgroundColor = strongSelf.maskType.backgroundColor
@@ -187,11 +208,6 @@ open class ZVProgressHUD: UIControl {
             strongSelf.titleLabel.textColor = strongSelf.displayStyle.foregroundColor
             strongSelf.indicatorView.tintColor = strongSelf.displayStyle.foregroundColor
             
-            // set property form displayType
-            strongSelf.displayType = displayType
-            strongSelf.titleLabel.text = displayType.title
-            strongSelf.titleLabel.isHidden = displayType.title.isEmpty
-            strongSelf.indicatorView.indcatorType = displayType.indicatorType
             
             // display
             if delayTimeInterval > 0 {
@@ -325,6 +341,7 @@ open class ZVProgressHUD: UIControl {
                 strongSelf.indicatorView.removeFromSuperview()
                 strongSelf.titleLabel.removeFromSuperview()
                 strongSelf.baseView.removeFromSuperview()
+                strongSelf.logoView.removeFromSuperview()
                 strongSelf.removeFromSuperview()
                 
                 strongSelf.containerView = nil
@@ -420,6 +437,12 @@ open class ZVProgressHUD: UIControl {
             bringSubviewToFront(baseView)
         }
         
+        if let displayType = displayType, displayType.indicatorType.showLogo, logo != nil, logoView.superview == nil {
+            baseView.addSubview(logoView)
+        } else {
+            baseView.bringSubviewToFront(logoView)
+        }
+        
         if indicatorView.superview == nil {
             baseView.addSubview(indicatorView)
         } else {
@@ -444,6 +467,10 @@ open class ZVProgressHUD: UIControl {
             indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
         }
         
+        if let displayType = displayType, displayType.indicatorType.showLogo, logo != nil {
+            logoView.frame = CGRect(origin: .zero, size: logoSize)
+        }
+        
         var labelSize: CGSize = .zero
         if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
             let maxSize: CGSize = .init(width: frame.width * 0.618, height: frame.width * 0.618)
@@ -458,7 +485,7 @@ open class ZVProgressHUD: UIControl {
         
         let contentHeight = labelHeight + indicatorHeight + contentInsets.top + contentInsets.bottom
         let contetnWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right, indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right) + contentInsets.left + contentInsets.right
-
+        
         let contentSize: CGSize = .init(width: contetnWidth, height: contentHeight)
         let oldOrigin = self.baseView.frame.origin
         baseView.frame = .init(origin: oldOrigin, size: contentSize)
@@ -474,7 +501,8 @@ open class ZVProgressHUD: UIControl {
             centerY = contentInsets.top + indicatorEdgeInsets.top + indicatorSize.height / 2.0
         }
         indicatorView.center = .init(x: centerX, y: centerY)
-        
+        logoView.center = .init(x: centerX, y: centerY)
+
         // Label
         if indicatorHeight > 0 && !titleLabel.isHidden {
             centerY = contentInsets.top + indicatorHeight + titleEdgeInsets.top + labelSize.height / 2.0

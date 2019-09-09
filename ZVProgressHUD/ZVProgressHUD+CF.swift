@@ -156,3 +156,4 @@ public extension ZVProgressHUD {
         shared.dismiss(with: delay, completion: completion)
     }
 }
+
