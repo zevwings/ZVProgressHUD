@@ -148,6 +148,15 @@ ZVProgressHUD.showAnimation(images)
 ZVProgressHUD.showProgress(0.0, title: "Progress")
 ```
 
+### Custom logo
+
+```
+// set logoSize of HUD, CGSize(30, 30)
+class var logoSize: CGSize 
+// set logo image of HUD, default is nil
+class var logo: UIImage 
+```
+
 ### Custom properties
 
 ```
