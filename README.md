@@ -11,7 +11,7 @@ ZVProgressHUD is a pure-swift and wieldy HUD.
 ## Requirements
 
 - iOS 8.0+ 
-- Swift 4.0
+- Swift 5.0
 
 ## Appetize
 You can run this demo at [Appetize](https://appetize.io/embed/39txw9h5d7mrkckm6f9vp9mn2r?device=iphone5s&scale=100&autoplay=false&orientation=portrait&deviceColor=white)
@@ -73,7 +73,11 @@ You can use `import ZVProgressHUD` when you needed to use `ZVProgressHUD`.
 When you start a task, You can using following code:
 
 ```
+// class method
 ZVProgressHUD.show()
+// or you can use instance method 
+hud = ZVProgressHUD()
+hud.show()
 ```
 
 you can custom animation type, use following code:
@@ -100,7 +104,10 @@ ZVProgressHUD.show(with: "Loading", in: superview, delay: 0.0)
 you can use a simple code to close HUD.
 
 ```
+// class method
 ZVProgressHUD.dismiss()
+// or you can use instance method 
+hud.dismiss()
 ```
 
 ### Showing a confirm

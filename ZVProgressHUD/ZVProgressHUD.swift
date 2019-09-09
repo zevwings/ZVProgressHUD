@@ -195,7 +195,7 @@ open class ZVProgressHUD: UIControl {
             
             // display
             if delayTimeInterval > 0 {
-                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: strongSelf, selector: #selector(strongSelf.fadeIn), userInfo: nil, repeats: false)
+                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: strongSelf, selector: #selector(strongSelf.fadeInTimerAction(_:)), userInfo: nil, repeats: false)
             } else {
                 strongSelf.fadeIn()
             }
@@ -205,10 +205,14 @@ open class ZVProgressHUD: UIControl {
     func internalDismiss(with delayTimeInterval: TimeInterval = 0, completion: ZVProgressHUDCompletionHandler? = nil) {
         
         if delayTimeInterval > 0 {
-            fadeOutDelayTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: self, selector: #selector(fadeOut(with:)), userInfo: completion, repeats: false)
+            fadeOutDelayTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: self, selector: #selector(fadeInTimerAction(_:)), userInfo: completion, repeats: false)
         } else {
             fadeOut(with: completion)
         }
+    }
+    
+    @objc private func fadeInTimerAction(_ timer: Timer?) {
+        fadeIn()
     }
     
     @objc private func fadeIn() {
@@ -281,7 +285,11 @@ open class ZVProgressHUD: UIControl {
             }
         }
     }
-    
+
+    @objc private func fadeOutTimerAction(_ timer: Timer?) {
+        dismiss()
+    }
+
     @objc private func fadeOut(with data: Any?) {
         
         var completion: ZVProgressHUDCompletionHandler?
@@ -392,10 +400,6 @@ open class ZVProgressHUD: UIControl {
                                                selector: #selector(placeSubviews(_:)),
                                                name: UIResponder.keyboardDidHideNotification,
                                                object: nil)
-    }
-    
-    @objc private func fadeOutTimerAction(_ timer: Timer?) {
-        dismiss()
     }
     
     private func updateViewHierarchy() {
