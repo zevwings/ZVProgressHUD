@@ -3,7 +3,7 @@
 //  ZVProgressHUD
 //
 //  Created by zevwings on 2017/7/12.
-//  Copyright © 2017年 zevwings. All rights reserved.
+//  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
 public typealias ZVProgressHUDCompletionHandler = () -> ()
@@ -51,44 +51,45 @@ open class ZVProgressHUD: UIControl {
         case bottom
     }
 
-    //MARK: - Internal
+    //MARK: Public
     
-    internal static let shared = ZVProgressHUD(frame: .zero)
+    public static let shared = ZVProgressHUD(frame: .zero)
     
-    internal var displayStyle: DisplayStyle = .light
-    internal var maskType: MaskType = .none
-    internal var position:Position = .center
+    public var displayStyle: DisplayStyle = .light
+    public var maskType: MaskType = .none
+    public var position:Position = .center
     
-    internal var maxSupportedWindowLevel: UIWindow.Level = .normal
-    internal var fadeInAnimationTimeInterval: TimeInterval = AnimationDuration.fadeIn
-    internal var fadeOutAnimationTImeInterval: TimeInterval = AnimationDuration.fadeOut
+    public var maxSupportedWindowLevel: UIWindow.Level = .normal
+    public var fadeInAnimationTimeInterval: TimeInterval = AnimationDuration.fadeIn
+    public var fadeOutAnimationTImeInterval: TimeInterval = AnimationDuration.fadeOut
     
-    internal var minimumDismissTimeInterval: TimeInterval = 3.0
-    internal var maximumDismissTimeInterval: TimeInterval = 10.0
+    public var minimumDismissTimeInterval: TimeInterval = 3.0
+    public var maximumDismissTimeInterval: TimeInterval = 10.0
     
-    internal var cornerRadius: CGFloat = 8.0
-    internal var offset: UIOffset = .zero
+    public var cornerRadius: CGFloat = 8.0
+    public var offset: UIOffset = .zero
     
-    internal var font: UIFont = .systemFont(ofSize: 16.0)
+    public var font: UIFont = .systemFont(ofSize: 16.0)
     
-    internal var strokeWith: CGFloat = 3.0
-    internal var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
-    internal var animationType: ZVIndicatorView.AnimationType = .flat
+    public var strokeWith: CGFloat = 3.0
+    public var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
+    public var animationType: ZVIndicatorView.AnimationType = .flat
 
-    internal var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
-    internal var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
-    internal var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    public var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
+    public var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
+    public var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
-    // MARK: - Private
-    
-    private var displayType: DisplayType?
-    
-    private var containerView: UIView?
+    // MARK: Private
     
     private var _fadeOutTimer: Timer?
     private var _fadeInDeleyTimer: Timer?
     private var _fadeOutDelayTimer: Timer?
+
     
+    private var displayType: DisplayType?
+    
+    private var containerView: UIView?
+
     private lazy var maskLayer: CALayer = { [unowned self] in
         let maskLayer = CALayer()
         return maskLayer
@@ -122,9 +123,13 @@ open class ZVProgressHUD: UIControl {
         return titleLabel
     }()
     
-    // MARK: - Init
+    // MARK: Init
     
-    override init(frame: CGRect) {
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         alpha = 0
@@ -133,14 +138,16 @@ open class ZVProgressHUD: UIControl {
         addTarget(self, action: #selector(overlayRecievedTouchUpInsideEvent(_:)), for: .touchUpInside)
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
-extension ZVProgressHUD {
-    
-    func show(with displayType: DisplayType, in superview: UIView? = nil, on position: Position, delay delayTimeInterval: TimeInterval = 0) {
+    //MARK: Internal Operations
+
+    func internalShow(with displayType: DisplayType,
+              in superview: UIView? = nil,
+              on position: Position,
+              delay delayTimeInterval: TimeInterval = 0) {
         
         OperationQueue.main.addOperation { [weak self] in
             
@@ -194,18 +201,14 @@ extension ZVProgressHUD {
             }
         }
     }
-    
-    func dismiss(with delayTimeInterval: TimeInterval = 0, completion: ZVProgressHUDCompletionHandler? = nil) {
+
+    func internalDismiss(with delayTimeInterval: TimeInterval = 0, completion: ZVProgressHUDCompletionHandler? = nil) {
         
         if delayTimeInterval > 0 {
             fadeOutDelayTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: self, selector: #selector(fadeOut(with:)), userInfo: completion, repeats: false)
         } else {
             fadeOut(with: completion)
         }
-    }
-    
-    @objc private func dismiss(_ timer: Timer?) {
-        dismiss()
     }
     
     @objc private func fadeIn() {
@@ -242,10 +245,9 @@ extension ZVProgressHUD {
                 NotificationCenter.default.post(name: .ZVProgressHUDDidAppear, object: self, userInfo: nil)
                 
                 if displayTimeInterval > 0 {
-                    self.fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.dismiss(_:)), userInfo: nil, repeats: false)
+                    self.fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.fadeOutTimerAction(_:)), userInfo: nil, repeats: false)
                     RunLoop.main.add(self.fadeOutTimer!, forMode: RunLoop.Mode.common)
                 } else {
-
                     if displayType.indicatorType.progressValueChecker.0 &&
                         displayType.indicatorType.progressValueChecker.1 >= 1.0 {
                         self.dismiss()
@@ -258,10 +260,10 @@ extension ZVProgressHUD {
                                delay: 0,
                                options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
                                animations: {
-                                   animationBlock()
-                               }, completion: { _ in
-                                   completionBlock()
-                               })
+                                animationBlock()
+                }, completion: { _ in
+                    completionBlock()
+                })
             } else {
                 animationBlock()
                 completionBlock()
@@ -269,7 +271,7 @@ extension ZVProgressHUD {
         } else {
             
             if displayTimeInterval > 0 {
-                fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.dismiss(_:)), userInfo: nil, repeats: false)
+                fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.fadeOutTimerAction(_:)), userInfo: nil, repeats: false)
                 RunLoop.main.add(fadeOutTimer!, forMode: RunLoop.Mode.common)
             } else {
                 if displayType.indicatorType.progressValueChecker.0 &&
@@ -316,7 +318,7 @@ extension ZVProgressHUD {
                 strongSelf.titleLabel.removeFromSuperview()
                 strongSelf.baseView.removeFromSuperview()
                 strongSelf.removeFromSuperview()
-
+                
                 strongSelf.containerView = nil
                 
                 // remove notifications from self
@@ -334,10 +336,10 @@ extension ZVProgressHUD {
                                delay: 0,
                                options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
                                animations: {
-                                   animationBlock()
-                               }, completion: { _ in
-                                   completionBlock()
-                               })
+                                animationBlock()
+                }, completion: { _ in
+                    completionBlock()
+                })
             } else {
                 animationBlock()
                 completionBlock()
@@ -347,8 +349,57 @@ extension ZVProgressHUD {
         }
     }
     
-    private func updateViewHierarchy() {
+    private func getDisplayTimeInterval(for displayType: DisplayType) -> TimeInterval {
+        
+        var displayTimeInterval: TimeInterval = displayType.dismissAtomically ? 3.0 : 0
+        
+        guard displayTimeInterval > 0 else { return 0 }
+        
+        displayTimeInterval = max(Double(displayType.title.count) * 0.06 + 0.5, minimumDismissTimeInterval)
+        displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
+        
+        return displayTimeInterval
+    }
 
+    private func registerNotifications() {
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(placeSubviews(_:)),
+                                               name: UIApplication.didChangeStatusBarOrientationNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(placeSubviews(_:)),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(placeSubviews(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(placeSubviews(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(placeSubviews(_:)),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(placeSubviews(_:)),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+    }
+    
+    @objc private func fadeOutTimerAction(_ timer: Timer?) {
+        dismiss()
+    }
+    
+    private func updateViewHierarchy() {
+        
         if superview == nil {
             containerView?.addSubview(self)
         } else {
@@ -378,57 +429,7 @@ extension ZVProgressHUD {
         }
     }
     
-    private func getDisplayTimeInterval(for displayType: DisplayType) -> TimeInterval {
-        
-        var displayTimeInterval: TimeInterval = displayType.dismissAtomically ? 3.0 : 0
-        
-        guard displayTimeInterval > 0 else { return 0 }
-        
-        displayTimeInterval = max(Double(displayType.title.count) * 0.06 + 0.5, minimumDismissTimeInterval)
-        displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
-        
-        return displayTimeInterval
-    }
-    
-    private func registerNotifications() {
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
-                                               name: UIApplication.didChangeStatusBarOrientationNotification,
-                                               object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
-                                               name: UIApplication.didBecomeActiveNotification,
-                                               object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
-                                               name: UIResponder.keyboardDidHideNotification,
-                                               object: nil)
-    }
-}
-
-// MARK: - Update Subviews
-
-private extension ZVProgressHUD {
-    
-    func updateSubviews() {
+    private func updateSubviews() {
         
         guard let containerView = containerView else { return }
         
@@ -479,7 +480,7 @@ private extension ZVProgressHUD {
         CATransaction.commit()
     }
     
-    @objc func placeSubviews(_ notification: Notification? = nil) {
+    @objc private func placeSubviews(_ notification: Notification? = nil) {
         
         guard let containerView = containerView else { return }
 
@@ -492,7 +493,6 @@ private extension ZVProgressHUD {
         let orientation = UIApplication.shared.statusBarOrientation
         
         if let notification = notification, let keyboardInfo = notification.userInfo {
-
             let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
             animationDuration = keyboardInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
             if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardDidShowNotification {
@@ -581,7 +581,7 @@ private extension ZVProgressHUD {
     }
 }
 
-// MARK: - Getter & Setter
+// MARK: - Props
 
 private extension ZVProgressHUD {
     
@@ -692,7 +692,7 @@ private extension ZVProgressHUD {
 
 // MARK: - ZVProgressHUD.DisplayType
 
-extension ZVProgressHUD.DisplayType {
+private extension ZVProgressHUD.DisplayType {
 
     var dismissAtomically: Bool {
         switch self {
@@ -727,7 +727,7 @@ extension ZVProgressHUD.DisplayType {
 
 // MARK: - ZVProgressHUD.DisplayStyle
 
-extension ZVProgressHUD.DisplayStyle {
+private extension ZVProgressHUD.DisplayStyle {
     
     var foregroundColor: UIColor {
         switch self {
@@ -748,7 +748,7 @@ extension ZVProgressHUD.DisplayStyle {
 
 // MARK: - ZVProgressHUD.MaskType
 
-extension ZVProgressHUD.MaskType {
+private extension ZVProgressHUD.MaskType {
     
     var backgroundColor: CGColor {
         switch self {

@@ -3,7 +3,7 @@
 //  Example
 //
 //  Created by zevwings on 2017/7/11.
-//  Copyright © 2017年 zevwings. All rights reserved.
+//  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
 import UIKit
@@ -34,6 +34,8 @@ class ViewController: UIViewController {
 
     var progress: Float = 0.0
     var timer: Timer?
+    var useInstanceMethod: Bool = true
+    var hud: ZVProgressHUD?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +72,12 @@ extension ViewController {
 extension ViewController {
 
     @objc func showIndicator() {
-        ZVProgressHUD.show()
+        if (useInstanceMethod) {
+            hud = ZVProgressHUD()
+            hud?.show()
+        } else {
+            ZVProgressHUD.show()
+        }
     }
 
     @objc func showWithLabel() {

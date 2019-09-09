@@ -3,7 +3,7 @@
 //  ZVProgressHUD
 //
 //  Created by zevwings on 2017/7/13.
-//  Copyright © 2017年 zevwings. All rights reserved.
+//  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
 import UIKit

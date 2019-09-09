@@ -1,159 +1,12 @@
 //
-//  ZVProgressHUD+Public.swift
+//  ZVProgressHUD+CF.swift
 //  ZVProgressHUD
 //
-//  Created by zevwings on 2018/2/25.
-//  Copyright © 2018年 zevwings. All rights reserved.
+//  Created by zevwings on 2019/9/9.
+//  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
 import Foundation
-
-public extension ZVProgressHUD {
-    
-    class var displayStyle: DisplayStyle {
-        get {
-            return shared.displayStyle
-        }
-        set {
-            shared.displayStyle = newValue
-        }
-    }
-    
-    class var maskType: MaskType {
-        get {
-            return shared.maskType
-        }
-        set {
-            shared.maskType = newValue
-        }
-    }
-    
-    class var maxSupportedWindowLevel: UIWindow.Level {
-        get {
-            return shared.maxSupportedWindowLevel
-        }
-        set {
-            shared.maxSupportedWindowLevel = newValue
-        }
-    }
-    
-    class var fadeInAnimationTimeInterval: TimeInterval {
-        get {
-            return shared.fadeInAnimationTimeInterval
-        }
-        set {
-            shared.fadeInAnimationTimeInterval = newValue
-        }
-    }
-    
-    class var fadeOutAnimationTImeInterval: TimeInterval {
-        get {
-            return shared.fadeOutAnimationTImeInterval
-        }
-        set {
-            shared.fadeOutAnimationTImeInterval = newValue
-        }
-    }
-    
-    class var minimumDismissTimeInterval: TimeInterval {
-        get {
-            return shared.minimumDismissTimeInterval
-        }
-        set {
-            shared.minimumDismissTimeInterval = newValue
-        }
-    }
-    
-    class var maximumDismissTimeInterval: TimeInterval {
-        get {
-            return shared.maximumDismissTimeInterval
-        }
-        set {
-            shared.maximumDismissTimeInterval = newValue
-        }
-    }
-    
-    class var cornerRadius: CGFloat {
-        get {
-            return shared.cornerRadius
-        }
-        set {
-            shared.cornerRadius = newValue
-        }
-    }
-    
-    class var offset: UIOffset {
-        get {
-            return shared.offset
-        }
-        set {
-            shared.offset = newValue
-        }
-    }
-    
-    class var font: UIFont {
-        get {
-            return shared.font
-        }
-        set {
-            shared.font = newValue
-        }
-    }
-    
-    class var strokeWith: CGFloat {
-        get {
-            return shared.strokeWith
-        }
-        set {
-            shared.strokeWith = newValue
-        }
-    }
-    
-    class var indicatorSize: CGSize {
-        get {
-            return shared.indicatorSize
-        }
-        set {
-            shared.indicatorSize = newValue
-        }
-    }
-    
-    class var animationType: ZVIndicatorView.AnimationType {
-        get {
-            return shared.animationType
-        }
-        set {
-            shared.animationType = newValue
-        }
-    }
-    
-    class var contentInsets: UIEdgeInsets {
-        get {
-            return shared.contentInsets
-        }
-        set {
-            shared.contentInsets =  newValue
-        }
-    }
-    
-    class var titleEdgeInsets: UIEdgeInsets {
-        get {
-            return shared.titleEdgeInsets
-        }
-        set {
-            shared.titleEdgeInsets = newValue
-        }
-    }
-    
-    class var indicatorEdgeInsets: UIEdgeInsets {
-        get {
-            return shared.indicatorEdgeInsets
-        }
-        set {
-            shared.indicatorEdgeInsets = newValue
-        }
-    }
-}
 
 public extension ZVProgressHUD {
     
@@ -168,8 +21,7 @@ public extension ZVProgressHUD {
                         on position: Position = .bottom,
                         delay delayTimeInterval: TimeInterval = 0.0) {
         
-        let displayType: DisplayType = .text(value: text)
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showText(text, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a success message
@@ -183,8 +35,7 @@ public extension ZVProgressHUD {
                            on position: Position = .center,
                            delay delayTimeInterval: TimeInterval = 0.0) {
         
-        let displayType: DisplayType = .indicator(title: title, type: .success)
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showSuccess(with: title, in: superview, on: position, delay: delayTimeInterval)
     }
     
     
@@ -194,13 +45,13 @@ public extension ZVProgressHUD {
     ///   - title: the error message remind users what you want
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    
     class func showError(with title: String = "",
                          in superview: UIView? = nil,
                          on position: Position = .center,
                          delay delayTimeInterval: TimeInterval = 0.0) {
         
-        let displayType: DisplayType = .indicator(title: title, type: .error)
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showError(with: title, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a warning message
@@ -214,8 +65,7 @@ public extension ZVProgressHUD {
                            on position: Position = .center,
                            delay delayTimeInterval: TimeInterval = 0.0) {
         
-        let displayType: DisplayType = .indicator(title: title, type: .warning)
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showWarning(with: title, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a waiting alert
@@ -229,8 +79,7 @@ public extension ZVProgressHUD {
                     on position: Position = .center,
                     delay delayTimeInterval: TimeInterval = 0.0) {
         
-        let displayType: DisplayType = .indicator(title: title, type: .indicator(style: animationType))
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.show(with: title, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show the progress of some task
@@ -246,8 +95,7 @@ public extension ZVProgressHUD {
                             on position: Position = .center,
                             delay delayTimeInterval: TimeInterval = 0.0) {
         
-        let displayType: DisplayType = .indicator(title: title, type: .progress(value: progress))
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showProgress(progress, title: title, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show a custom image
@@ -264,9 +112,7 @@ public extension ZVProgressHUD {
                          on position: Position = .center,
                          dismissAtomically: Bool = true,
                          delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        let displayType: DisplayType = .indicator(title: title, type: .image(value: image, dismissAtomically: dismissAtomically))
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showImage(image, title: title, in: superview, on: position, dismissAtomically: dismissAtomically, delay: delayTimeInterval)
     }
     
     /// show the animation waiting alert
@@ -284,11 +130,7 @@ public extension ZVProgressHUD {
                              on position: Position = .center,
                              delay delayTimeInterval: TimeInterval = 0.0) {
         
-        guard images.count > 0 else { return }
-        var animationDuration = duration
-        if animationDuration == 0 { animationDuration = Double(images.count) * 0.1 }
-        let displayType: DisplayType = .indicator(title: title, type: .animation(value: images, duration: animationDuration))
-        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+        shared.showAnimation(images, duration: duration, title: title, in: superview, on: position, delay: delayTimeInterval)
     }
     
     /// show custom display type @see ZVProgressHUD.DisplayType

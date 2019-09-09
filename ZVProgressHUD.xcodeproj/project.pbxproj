@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0B070E23262BCC00EB28B6 /* ZVProgressHUD+CF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B070D23262BCC00EB28B6 /* ZVProgressHUD+CF.swift */; };
+		4D0B071023262CA900EB28B6 /* ZVProgressHUD+CP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B070F23262CA900EB28B6 /* ZVProgressHUD+CP.swift */; };
+		4D0B071223262E5E00EB28B6 /* ZVProgressHUD+IF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B071123262E5E00EB28B6 /* ZVProgressHUD+IF.swift */; };
 		4D4445FC20A17185006FCEEC /* ZVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; };
 		4D4445FD20A17185006FCEEC /* ZVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D44460120A1719D006FCEEC /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */; };
@@ -18,7 +21,6 @@
 		4DC8B6972306A61900170426 /* ZVProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6952306A61900170426 /* ZVProgressView.swift */; };
 		4DC8B6982306A61900170426 /* ZVIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6962306A61900170426 /* ZVIndicatorView.swift */; };
 		4DCDC08D207F4E0100CB78B8 /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */; };
-		4DEC197C2042FC8200ACAA5B /* ZVProgressHUD+PF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+PF.swift */; };
 		4DFF5B4C20318D7A0098BA7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4B20318D7A0098BA7D /* AppDelegate.swift */; };
 		4DFF5B5120318D7A0098BA7D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4F20318D7A0098BA7D /* Main.storyboard */; };
 		4DFF5B5320318D7A0098BA7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DFF5B5220318D7A0098BA7D /* Assets.xcassets */; };
@@ -51,6 +53,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4D0B070D23262BCC00EB28B6 /* ZVProgressHUD+CF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZVProgressHUD+CF.swift"; sourceTree = "<group>"; };
+		4D0B070F23262CA900EB28B6 /* ZVProgressHUD+CP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZVProgressHUD+CP.swift"; sourceTree = "<group>"; };
+		4D0B071123262E5E00EB28B6 /* ZVProgressHUD+IF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZVProgressHUD+IF.swift"; sourceTree = "<group>"; };
 		4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZVProgressHUD.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZVProgressHUD.h; sourceTree = "<group>"; };
 		4D5BDA911F146CAC00E68CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,7 +65,6 @@
 		4DC8B6952306A61900170426 /* ZVProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZVProgressView.swift; sourceTree = "<group>"; };
 		4DC8B6962306A61900170426 /* ZVIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZVIndicatorView.swift; sourceTree = "<group>"; };
 		4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZVActivityIndicatorView.framework; path = Carthage/Build/iOS/ZVActivityIndicatorView.framework; sourceTree = "<group>"; };
-		4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+PF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZVProgressHUD+PF.swift"; sourceTree = "<group>"; };
 		4DFF5B4920318D7A0098BA7D /* ZVProgressHUDExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZVProgressHUDExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DFF5B4B20318D7A0098BA7D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DFF5B5020318D7A0098BA7D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,7 +120,9 @@
 				4DC8B6952306A61900170426 /* ZVProgressView.swift */,
 				4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */,
 				4D99C8701F15DCC0009721FC /* ZVProgressHUD.swift */,
-				4DEC197B2042FC8200ACAA5B /* ZVProgressHUD+PF.swift */,
+				4D0B071123262E5E00EB28B6 /* ZVProgressHUD+IF.swift */,
+				4D0B070D23262BCC00EB28B6 /* ZVProgressHUD+CF.swift */,
+				4D0B070F23262CA900EB28B6 /* ZVProgressHUD+CP.swift */,
 				4D5BDA911F146CAC00E68CB6 /* Info.plist */,
 				4D8046F81F14CBFD0069F9F2 /* Resource.bundle */,
 			);
@@ -262,9 +268,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D0B070E23262BCC00EB28B6 /* ZVProgressHUD+CF.swift in Sources */,
+				4D0B071223262E5E00EB28B6 /* ZVProgressHUD+IF.swift in Sources */,
+				4D0B071023262CA900EB28B6 /* ZVProgressHUD+CP.swift in Sources */,
 				4DC8B6982306A61900170426 /* ZVIndicatorView.swift in Sources */,
 				4D99C8711F15DCC0009721FC /* ZVProgressHUD.swift in Sources */,
-				4DEC197C2042FC8200ACAA5B /* ZVProgressHUD+PF.swift in Sources */,
 				4DC8B6972306A61900170426 /* ZVProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
