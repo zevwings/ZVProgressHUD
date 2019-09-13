@@ -81,6 +81,7 @@ open class ZVProgressHUD: UIControl {
     public var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
     public var logo: UIImage?
+    public var completionHandler: ZVProgressHUDCompletionHandler?
     
     // MARK: Private
     
@@ -354,6 +355,7 @@ open class ZVProgressHUD: UIControl {
                 
                 // execute completion handler
                 completion?()
+                strongSelf.completionHandler?()
             }
             
             if strongSelf.fadeOutAnimationTImeInterval > 0 {
