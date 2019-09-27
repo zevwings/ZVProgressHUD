@@ -34,7 +34,7 @@ platform :ios, '8.0'
 
 target 'TargetName' do
     use_frameworks!
-    pod 'ZVProgressHUD', :git => 'https://github.com/zevwings/ZVProgressHUD.git'
+    pod 'ZVProgressHUD', '~> 2.0.0'
 end
 ```
 
@@ -67,16 +67,16 @@ using `carthage update` and drag `ZVProgressHUD.framework` into your project.
 The framework is under the Carthage/Build, and you should drag it into  `Target` -> `Genral` -> `Embedded Binaries`
 
 ## Usage
-You can use `import ZVProgressHUD` when you needed to use `ZVProgressHUD`.
+You can use `import ProgressHUD` when you needed to use `ZVProgressHUD`.
 
 ### Showing a HUD
 When you start a task, You can using following code:
 
 ```
 // class method
-ZVProgressHUD.show()
+ProgressHUD.shared.show()
 // or you can use instance method 
-hud = ZVProgressHUD()
+let hud = ProgressHUD()
 hud.show()
 ```
 
@@ -90,7 +90,7 @@ public enum AnimationType {
 }
 
 /// this code will modify global animation type.
-ZVProgressHUD.animationType = .flat
+ProgressHUD.shared.animationType = .flat
 ```
 
 when you want modify the superview of `ZVProgressHUD`, use the following code:
@@ -105,7 +105,7 @@ you can use a simple code to close HUD.
 
 ```
 // class method
-ZVProgressHUD.dismiss()
+ProgressHUD.shared.dismiss()
 // or you can use instance method 
 hud.dismiss()
 ```
@@ -114,9 +114,9 @@ hud.dismiss()
 when you want show a comfirm infomation, use the following code:
 
 ```
-ZVProgressHUD.showError(with: "error")
-ZVProgressHUD.showSuccess(with: "success")
-ZVProgressHUD.showWarning(with: "warning")
+ProgressHUD.shared.showError(with: "error")
+ProgressHUD.shared.showSuccess(with: "success")
+ProgressHUD.shared.showWarning(with: "warning")
 ```
 
 ### Showing a custom image 
@@ -124,9 +124,9 @@ you also can show a custom image, use the following code:
 
 ```
 let image = UIImage(named: "smile")
-ZVProgressHUD.showImage(image!)
+ProgressHUD.shared.showImage(image!)
 // or
-ZVProgressHUD.showImage(image!, title: "smile everyday!")
+ProgressHUD.shared.showImage(image!, title: "smile everyday!")
 ```
 
 ### Showing a custom animation
@@ -139,13 +139,13 @@ for index in 1 ... 3 {
     images.append(image!)
 }
 
-ZVProgressHUD.showAnimation(images)
+ProgressHUD.shared.showAnimation(images)
 ```
 
 ### Showing a progress
 
 ```
-ZVProgressHUD.showProgress(0.0, title: "Progress")
+ProgressHUD.shared.showProgress(0.0, title: "Progress")
 ```
 
 ### Custom logo
@@ -204,19 +204,19 @@ you can add an observer to do something from hud's notifications.
 extension NSNotification.Name {
 	
 	 // this hud did disappear
-    public static let ZVProgressHUDReceivedTouchUpInsideEvent: Notification.Name
+    public static let ProgressHUDReceivedTouchUpInsideEvent: Notification.Name
 
 	 // this hud will appear
-    public static let ZVProgressHUDWillAppear: Notification.Name
+    public static let ProgressHUDWillAppear: Notification.Name
 
 	 // this hud did appear
-    public static let ZVProgressHUDDidAppear: Notification.Name
+    public static let ProgressHUDDidAppear: Notification.Name
 
 	 // this hud will disappear
-    public static let ZVProgressHUDWillDisappear: Notification.Name
+    public static let ProgressHUDWillDisappear: Notification.Name
 
 	 // this hud did disappear
-    public static let ZVProgressHUDDidDisappear: Notification.Name
+    public static let ProgressHUDDidDisappear: Notification.Name
 }
 ```
 
