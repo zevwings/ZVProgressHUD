@@ -3,19 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		4D0B070E23262BCC00EB28B6 /* Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0B070D23262BCC00EB28B6 /* Deprecated.swift */; };
 		4D4445FC20A17185006FCEEC /* ZVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; };
 		4D4445FD20A17185006FCEEC /* ZVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4D44460120A1719D006FCEEC /* ZVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */; };
-		4D44460220A1719D006FCEEC /* ZVActivityIndicatorView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D5BDA9E1F146CAC00E68CB6 /* ZVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
 		4D8046F91F14CBFD0069F9F2 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D8046F81F14CBFD0069F9F2 /* Resource.bundle */; };
 		4D99C8711F15DCC0009721FC /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D99C8701F15DCC0009721FC /* ProgressHUD.swift */; };
+		4DBCB8D6233E512C008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */; };
+		4DBCB8D8233E5149008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */; };
 		4DC8B6972306A61900170426 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6952306A61900170426 /* ProgressView.swift */; };
 		4DC8B6982306A61900170426 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6962306A61900170426 /* IndicatorView.swift */; };
 		4DFF5B4C20318D7A0098BA7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4B20318D7A0098BA7D /* AppDelegate.swift */; };
@@ -41,7 +41,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4D44460220A1719D006FCEEC /* ZVActivityIndicatorView.framework in Embed Frameworks */,
 				4D4445FD20A17185006FCEEC /* ZVProgressHUD.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -73,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DBCB8D6233E512C008FCD82 /* ZVActivityIndicatorView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D44460120A1719D006FCEEC /* ZVActivityIndicatorView.framework in Frameworks */,
+				4DBCB8D8233E5149008FCD82 /* ZVActivityIndicatorView in Frameworks */,
 				4D4445FC20A17185006FCEEC /* ZVProgressHUD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +170,9 @@
 			dependencies = (
 			);
 			name = ZVProgressHUD;
+			packageProductDependencies = (
+				4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */,
+			);
 			productName = ZVProgressHUD;
 			productReference = 4D5BDA8D1F146CAC00E68CB6 /* ZVProgressHUD.framework */;
 			productType = "com.apple.product-type.framework";
@@ -189,6 +192,9 @@
 				4D4445FF20A17185006FCEEC /* PBXTargetDependency */,
 			);
 			name = ZVProgressHUDExample;
+			packageProductDependencies = (
+				4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */,
+			);
 			productName = ZVProgressHUDExample;
 			productReference = 4DFF5B4920318D7A0098BA7D /* ZVProgressHUDExample.app */;
 			productType = "com.apple.product-type.application";
@@ -224,6 +230,9 @@
 				Base,
 			);
 			mainGroup = 4D5BDA831F146CAC00E68CB6;
+			packageReferences = (
+				4DBCB8D2233E4EF8008FCD82 /* XCRemoteSwiftPackageReference "ZVActivityIndicatorView" */,
+			);
 			productRefGroup = 4D5BDA8E1F146CAC00E68CB6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -417,7 +426,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -440,7 +450,11 @@
 				INFOPLIST_FILE = ZVProgressHUD/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -464,7 +478,11 @@
 				INFOPLIST_FILE = ZVProgressHUD/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -486,7 +504,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ZVProgressHUDExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUDExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -509,7 +530,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ZVProgressHUDExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zevwings.ZVProgressHUDExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -549,6 +573,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4DBCB8D2233E4EF8008FCD82 /* XCRemoteSwiftPackageReference "ZVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zevwings/ZVActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DBCB8D2233E4EF8008FCD82 /* XCRemoteSwiftPackageReference "ZVActivityIndicatorView" */;
+			productName = ZVActivityIndicatorView;
+		};
+		4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DBCB8D2233E4EF8008FCD82 /* XCRemoteSwiftPackageReference "ZVActivityIndicatorView" */;
+			productName = ZVActivityIndicatorView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4D5BDA841F146CAC00E68CB6 /* Project object */;
 }
