@@ -35,23 +35,23 @@ class ViewController: UIViewController {
     var progress: Float = 0.0
     var timer: Timer?
     var useInstanceMethod: Bool = false
-    var hud: ZVProgressHUD?
+    var hud: ProgressHUD?
     
-    var displayStyle: ZVProgressHUD.DisplayStyle = .dark
-    var maskType: ZVProgressHUD.MaskType = .black
-    var animationType: ZVIndicatorView.AnimationType = .flat
+    var displayStyle: ProgressHUD.DisplayStyle = .dark
+    var maskType: ProgressHUD.MaskType = .black
+    var animationType: IndicatorView.AnimationType = .flat
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ZVProgressHUD.maskType = .black
-        ZVProgressHUD.displayStyle = .dark
-        ZVProgressHUD.logoSize = CGSize(width: 30, height: 30)
-        ZVProgressHUD.logo = UIImage(named: "logo_crown")?.withRenderingMode(.alwaysTemplate)
+        ProgressHUD.shared.maskType = .black
+        ProgressHUD.shared.displayStyle = .dark
+        ProgressHUD.shared.logoSize = CGSize(width: 30, height: 30)
+        ProgressHUD.shared.logo = UIImage(named: "logo_crown")?.withRenderingMode(.alwaysTemplate)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(progressHUDTouchEvent(_:)),
-                                               name: .ZVProgressHUDReceivedTouchUpInsideEvent,
+                                               name: .ProgressHUDReceivedTouchUpInsideEvent,
                                                object: nil)
     }
 
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK: - ZVProgressHUD Notification
+// MARK: - ProgressHUD Notification
 
 extension ViewController {
 
@@ -72,67 +72,67 @@ extension ViewController {
     }
 }
 
-// MARK: - ZVProgressHUD
+// MARK: - ProgressHUD
 
 extension ViewController {
 
     @objc func showIndicator() {
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.show()
         } else {
-            ZVProgressHUD.show()
+            ProgressHUD.shared.show()
         }
     }
 
     @objc func showWithLabel() {
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.show(with: "loading", delay: 0)
         } else {
-            ZVProgressHUD.show(with: "loading", delay: 1)
+            ProgressHUD.shared.show(with: "loading", delay: 1)
         }
     }
 
     @objc func showError() {
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showError(with: "error")
         } else {
-            ZVProgressHUD.showError(with: "error")
+            ProgressHUD.shared.showError(with: "error")
         }
     }
 
     @objc func showSuccess() {
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showSuccess(with: "success")
         } else {
-            ZVProgressHUD.showSuccess(with: "success")
+            ProgressHUD.shared.showSuccess(with: "success")
         }
     }
 
     @objc func showWarning() {
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showWarning(with: "warning")
         } else {
-            ZVProgressHUD.showWarning(with: "warning")
+            ProgressHUD.shared.showWarning(with: "warning")
         }
     }
 
@@ -140,13 +140,13 @@ extension ViewController {
         let image = UIImage(named: "smile")
 
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showImage(image!)
         } else {
-            ZVProgressHUD.showImage(image!)
+            ProgressHUD.shared.showImage(image!)
         }
     }
 
@@ -154,13 +154,13 @@ extension ViewController {
         let image = UIImage(named: "smile")
 
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showImage(image!, title: "smile everyday")
         } else {
-            ZVProgressHUD.showImage(image!, title: "smile everyday")
+            ProgressHUD.shared.showImage(image!, title: "smile everyday")
         }
     }
 
@@ -172,13 +172,13 @@ extension ViewController {
         }
         
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showProgress(0.0)
         } else {
-            ZVProgressHUD.showProgress(0.0)
+            ProgressHUD.shared.showProgress(0.0)
         }
         self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
     }
@@ -191,13 +191,13 @@ extension ViewController {
         }
         
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showProgress(0.0, title: "Progress")
         } else {
-            ZVProgressHUD.showProgress(0.0, title: "Progress")
+            ProgressHUD.shared.showProgress(0.0, title: "Progress")
         }
         self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
     }
@@ -212,26 +212,26 @@ extension ViewController {
         }
         
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showAnimation(images)
         } else {
-            ZVProgressHUD.showAnimation(images)
+            ProgressHUD.shared.showAnimation(images)
         }
     }
 
     @objc func showLabel() {
         
         if (useInstanceMethod) {
-            if hud == nil { hud = ZVProgressHUD() }
+            if hud == nil { hud = ProgressHUD() }
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
             hud?.showText("pure text", in: self.view)
         } else {
-            ZVProgressHUD.showText("pure text", in: self.view)
+            ProgressHUD.shared.showText("pure text", in: self.view)
         }
     }
 
@@ -242,7 +242,7 @@ extension ViewController {
                 print("dimiss delay 2 second.")
             })
         } else {
-            ZVProgressHUD.dismiss() {
+            ProgressHUD.shared.dismiss() {
                 print("dimiss")
             }
         }
@@ -255,17 +255,17 @@ extension ViewController {
 
         switch sender.selectedSegmentIndex {
         case 0:
-            ZVProgressHUD.displayStyle = .dark
+            ProgressHUD.shared.displayStyle = .dark
             displayStyle = .dark
             break
         case 1:
-            ZVProgressHUD.displayStyle = .light
+            ProgressHUD.shared.displayStyle = .light
             displayStyle = .light
             break
         case 2:
             let backgroundColor = UIColor(red: 86.0 / 255.0, green: 75.0 / 255.0, blue: 151.0 / 255.0, alpha: 1.0)
             let foregroundColor = UIColor(red: 239.0 / 255.0, green: 83.0 / 255.0, blue: 64.0 / 255.0, alpha: 1.0)
-            ZVProgressHUD.displayStyle = .custom(backgroundColor: backgroundColor,
+            ProgressHUD.shared.displayStyle = .custom(backgroundColor: backgroundColor,
                                                  foregroundColor: foregroundColor)
             
             displayStyle = .custom(backgroundColor: backgroundColor,
@@ -280,20 +280,20 @@ extension ViewController {
 
         switch sender.selectedSegmentIndex {
         case 0:
-            ZVProgressHUD.maskType = .clear
+            ProgressHUD.shared.maskType = .clear
             maskType = .clear
             break
         case 1:
-            ZVProgressHUD.maskType = .none
+            ProgressHUD.shared.maskType = .none
             maskType = .none
             break
         case 2:
-            ZVProgressHUD.maskType = .black
+            ProgressHUD.shared.maskType = .black
             maskType = .black
             break
         case 3:
             let color = UIColor(red: 215.0 / 255.0, green: 22.0 / 255.0, blue: 59.0 / 255.0, alpha: 0.35)
-            ZVProgressHUD.maskType = .custom(color: color)
+            ProgressHUD.shared.maskType = .custom(color: color)
             maskType = .custom(color: color)
         default:
             break
@@ -303,11 +303,11 @@ extension ViewController {
     @IBAction func setAnimationType(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            ZVProgressHUD.animationType = .flat
+            ProgressHUD.shared.animationType = .flat
             animationType = .flat
             break
         case 1:
-            ZVProgressHUD.animationType = .native
+            ProgressHUD.shared.animationType = .native
             animationType = .native
             break
         default:
@@ -336,7 +336,7 @@ extension ViewController {
         if (useInstanceMethod) {
             hud?.showProgress(progress, title: title)
         } else {
-            ZVProgressHUD.showProgress(progress, title: title)
+            ProgressHUD.shared.showProgress(progress, title: title)
         }
 
         print("timer action : \(progress)")

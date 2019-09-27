@@ -1,25 +1,25 @@
 //
-//  ZVProgressHUD.swift
-//  ZVProgressHUD
+//  ProgressHUD.swift
+//  ProgressHUD
 //
 //  Created by zevwings on 2017/7/12.
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
-public typealias ZVProgressHUDCompletionHandler = () -> ()
+public typealias ProgressHUDCompletionHandler = () -> ()
 
 public extension Notification.Name {
     
-    static let ZVProgressHUDReceivedTouchUpInsideEvent = Notification.Name("com.zevwings.progresshud.touchup.inside")
+    static let ProgressHUDReceivedTouchUpInsideEvent = Notification.Name("com.zevwings.progresshud.touchup.inside")
     
-    static let ZVProgressHUDWillAppear = Notification.Name("com.zevwings.progresshud.willAppear")
-    static let ZVProgressHUDDidAppear = Notification.Name("com.zevwings.progresshud.didAppear")
+    static let ProgressHUDWillAppear = Notification.Name("com.zevwings.progresshud.willAppear")
+    static let ProgressHUDDidAppear = Notification.Name("com.zevwings.progresshud.didAppear")
     
-    static let ZVProgressHUDWillDisappear = Notification.Name("com.zevwings.progresshud.willDisappear")
-    static let ZVProgressHUDDidDisappear = Notification.Name("com.zevwings.progresshud.didDisappear")
+    static let ProgressHUDWillDisappear = Notification.Name("com.zevwings.progresshud.willDisappear")
+    static let ProgressHUDDidDisappear = Notification.Name("com.zevwings.progresshud.didDisappear")
 }
 
-open class ZVProgressHUD: UIControl {
+open class ProgressHUD: UIControl {
     
     private struct AnimationDuration {
         static let fadeIn: TimeInterval = 0.15
@@ -28,7 +28,7 @@ open class ZVProgressHUD: UIControl {
     }
     
     public enum DisplayType {
-        case indicator(title: String?, type: ZVIndicatorView.IndicatorType)
+        case indicator(title: String?, type: IndicatorView.IndicatorType)
         case text(value: String)
     }
     
@@ -53,7 +53,7 @@ open class ZVProgressHUD: UIControl {
 
     //MARK: Public
     
-    public static let shared = ZVProgressHUD(frame: .zero)
+    public static let shared = ProgressHUD(frame: .zero)
     
     public var displayStyle: DisplayStyle = .light
     public var maskType: MaskType = .none
@@ -74,14 +74,14 @@ open class ZVProgressHUD: UIControl {
     public var strokeWith: CGFloat = 3.0
     public var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
     public var logoSize: CGSize = .init(width: 30.0, height: 30.0)
-    public var animationType: ZVIndicatorView.AnimationType = .flat
+    public var animationType: IndicatorView.AnimationType = .flat
 
     public var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
     public var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
     public var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
 
     public var logo: UIImage?
-    public var completionHandler: ZVProgressHUDCompletionHandler?
+    public var completionHandler: ProgressHUDCompletionHandler?
     
     // MARK: Private
     
@@ -107,8 +107,8 @@ open class ZVProgressHUD: UIControl {
         return baseView
     }()
     
-    private lazy var indicatorView: ZVIndicatorView = {
-        let indicatorView = ZVIndicatorView()
+    private lazy var indicatorView: IndicatorView = {
+        let indicatorView = IndicatorView()
         indicatorView.isUserInteractionEnabled = false
         indicatorView.alpha = 0
         return indicatorView
@@ -219,7 +219,7 @@ open class ZVProgressHUD: UIControl {
         }
     }
 
-    func internalDismiss(with delayTimeInterval: TimeInterval = 0, completion: ZVProgressHUDCompletionHandler? = nil) {
+    func internalDismiss(with delayTimeInterval: TimeInterval = 0, completion: ProgressHUDCompletionHandler? = nil) {
         
         if delayTimeInterval > 0 {
             fadeOutDelayTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: self, selector: #selector(fadeInTimerAction(_:)), userInfo: completion, repeats: false)
@@ -244,7 +244,7 @@ open class ZVProgressHUD: UIControl {
         if self.alpha != 1.0 {
             
             // send the notification HUD will appear
-            NotificationCenter.default.post(name: .ZVProgressHUDWillAppear, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: .ProgressHUDWillAppear, object: self, userInfo: nil)
             
             let animationBlock = {
                 self.alpha = 1.0
@@ -263,7 +263,7 @@ open class ZVProgressHUD: UIControl {
                 self.registerNotifications()
                 
                 // send the notification HUD did appear
-                NotificationCenter.default.post(name: .ZVProgressHUDDidAppear, object: self, userInfo: nil)
+                NotificationCenter.default.post(name: .ProgressHUDDidAppear, object: self, userInfo: nil)
                 
                 if displayTimeInterval > 0 {
                     self.fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.fadeOutTimerAction(_:)), userInfo: nil, repeats: false)
@@ -309,11 +309,11 @@ open class ZVProgressHUD: UIControl {
 
     @objc private func fadeOut(with data: Any?) {
         
-        var completion: ZVProgressHUDCompletionHandler?
+        var completion: ProgressHUDCompletionHandler?
         if let timer = data as? Timer {
-            completion = timer.userInfo as? ZVProgressHUDCompletionHandler
+            completion = timer.userInfo as? ProgressHUDCompletionHandler
         } else {
-            completion = data as? ZVProgressHUDCompletionHandler
+            completion = data as? ProgressHUDCompletionHandler
         }
         
         OperationQueue.main.addOperation { [weak self] in
@@ -321,7 +321,7 @@ open class ZVProgressHUD: UIControl {
             guard let strongSelf = self else { return }
             
             // send the notification HUD will disAppear
-            NotificationCenter.default.post(name: .ZVProgressHUDWillDisappear, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: .ProgressHUDWillDisappear, object: self, userInfo: nil)
             
             let animationBlock = {
                 strongSelf.alpha = 0
@@ -351,7 +351,7 @@ open class ZVProgressHUD: UIControl {
                 NotificationCenter.default.removeObserver(strongSelf)
                 
                 // send the notification HUD did disAppear
-                NotificationCenter.default.post(name: .ZVProgressHUDDidDisappear, object: self, userInfo: nil)
+                NotificationCenter.default.post(name: .ProgressHUDDidDisappear, object: self, userInfo: nil)
                 
                 // execute completion handler
                 completion?()
@@ -608,16 +608,176 @@ open class ZVProgressHUD: UIControl {
 
 // MARK: - Event Handler
 
-private extension ZVProgressHUD {
+private extension ProgressHUD {
     
     @objc func overlayRecievedTouchUpInsideEvent(_ sender: UIControl) {
-        NotificationCenter.default.post(name: .ZVProgressHUDReceivedTouchUpInsideEvent, object: self, userInfo: nil)
+        NotificationCenter.default.post(name: .ProgressHUDReceivedTouchUpInsideEvent, object: self, userInfo: nil)
+    }
+}
+
+// MARK: - Handle
+
+public extension ProgressHUD {
+    
+    /// show a toast
+    ///
+    /// - Parameters:
+    ///   - text: toast content
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showText(_ text: String,
+                  in superview: UIView? = nil,
+                  on position: Position = .bottom,
+                  delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .text(value: text)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show a success message
+    ///
+    /// - Parameters:
+    ///   - title: the success message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showSuccess(with title: String = "",
+                     in superview: UIView? = nil,
+                     on position: Position = .center,
+                     delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .indicator(title: title, type: .success)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show a error message
+    ///
+    /// - Parameters:
+    ///   - title: the error message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showError(with title: String = "",
+                   in superview: UIView? = nil,
+                   on position: Position = .center,
+                   delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .indicator(title: title, type: .error)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show a warning message
+    ///
+    /// - Parameters:
+    ///   - title: the warning message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showWarning(with title: String = "",
+                     in superview: UIView? = nil,
+                     on position: Position = .center,
+                     delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .indicator(title: title, type: .warning)
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show a waiting alert
+    ///
+    /// - Parameters:
+    ///   - title: the message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func show(with title: String = "",
+              in superview: UIView? = nil,
+              on position: Position = .center,
+              delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .indicator(title: title, type: .indicator(style: animationType))
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show the progress of some task
+    ///
+    /// - Parameters:
+    ///   - progress: the progress of your task
+    ///   - title: the message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showProgress(_ progress: Float,
+                      title: String = "",
+                      in superview: UIView? = nil,
+                      on position: Position = .center,
+                      delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .indicator(title: title, type: .progress(value: progress))
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show a custom image
+    ///
+    /// - Parameters:
+    ///   - image: your image
+    ///   - title: the message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - dismissAtomically: if `true` the `HUD` will dissmiss atomically
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showImage(_ image: UIImage,
+                   title: String = "",
+                   in superview: UIView? = nil,
+                   on position: Position = .center,
+                   dismissAtomically: Bool = true,
+                   delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        let displayType: DisplayType = .indicator(title: title, type: .image(value: image, dismissAtomically: dismissAtomically))
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show the animation waiting alert
+    ///
+    /// - Parameters:
+    ///   - images: animation image array
+    ///   - duration: animation duration @see UIImage
+    ///   - title: the message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func showAnimation(_ images: [UIImage],
+                       duration: TimeInterval = 0.0,
+                       title: String = "",
+                       in superview: UIView? = nil,
+                       on position: Position = .center,
+                       delay delayTimeInterval: TimeInterval = 0.0) {
+        
+        guard images.count > 0 else { return }
+        var animationDuration = duration
+        if animationDuration == 0 { animationDuration = Double(images.count) * 0.1 }
+        let displayType: DisplayType = .indicator(title: title, type: .animation(value: images, duration: animationDuration))
+        show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// show custom display type @see ZVProgressHUD.DisplayType
+    ///
+    /// - Parameters:
+    ///   - displayType: ZVProgressHUD.DisplayType
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    func show(with displayType: DisplayType,
+              in superview: UIView? = nil,
+              on position: Position,
+              delay delayTimeInterval: TimeInterval = 0) {
+        internalShow(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    }
+    
+    /// dismiss the hud
+    ///
+    /// - Parameters:
+    ///   - delay: the view will dissmiss delay the `delayTimeInterval`
+    ///   - completion: dismiss completion handler
+    func dismiss(with delayTimeInterval: TimeInterval = 0, completion: ProgressHUDCompletionHandler? = nil) {
+        internalDismiss(with: delayTimeInterval, completion: completion)
     }
 }
 
 // MARK: - Props
 
-private extension ZVProgressHUD {
+private extension ProgressHUD {
     
     var fadeOutTimer: Timer? {
         get {
@@ -724,9 +884,9 @@ private extension ZVProgressHUD {
     }
 }
 
-// MARK: - ZVProgressHUD.DisplayType
+// MARK: - ProgressHUD.DisplayType
 
-private extension ZVProgressHUD.DisplayType {
+private extension ProgressHUD.DisplayType {
 
     var dismissAtomically: Bool {
         switch self {
@@ -751,7 +911,7 @@ private extension ZVProgressHUD.DisplayType {
         }
     }
     
-    var indicatorType: ZVIndicatorView.IndicatorType {
+    var indicatorType: IndicatorView.IndicatorType {
         switch self {
         case .text: return .none
         case .indicator(_, let type): return type
@@ -759,9 +919,9 @@ private extension ZVProgressHUD.DisplayType {
     }    
 }
 
-// MARK: - ZVProgressHUD.DisplayStyle
+// MARK: - ProgressHUD.DisplayStyle
 
-private extension ZVProgressHUD.DisplayStyle {
+private extension ProgressHUD.DisplayStyle {
     
     var foregroundColor: UIColor {
         switch self {
@@ -780,9 +940,9 @@ private extension ZVProgressHUD.DisplayStyle {
     }
 }
 
-// MARK: - ZVProgressHUD.MaskType
+// MARK: - ProgressHUD.MaskType
 
-private extension ZVProgressHUD.MaskType {
+private extension ProgressHUD.MaskType {
     
     var backgroundColor: CGColor {
         switch self {
