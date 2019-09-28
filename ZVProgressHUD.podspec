@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name              = "ZVProgressHUD"
-  s.version           = "2.3.3"
+  s.version           = "2.4.0"
   s.summary           = "A pure-swift and wieldy HUD"
   s.swift_version     = '5.0'
 

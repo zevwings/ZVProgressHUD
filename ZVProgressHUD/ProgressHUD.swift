@@ -6,6 +6,8 @@
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
+import UIKit
+
 public typealias ProgressHUDCompletionHandler = () -> ()
 
 public extension Notification.Name {

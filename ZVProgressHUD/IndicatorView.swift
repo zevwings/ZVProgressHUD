@@ -65,7 +65,7 @@ public class IndicatorView: UIView {
     
     private var imageIndicaotorView: UIImageView?
     private var nativeActivityIndicatorView: UIActivityIndicatorView?
-    private var flatActivityIndicatorView: ZVActivityIndicatorView?
+    private var flatActivityIndicatorView: ActivityIndicatorView?
     private var progressIndicatorView: ProgressView?
     
     convenience init() {
@@ -226,7 +226,7 @@ private extension IndicatorView {
         progressIndicatorView?.removeFromSuperview()
 
         if flatActivityIndicatorView == nil {
-            flatActivityIndicatorView = ZVActivityIndicatorView()
+            flatActivityIndicatorView = ActivityIndicatorView()
             flatActivityIndicatorView?.tintColor = tintColor
             flatActivityIndicatorView?.hidesWhenStopped = true
             flatActivityIndicatorView?.strokeWidth = strokeWidth
