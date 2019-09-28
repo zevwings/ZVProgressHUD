@@ -6,7 +6,7 @@
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 @available(*, deprecated, renamed: "ProgressHUD", message: "renamed ProgressHUD will remove in future")
 public typealias ZVProgressHUD = ProgressHUD
