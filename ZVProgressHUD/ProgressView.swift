@@ -107,4 +107,3 @@ class ProgressView: UIView {
         CATransaction.commit()
     }
 }
-

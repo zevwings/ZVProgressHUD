@@ -14,6 +14,7 @@
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
 		4D8046F91F14CBFD0069F9F2 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D8046F81F14CBFD0069F9F2 /* Resource.bundle */; };
 		4D99C8711F15DCC0009721FC /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D99C8701F15DCC0009721FC /* ProgressHUD.swift */; };
+		4DAE474D2340B2E2008773D2 /* ProgressHUD+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */; };
 		4DBCB8D6233E512C008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */; };
 		4DBCB8D8233E5149008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */; };
 		4DC8B6972306A61900170426 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6952306A61900170426 /* ProgressView.swift */; };
@@ -56,6 +57,7 @@
 		4D60771520327D4F00474944 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4D8046F81F14CBFD0069F9F2 /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
 		4D99C8701F15DCC0009721FC /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
+		4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProgressHUD+Operations.swift"; sourceTree = "<group>"; };
 		4DC8B6952306A61900170426 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		4DC8B6962306A61900170426 /* IndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
 		4DCDC08C207F4E0100CB78B8 /* ZVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZVActivityIndicatorView.framework; path = Carthage/Build/iOS/ZVActivityIndicatorView.framework; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				4D0B070D23262BCC00EB28B6 /* Deprecated.swift */,
 				4D5BDA911F146CAC00E68CB6 /* Info.plist */,
 				4D8046F81F14CBFD0069F9F2 /* Resource.bundle */,
+				4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */,
 			);
 			path = ZVProgressHUD;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 				4D5BDA891F146CAC00E68CB6 /* Frameworks */,
 				4D5BDA8A1F146CAC00E68CB6 /* Headers */,
 				4D5BDA8B1F146CAC00E68CB6 /* Resources */,
+				4DAE474B2340B1B3008773D2 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -264,6 +268,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4DAE474B2340B1B3008773D2 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n    if which swiftlint > /dev/null; then\n        swiftlint\n    else\n        echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint to lint!\"\n    fi\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4D5BDA881F146CAC00E68CB6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -272,6 +297,7 @@
 				4D0B070E23262BCC00EB28B6 /* Deprecated.swift in Sources */,
 				4DC8B6982306A61900170426 /* IndicatorView.swift in Sources */,
 				4D99C8711F15DCC0009721FC /* ProgressHUD.swift in Sources */,
+				4DAE474D2340B2E2008773D2 /* ProgressHUD+Operations.swift in Sources */,
 				4DC8B6972306A61900170426 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

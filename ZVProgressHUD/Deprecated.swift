@@ -203,12 +203,16 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showText(_ text: String,
-                        in superview: UIView? = nil,
-                        on position: Position = .bottom,
-                        delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.showText(text, in: superview, on: position, delay: delayTimeInterval)
+    class func showText(
+        _ text: String,
+        in superview: UIView? = nil,
+        on position: Position = .bottom,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showText(text,
+                        in: superview,
+                        on: position,
+                        delay: delayTimeInterval)
     }
     
     /// show a success message
@@ -218,12 +222,16 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showSuccess(with title: String = "",
-                           in superview: UIView? = nil,
-                           on position: Position = .center,
-                           delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.showSuccess(with: title, in: superview, on: position, delay: delayTimeInterval)
+    class func showSuccess(
+        with title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showSuccess(with: title,
+                           in: superview,
+                           on: position,
+                           delay: delayTimeInterval)
     }
     
     
@@ -234,12 +242,16 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showError(with title: String = "",
-                         in superview: UIView? = nil,
-                         on position: Position = .center,
-                         delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.showError(with: title, in: superview, on: position, delay: delayTimeInterval)
+    class func showError(
+        with title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showError(with: title,
+                         in: superview,
+                         on: position,
+                         delay: delayTimeInterval)
     }
     
     /// show a warning message
@@ -249,12 +261,16 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showWarning(with title: String = "",
-                           in superview: UIView? = nil,
-                           on position: Position = .center,
-                           delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.showWarning(with: title, in: superview, on: position, delay: delayTimeInterval)
+    class func showWarning(
+        with title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showWarning(with: title,
+                           in: superview,
+                           on: position,
+                           delay: delayTimeInterval)
     }
     
     /// show a waiting alert
@@ -264,12 +280,16 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func show(with title: String = "",
-                    in superview: UIView? = nil,
-                    on position: Position = .center,
-                    delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.show(with: title, in: superview, on: position, delay: delayTimeInterval)
+    class func show(
+        with title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.show(with: title,
+                    in: superview,
+                    on: position,
+                    delay: delayTimeInterval)
     }
     
     /// show the progress of some task
@@ -280,13 +300,18 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showProgress(_ progress: Float,
-                            title: String = "",
-                            in superview: UIView? = nil,
-                            on position: Position = .center,
-                            delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.showProgress(progress, title: title, in: superview, on: position, delay: delayTimeInterval)
+    class func showProgress(
+        _ progress: Float,
+        title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showProgress(progress,
+                            title: title,
+                            in: superview,
+                            on: position,
+                            delay: delayTimeInterval)
     }
     
     /// show a custom image
@@ -298,13 +323,20 @@ public extension ProgressHUD {
     ///   - dismissAtomically: if `true` the `HUD` will dissmiss atomically
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showImage(_ image: UIImage,
-                         title: String = "",
-                         in superview: UIView? = nil,
-                         on position: Position = .center,
-                         dismissAtomically: Bool = true,
-                         delay delayTimeInterval: TimeInterval = 0.0) {
-        shared.showImage(image, title: title, in: superview, on: position, dismissAtomically: dismissAtomically, delay: delayTimeInterval)
+    class func showImage(
+        _ image: UIImage,
+        title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        dismissAtomically: Bool = true,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showImage(image,
+                         title: title,
+                         in: superview,
+                         on: position,
+                         dismissAtomically: dismissAtomically,
+                         delay: delayTimeInterval)
     }
     
     /// show the animation waiting alert
@@ -316,14 +348,20 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func showAnimation(_ images: [UIImage],
-                             duration: TimeInterval = 0.0,
-                             title: String = "",
-                             in superview: UIView? = nil,
-                             on position: Position = .center,
-                             delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.showAnimation(images, duration: duration, title: title, in: superview, on: position, delay: delayTimeInterval)
+    class func showAnimation(
+        _ images: [UIImage],
+        duration: TimeInterval = 0.0,
+        title: String = "",
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.showAnimation(images,
+                             duration: duration,
+                             title: title,
+                             in: superview,
+                             on: position,
+                             delay: delayTimeInterval)
     }
     
     /// show custom display type @see ZVProgressHUD.DisplayType
@@ -333,12 +371,16 @@ public extension ProgressHUD {
     ///   - superview: super view, if superview is nil, show on main window
     ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func show(with displayType: DisplayType,
-                    in superview: UIView? = nil,
-                    on position: Position = .center,
-                    delay delayTimeInterval: TimeInterval = 0.0) {
-        
-        shared.show(with: displayType, in: superview, on: position, delay: delayTimeInterval)
+    class func show(
+        with displayType: DisplayType,
+        in superview: UIView? = nil,
+        on position: Position = .center,
+        delay delayTimeInterval: TimeInterval = 0.0
+    ) {
+        shared.show(with: displayType,
+                    in: superview,
+                    on: position,
+                    delay: delayTimeInterval)
     }
     
     /// dismiss the hud
@@ -347,8 +389,10 @@ public extension ProgressHUD {
     ///   - delay: the view will dissmiss delay the `delayTimeInterval`
     ///   - completion: dismiss completion handler
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
-    class func dismiss(delay: TimeInterval = 0.0, completion: ProgressHUDCompletionHandler? = nil) {
+    class func dismiss(
+        delay: TimeInterval = 0.0,
+        completion: ProgressHUDCompletionHandler? = nil
+    ) {
         shared.dismiss(with: delay, completion: completion)
     }
 }
-
