@@ -17,7 +17,7 @@ class ProgressView: UIView {
         }
     }
     
-    var _strokeColor: UIColor = .black
+    private var _strokeColor: UIColor = .black
     var strokeColor: UIColor {
         get {
             return _strokeColor
@@ -93,7 +93,13 @@ class ProgressView: UIView {
         let startAngle = CGFloat( -0.5 * Double.pi)
         let endAngle = CGFloat(1.5 * Double.pi)
 
-        let path = UIBezierPath(arcCenter: arcCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true).cgPath
+        let path = UIBezierPath(
+            arcCenter: arcCenter,
+            radius: radius,
+            startAngle: startAngle,
+            endAngle: endAngle,
+            clockwise: true
+        ).cgPath
         foregroundLayer.path = path
         backgroundLayer.path = path
     }

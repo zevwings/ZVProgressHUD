@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias ProgressHUDCompletionHandler = () -> ()
+public typealias ProgressHUDCompletionHandler = () -> Void
 
 public extension Notification.Name {
     
@@ -53,7 +53,7 @@ open class ProgressHUD: UIControl {
         case bottom
     }
 
-    //MARK: Public
+    // MARK: Public
     
     public static let shared = ProgressHUD(frame: .zero)
     
@@ -91,7 +91,6 @@ open class ProgressHUD: UIControl {
     private var _fadeInDeleyTimer: Timer?
     private var _fadeOutDelayTimer: Timer?
 
-    
     private var displayType: DisplayType?
     
     private var containerView: UIView?
@@ -158,13 +157,18 @@ open class ProgressHUD: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //MARK: Internal Operations
+}
 
-    func internalShow(with displayType: DisplayType,
-                      in superview: UIView? = nil,
-                      on position: Position,
-                      delay delayTimeInterval: TimeInterval = 0) {
-        
+// MAKR: - Internal Operations
+
+extension ProgressHUD {
+    
+    func internalShow(
+        with displayType: DisplayType,
+        in superview: UIView? = nil,
+        on position: Position,
+        delay delayTimeInterval: TimeInterval = 0
+    ) {
         OperationQueue.main.addOperation { [weak self] in
             
             guard let strongSelf = self else { return }
@@ -183,8 +187,8 @@ open class ProgressHUD: UIControl {
             
             strongSelf.position = position
 
-            if let sv = superview {
-                strongSelf.containerView = sv
+            if let superview = superview {
+                strongSelf.containerView = superview
             } else {
                 strongSelf.containerView = strongSelf.keyWindow
             }
@@ -211,20 +215,34 @@ open class ProgressHUD: UIControl {
             strongSelf.titleLabel.textColor = strongSelf.displayStyle.foregroundColor
             strongSelf.indicatorView.tintColor = strongSelf.displayStyle.foregroundColor
             
-            
             // display
             if delayTimeInterval > 0 {
-                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: strongSelf, selector: #selector(strongSelf.fadeInTimerAction(_:)), userInfo: nil, repeats: false)
+                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(
+                    timeInterval: delayTimeInterval,
+                    target: strongSelf,
+                    selector: #selector(strongSelf.fadeInTimerAction(_:)),
+                    userInfo: nil,
+                    repeats: false
+                )
             } else {
                 strongSelf.fadeIn()
             }
         }
     }
 
-    func internalDismiss(with delayTimeInterval: TimeInterval = 0, completion: ProgressHUDCompletionHandler? = nil) {
+    func internalDismiss(
+        with delayTimeInterval: TimeInterval = 0,
+        completion: ProgressHUDCompletionHandler? = nil
+    ) {
         
         if delayTimeInterval > 0 {
-            fadeOutDelayTimer = Timer.scheduledTimer(timeInterval: delayTimeInterval, target: self, selector: #selector(fadeInTimerAction(_:)), userInfo: completion, repeats: false)
+            fadeOutDelayTimer = Timer.scheduledTimer(
+                timeInterval: delayTimeInterval,
+                target: self,
+                selector: #selector(fadeOutTimerAction(_:)),
+                userInfo: completion,
+                repeats: false
+            )
         } else {
             fadeOut(with: completion)
         }
@@ -268,7 +286,13 @@ open class ProgressHUD: UIControl {
                 NotificationCenter.default.post(name: .ProgressHUDDidAppear, object: self, userInfo: nil)
                 
                 if displayTimeInterval > 0 {
-                    self.fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.fadeOutTimerAction(_:)), userInfo: nil, repeats: false)
+                    self.fadeOutTimer = Timer.scheduledTimer(
+                        timeInterval: displayTimeInterval,
+                        target: self,
+                        selector: #selector(self.fadeOutTimerAction(_:)),
+                        userInfo: nil,
+                        repeats: false
+                    )
                     RunLoop.main.add(self.fadeOutTimer!, forMode: RunLoop.Mode.common)
                 } else {
                     if displayType.indicatorType.progressValueChecker.0 &&
@@ -279,14 +303,16 @@ open class ProgressHUD: UIControl {
             }
             
             if fadeInAnimationTimeInterval > 0 {
-                UIView.animate(withDuration: fadeInAnimationTimeInterval,
-                               delay: 0,
-                               options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
-                               animations: {
-                                animationBlock()
-                }, completion: { _ in
-                    completionBlock()
-                })
+                UIView.animate(
+                    withDuration: fadeInAnimationTimeInterval,
+                    delay: 0,
+                    options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
+                    animations: {
+                        animationBlock()
+                    }, completion: { _ in
+                        completionBlock()
+                    }
+                )
             } else {
                 animationBlock()
                 completionBlock()
@@ -294,7 +320,13 @@ open class ProgressHUD: UIControl {
         } else {
             
             if displayTimeInterval > 0 {
-                fadeOutTimer = Timer.scheduledTimer(timeInterval: displayTimeInterval, target: self, selector: #selector(self.fadeOutTimerAction(_:)), userInfo: nil, repeats: false)
+                fadeOutTimer = Timer.scheduledTimer(
+                    timeInterval: displayTimeInterval,
+                    target: self,
+                    selector: #selector(self.fadeInTimerAction(_:)),
+                    userInfo: nil,
+                    repeats: false
+                )
                 RunLoop.main.add(fadeOutTimer!, forMode: RunLoop.Mode.common)
             } else {
                 if displayType.indicatorType.progressValueChecker.0 &&
@@ -361,14 +393,16 @@ open class ProgressHUD: UIControl {
             }
             
             if strongSelf.fadeOutAnimationTImeInterval > 0 {
-                UIView.animate(withDuration: strongSelf.fadeOutAnimationTImeInterval,
-                               delay: 0,
-                               options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
-                               animations: {
-                                animationBlock()
-                }, completion: { _ in
-                    completionBlock()
-                })
+                UIView.animate(
+                    withDuration: strongSelf.fadeOutAnimationTImeInterval,
+                    delay: 0,
+                    options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
+                    animations: {
+                        animationBlock()
+                    }, completion: { _ in
+                        completionBlock()
+                    }
+                )
             } else {
                 animationBlock()
                 completionBlock()
@@ -389,41 +423,74 @@ open class ProgressHUD: UIControl {
         
         return displayTimeInterval
     }
+}
 
+// MARK: - Notifications
+
+private extension ProgressHUD {
+    
     private func registerNotifications() {
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
+                                               selector: #selector(handleKeyboardNotification(_:)),
                                                name: UIApplication.didChangeStatusBarOrientationNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
+                                               selector: #selector(handleKeyboardNotification(_:)),
                                                name: UIApplication.didBecomeActiveNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
+                                               selector: #selector(handleKeyboardNotification(_:)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
+                                               selector: #selector(handleKeyboardNotification(_:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
+                                               selector: #selector(handleKeyboardNotification(_:)),
                                                name: UIResponder.keyboardDidShowNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(placeSubviews(_:)),
+                                               selector: #selector(handleKeyboardNotification(_:)),
                                                name: UIResponder.keyboardDidHideNotification,
                                                object: nil)
     }
     
-    private func updateViewHierarchy() {
+    @objc func handleKeyboardNotification(_ notification: Notification?) {
+        
+        let orientation = UIApplication.shared.statusBarOrientation
+        
+        var keybordHeight: CGFloat = 0
+        var animationDuration: TimeInterval = 0
+
+        if let notification = notification, let keyboardInfo = notification.userInfo {
+            let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+            animationDuration = keyboardInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
+            if notification.name == UIResponder.keyboardWillShowNotification ||
+                notification.name == UIResponder.keyboardDidShowNotification {
+                if orientation == .portrait {
+                    keybordHeight = keyboardFrame?.height ?? 0
+                }
+            }
+        } else {
+            keybordHeight = visibleKeyboardHeight
+        }
+        
+        placeSubviews(keybordHeight, animationDuration: animationDuration)
+    }
+}
+
+// MARK: - Update Subviews
+
+private extension ProgressHUD {
+    
+    func updateViewHierarchy() {
         
         if superview == nil {
             containerView?.addSubview(self)
@@ -460,7 +527,7 @@ open class ProgressHUD: UIControl {
         }
     }
     
-    private func updateSubviews() {
+    func updateSubviews() {
         
         guard let containerView = containerView else { return }
         
@@ -485,10 +552,14 @@ open class ProgressHUD: UIControl {
         }
         
         let labelHeight = titleLabel.isHidden ? 0 : labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
-        let indicatorHeight = indicatorView.isHidden ? 0 : indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
+        let indicatorHeight = indicatorView.isHidden ?
+            0 :
+            indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
         
         let contentHeight = labelHeight + indicatorHeight + contentInsets.top + contentInsets.bottom
-        let contetnWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right, indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right) + contentInsets.left + contentInsets.right
+        let maxWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right,
+                           indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right)
+        let contetnWidth = maxWidth + contentInsets.left + contentInsets.right
         
         let contentSize: CGSize = .init(width: contetnWidth, height: contentHeight)
         let oldOrigin = self.baseView.frame.origin
@@ -515,31 +586,14 @@ open class ProgressHUD: UIControl {
         
         CATransaction.commit()
     }
-    
-    @objc private func placeSubviews(_ notification: Notification? = nil) {
+        
+    @objc func placeSubviews(_ keybordHeight: CGFloat = 0, animationDuration: TimeInterval = 0) {
         
         guard let containerView = containerView else { return }
 
         frame = .init(origin: .zero, size: containerView.frame.size)
         maskLayer.frame = .init(origin: .zero, size: containerView.frame.size)
-        
-        var keybordHeight: CGFloat = 0
-        var animationDuration: TimeInterval = 0
-        
-        let orientation = UIApplication.shared.statusBarOrientation
-        
-        if let notification = notification, let keyboardInfo = notification.userInfo {
-            let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
-            animationDuration = keyboardInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
-            if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardDidShowNotification {
-                if orientation == .portrait {
-                    keybordHeight = keyboardFrame?.height ?? 0
-                }
-            }
-        } else {
-            keybordHeight = visibleKeyboardHeight
-        }
-        
+                
         let orenitationFrame = frame
         var statusBarFrame: CGRect = .zero
         if containerView == self.keyWindow {
@@ -557,7 +611,7 @@ open class ProgressHUD: UIControl {
         // if tabBar is hidden, bottom instantce is 24.0 + 12.0
         // otherwise, if keyboard is show, ignore tabBar height.
         let  defaultBottomInset: CGFloat
-        if visibleKeyboardHeight > 0 {
+        if keybordHeight > 0 {
             defaultBottomInset = 0
         } else {
             let tabBarHeight = self.keyWindow?.rootViewController?.tabBarController?.tabBar.frame.height ?? 24.0
@@ -565,6 +619,7 @@ open class ProgressHUD: UIControl {
         }
         
         // if navigationBar is hidden, top instantce is 24.0
+        // swiftlint:disable:next line_length
         let defaultTopInset: CGFloat = self.keyWindow?.rootViewController?.navigationController?.navigationBar.frame.height ?? 24.0
         
         var activeHeight = orenitationFrame.height
@@ -577,6 +632,7 @@ open class ProgressHUD: UIControl {
         
         let distanceOfNavigationBarOrTabBar: CGFloat = 12
         
+        //swiftlint:disable line_length
         let posY: CGFloat
         switch position {
         case .top:
@@ -586,21 +642,23 @@ open class ProgressHUD: UIControl {
         case .bottom:
             posY = activeHeight - defaultBottomInset - distanceOfNavigationBarOrTabBar - baseView.frame.height * 0.5 + offset.vertical
         }
-        
+        //swiftlint:enable line_length
+
         let posX = orenitationFrame.width / 2.0 + offset.horizontal
 
         let center: CGPoint = .init(x: posX, y: posY)
         
-        if notification != nil {
-            UIView.animate(withDuration: animationDuration,
-                           delay: 0,
-                           options: [.allowUserInteraction, .beginFromCurrentState],
-                           animations: {
-                               self.baseView.center = center
-                               self.baseView.setNeedsDisplay()
-                           })
-        } else {
+        if animationDuration == 0 {
             baseView.center = center
+        } else {
+            UIView.animate(
+                withDuration: animationDuration,
+                delay: 0,
+                options: [.allowUserInteraction, .beginFromCurrentState],
+                animations: {
+                    self.baseView.center = center
+                    self.baseView.setNeedsDisplay()
+            })
         }
     }
 }

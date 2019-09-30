@@ -234,7 +234,6 @@ public extension ProgressHUD {
                            delay: delayTimeInterval)
     }
     
-    
     /// show a error message
     ///
     /// - Parameters:

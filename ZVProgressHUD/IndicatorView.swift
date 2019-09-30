@@ -38,24 +38,17 @@ public class IndicatorView: UIView {
                 switch (style) {
                 case .native:
                     configNativeActivityIndicatorView()
-                    break
                 case .flat:
                     configFlatActivityIndicatorView()
-                    break
                 }
-                break
             case .progress(let value):
                 configProgressIndicatorView(with: value)
-                break
             case .error, .success, .warning:
                 configImageIndicatorView(indcatorType.resource)
-                break
             case .image(let value, _):
                 configImageIndicatorView(value)
-                break
             case .animation(let value, let duration):
                 configImageIndicatorView(value, animationDuration: duration)
-                break
             default:
                 break
             }
@@ -135,9 +128,9 @@ private extension IndicatorView {
             addSubview(imageIndicaotorView!)
         }
         
-        if let resource = value as? String {
+        if let resource = value as? String,
+            let path = Bundle(for: ProgressHUD.self).path(forResource: "Resource", ofType: "bundle") {
             
-            guard let path = Bundle(for: ProgressHUD.self).path(forResource: "Resource", ofType: "bundle") else { return }
             let bundle = Bundle(path: path)
             guard let fileName = bundle?.path(forResource: resource, ofType: "png") else { return }
             let image = UIImage(contentsOfFile: fileName)?.withRenderingMode(.alwaysTemplate)
