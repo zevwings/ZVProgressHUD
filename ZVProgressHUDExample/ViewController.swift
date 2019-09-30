@@ -26,17 +26,17 @@ class ViewController: UIViewController {
         ("dismiss", #selector(dismissHUD))
     ]
 
-    @IBOutlet weak var stateSizeTextField: UITextField!
-
     @IBOutlet weak var tableView: UITableView!
 
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var showDelayTimeTextField: UITextField!
+    @IBOutlet weak var dismissDelayTimeTextField: UITextField!
 
     var progress: Float = 0.0
     var timer: Timer?
     var useInstanceMethod: Bool = false
     var hud: ProgressHUD?
     
+    var indicatorSize: CGSize = CGSize(width: 48.0, height: 48.0)
     var displayStyle: ProgressHUD.DisplayStyle = .dark
     var maskType: ProgressHUD.MaskType = .black
     var animationType: IndicatorView.AnimationType = .flat
@@ -44,6 +44,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        ProgressHUD.shared.indicatorSize
         ProgressHUD.shared.maskType = .black
         ProgressHUD.shared.displayStyle = .dark
         ProgressHUD.shared.logoSize = CGSize(width: 30, height: 30)
@@ -77,94 +78,116 @@ extension ViewController {
 extension ViewController {
 
     @objc func showIndicator() {
+        
+        let showDelay = getShowDelayTime()
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.show()
+            hud?.show(delay: showDelay)
         } else {
-            ProgressHUD.shared.show()
+            ProgressHUD.shared.show(delay: showDelay)
         }
     }
 
     @objc func showWithLabel() {
+        
+        let showDelay = getShowDelayTime()
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.show(with: "loading", delay: 0)
+            hud?.show(with: "loading", delay: showDelay)
         } else {
-            ProgressHUD.shared.show(with: "loading", delay: 1)
+            ProgressHUD.shared.show(with: "loading", delay: showDelay)
         }
     }
 
     @objc func showError() {
+        
+        let showDelay = getShowDelayTime()
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showError(with: "error")
+            hud?.showError(with: "error", delay: showDelay)
         } else {
-            ProgressHUD.shared.showError(with: "error")
+            ProgressHUD.shared.showError(with: "error", delay: showDelay)
         }
     }
 
     @objc func showSuccess() {
+        
+        let showDelay = getShowDelayTime()
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showSuccess(with: "success")
+            hud?.showSuccess(with: "success", delay: showDelay)
         } else {
-            ProgressHUD.shared.showSuccess(with: "success")
+            ProgressHUD.shared.showSuccess(with: "success", delay: showDelay)
         }
     }
 
     @objc func showWarning() {
+        
+        let showDelay = getShowDelayTime()
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showWarning(with: "warning")
+            hud?.showWarning(with: "warning", delay: showDelay)
         } else {
-            ProgressHUD.shared.showWarning(with: "warning")
+            ProgressHUD.shared.showWarning(with: "warning", delay: showDelay)
         }
     }
 
     @objc func showCustomImage() {
+        
+        let showDelay = getShowDelayTime()
         let image = UIImage(named: "smile")
 
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showImage(image!)
+            hud?.showImage(image!, delay: showDelay)
         } else {
-            ProgressHUD.shared.showImage(image!)
+            ProgressHUD.shared.showImage(image!, delay: showDelay)
         }
     }
 
     @objc func showCustomImageWithLabel() {
+        
+        let showDelay = getShowDelayTime()
         let image = UIImage(named: "smile")
 
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showImage(image!, title: "smile everyday")
+            hud?.showImage(image!, title: "smile everyday", delay: showDelay)
         } else {
-            ProgressHUD.shared.showImage(image!, title: "smile everyday")
+            ProgressHUD.shared.showImage(image!, title: "smile everyday", delay: showDelay)
         }
     }
 
     @objc func showProgress() {
+        
         self.progress = 0
         if  self.timer != nil {
             timer?.invalidate()
@@ -173,6 +196,7 @@ extension ViewController {
         
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
@@ -180,10 +204,19 @@ extension ViewController {
         } else {
             ProgressHUD.shared.showProgress(0.0)
         }
-        self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: nil, repeats: true)
+        
+        self.timer = Timer.scheduledTimer(
+            timeInterval: 0.25,
+            target: self,
+            selector: #selector(ViewController.progressTimerAction(_:)),
+            userInfo: nil,
+            repeats: true
+        )
     }
 
     @objc func showProgressWithLabel() {
+        
+        let showDelay = getShowDelayTime()
         self.progress = 0
         if  self.timer != nil {
             timer?.invalidate()
@@ -192,19 +225,28 @@ extension ViewController {
         
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showProgress(0.0, title: "Progress")
+            hud?.showProgress(0.0, title: "Progress", delay: showDelay)
         } else {
-            ProgressHUD.shared.showProgress(0.0, title: "Progress")
+            ProgressHUD.shared.showProgress(0.0, title: "Progress", delay: showDelay)
         }
-        self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.progressTimerAction(_:)), userInfo: ["title": "Progress"], repeats: true)
+        
+        self.timer = Timer.scheduledTimer(
+            timeInterval: 0.25,
+            target: self,
+            selector: #selector(ViewController.progressTimerAction(_:)),
+            userInfo: ["title": "Progress"],
+            repeats: true
+        )
     }
 
 
     @objc func showCustomView() {
-        
+
+        let showDelay = getShowDelayTime()
         var images = [UIImage]()
         for index in 1 ... 3 {
             let image = UIImage(named: "loading_0\(index)")
@@ -213,44 +255,59 @@ extension ViewController {
         
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showAnimation(images)
+            hud?.showAnimation(images, delay: showDelay)
         } else {
-            ProgressHUD.shared.showAnimation(images)
+            ProgressHUD.shared.showAnimation(images, delay: showDelay)
         }
     }
 
     @objc func showLabel() {
         
+        let showDelay = getShowDelayTime()
         if (useInstanceMethod) {
             if hud == nil { hud = ProgressHUD() }
+            hud?.indicatorSize = indicatorSize
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showText("pure text", in: self.view)
+            hud?.showText("pure text", in: self.view, delay: showDelay)
         } else {
-            ProgressHUD.shared.showText("pure text", in: self.view)
+            ProgressHUD.shared.showText("pure text", in: self.view, delay: showDelay)
         }
     }
 
     @objc func dismissHUD() {
 
+        let dismissDelay = getDismissDelayTime()
         if (useInstanceMethod) {
-            hud?.dismiss(with: 0, completion: {
+            hud?.dismiss(with: dismissDelay, completion: {
                 print("dimiss delay 2 second.")
             })
         } else {
-            ProgressHUD.shared.dismiss() {
+            ProgressHUD.shared.dismiss(with: dismissDelay) {
                 print("dimiss")
             }
         }
-        
-//        print("timer action : \(progress)")
-
     }
 
+    func getShowDelayTime() -> TimeInterval {
+        return TimeInterval(self.showDelayTimeTextField.text ?? "") ?? 0
+    }
+    
+    func getDismissDelayTime() -> TimeInterval {
+        return TimeInterval(self.dismissDelayTimeTextField.text ?? "") ?? 0
+    }
+    
+    @IBAction func setStateViewSize(_ sender: UISlider) {
+        let size = CGFloat(sender.value)
+        indicatorSize = CGSize(width: size, height: size)
+        ProgressHUD.shared.indicatorSize = indicatorSize
+    }
+    
     @IBAction func setDisplayStyle(_ sender: UISegmentedControl) {
 
         switch sender.selectedSegmentIndex {

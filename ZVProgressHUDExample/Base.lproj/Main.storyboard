@@ -42,7 +42,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fRL-Mv-oJj">
-                                <rect key="frame" x="0.0" y="230" width="375" height="393"/>
+                                <rect key="frame" x="0.0" y="328" width="375" height="295"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReuseIdentifier" id="Ei7-Pb-6Ta">
@@ -60,7 +60,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zdR-fL-ctk">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="230"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="328"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lAf-uf-og0">
                                         <rect key="frame" x="125.5" y="11.5" width="231.5" height="32"/>
@@ -119,7 +119,7 @@
                                             <action selector="setAnimationType:" destination="BYZ-38-t0r" eventType="valueChanged" id="OkD-Lm-pW5"/>
                                         </connections>
                                     </segmentedControl>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="我是一个打酱油的" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EOH-2M-oms">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Please enter delay time of show HUD" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EOH-2M-oms">
                                         <rect key="frame" x="12" y="174" width="351" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -148,33 +148,55 @@
                                             <action selector="setMethodMode:" destination="BYZ-38-t0r" eventType="valueChanged" id="XQJ-y4-FIu"/>
                                         </connections>
                                     </segmentedControl>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Please enter delay time of dismiss HUD" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pps-Rk-e3t">
+                                        <rect key="frame" x="12" y="230" width="351" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="GPV-in-bjR"/>
+                                        </connections>
+                                    </textField>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="48" minValue="30" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="IqC-tZ-dX0">
+                                        <rect key="frame" x="10" y="286" width="355" height="31"/>
+                                        <connections>
+                                            <action selector="setStateViewSize:" destination="BYZ-38-t0r" eventType="valueChanged" id="IBR-L6-Utl"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="Pps-Rk-e3t" firstAttribute="top" secondItem="EOH-2M-oms" secondAttribute="bottom" constant="12" id="1oJ-ak-dyI"/>
                                     <constraint firstItem="mzG-hN-M2r" firstAttribute="width" secondItem="gGJ-5S-buc" secondAttribute="width" id="2WZ-XB-Jvk"/>
                                     <constraint firstItem="iTW-HY-RGN" firstAttribute="centerY" secondItem="mzG-hN-M2r" secondAttribute="centerY" id="6ZJ-wX-Wsh"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mzG-hN-M2r" secondAttribute="trailing" constant="20" symbolic="YES" id="6qD-hN-0a0"/>
                                     <constraint firstItem="Eb9-qY-HWQ" firstAttribute="leading" secondItem="gGJ-5S-buc" secondAttribute="trailing" constant="18" id="77R-xW-lRM"/>
+                                    <constraint firstItem="IqC-tZ-dX0" firstAttribute="top" secondItem="Pps-Rk-e3t" secondAttribute="bottom" constant="12" id="7ug-4t-1eb"/>
                                     <constraint firstItem="7bi-UK-UE0" firstAttribute="leading" secondItem="zdR-fL-ctk" secondAttribute="leading" constant="12" id="9xQ-dV-iTy"/>
                                     <constraint firstItem="ia5-RX-oTI" firstAttribute="top" secondItem="mzG-hN-M2r" secondAttribute="bottom" constant="12" id="E9C-B8-c7i"/>
                                     <constraint firstItem="kzJ-Xf-bTw" firstAttribute="leading" secondItem="iTW-HY-RGN" secondAttribute="leading" id="Egv-IE-zB6"/>
                                     <constraint firstItem="ia5-RX-oTI" firstAttribute="trailing" secondItem="mzG-hN-M2r" secondAttribute="trailing" id="F09-US-Buy"/>
                                     <constraint firstAttribute="trailing" secondItem="Eb9-qY-HWQ" secondAttribute="trailing" constant="18" id="FQn-YP-eBO"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="width" secondItem="7bi-UK-UE0" secondAttribute="width" id="JQ9-yg-KrW"/>
-                                    <constraint firstAttribute="bottom" secondItem="EOH-2M-oms" secondAttribute="bottom" constant="12" id="KY2-ID-rea"/>
                                     <constraint firstItem="iTW-HY-RGN" firstAttribute="width" secondItem="Eb9-qY-HWQ" secondAttribute="width" id="L7d-Va-lln"/>
+                                    <constraint firstItem="IqC-tZ-dX0" firstAttribute="leading" secondItem="Pps-Rk-e3t" secondAttribute="leading" id="NaE-bd-D8z"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="leading" secondItem="7bi-UK-UE0" secondAttribute="leading" id="QdD-Zz-Nzn"/>
+                                    <constraint firstItem="Pps-Rk-e3t" firstAttribute="leading" secondItem="EOH-2M-oms" secondAttribute="leading" id="Yka-n9-4i7"/>
                                     <constraint firstAttribute="trailing" secondItem="EOH-2M-oms" secondAttribute="trailing" constant="12" id="aRZ-X9-d2s"/>
                                     <constraint firstItem="EOH-2M-oms" firstAttribute="top" secondItem="kzJ-Xf-bTw" secondAttribute="bottom" constant="12" id="axN-3S-VPc"/>
+                                    <constraint firstItem="Pps-Rk-e3t" firstAttribute="height" secondItem="EOH-2M-oms" secondAttribute="height" id="c5l-QL-6dx"/>
                                     <constraint firstItem="gGJ-5S-buc" firstAttribute="height" secondItem="7bi-UK-UE0" secondAttribute="height" id="dAl-eF-xJ5"/>
                                     <constraint firstItem="lAf-uf-og0" firstAttribute="leading" secondItem="7bi-UK-UE0" secondAttribute="trailing" constant="18" id="e6K-8g-NPj"/>
                                     <constraint firstAttribute="trailing" secondItem="lAf-uf-og0" secondAttribute="trailing" constant="18" id="eMF-Gr-tcL"/>
+                                    <constraint firstAttribute="bottom" secondItem="IqC-tZ-dX0" secondAttribute="bottom" constant="12" id="feB-Au-z0u"/>
                                     <constraint firstAttribute="trailing" secondItem="iTW-HY-RGN" secondAttribute="trailing" constant="18" id="gHo-Vj-5en"/>
                                     <constraint firstItem="EOH-2M-oms" firstAttribute="leading" secondItem="zdR-fL-ctk" secondAttribute="leading" constant="12" id="gW0-bo-Lsy"/>
                                     <constraint firstItem="mzG-hN-M2r" firstAttribute="height" secondItem="gGJ-5S-buc" secondAttribute="height" id="heJ-dd-caw"/>
                                     <constraint firstItem="Eb9-qY-HWQ" firstAttribute="centerY" secondItem="gGJ-5S-buc" secondAttribute="centerY" id="hfB-tG-FF3"/>
                                     <constraint firstItem="7bi-UK-UE0" firstAttribute="top" secondItem="zdR-fL-ctk" secondAttribute="top" constant="12" id="hx5-E9-L0Z"/>
                                     <constraint firstItem="ia5-RX-oTI" firstAttribute="leading" secondItem="mzG-hN-M2r" secondAttribute="leading" id="kVD-s2-YjS"/>
+                                    <constraint firstItem="IqC-tZ-dX0" firstAttribute="trailing" secondItem="Pps-Rk-e3t" secondAttribute="trailing" id="kak-gc-Cz0"/>
+                                    <constraint firstItem="Pps-Rk-e3t" firstAttribute="trailing" secondItem="EOH-2M-oms" secondAttribute="trailing" id="kjn-Fr-7Ny"/>
                                     <constraint firstItem="iTW-HY-RGN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Eb9-qY-HWQ" secondAttribute="leading" id="rpb-7S-mVB"/>
                                     <constraint firstItem="mzG-hN-M2r" firstAttribute="leading" secondItem="gGJ-5S-buc" secondAttribute="leading" id="sIr-Do-7Wd"/>
                                     <constraint firstItem="mzG-hN-M2r" firstAttribute="top" secondItem="gGJ-5S-buc" secondAttribute="bottom" constant="12" id="sSZ-4V-Jpp"/>
@@ -198,8 +220,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="ZVProgressHUD" id="6x1-7Q-jEP"/>
                     <connections>
+                        <outlet property="dismissDelayTimeTextField" destination="Pps-Rk-e3t" id="8j7-xI-Xf8"/>
+                        <outlet property="showDelayTimeTextField" destination="EOH-2M-oms" id="Vkc-L1-xYd"/>
                         <outlet property="tableView" destination="fRL-Mv-oJj" id="mHA-oU-kwo"/>
-                        <outlet property="textField" destination="EOH-2M-oms" id="ewq-Pu-hXa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
