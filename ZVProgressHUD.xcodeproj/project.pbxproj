@@ -116,10 +116,10 @@
 				4DC8B6962306A61900170426 /* IndicatorView.swift */,
 				4DC8B6952306A61900170426 /* ProgressView.swift */,
 				4D99C8701F15DCC0009721FC /* ProgressHUD.swift */,
+				4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */,
 				4D0B070D23262BCC00EB28B6 /* Deprecated.swift */,
 				4D5BDA911F146CAC00E68CB6 /* Info.plist */,
 				4D8046F81F14CBFD0069F9F2 /* Resource.bundle */,
-				4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */,
 			);
 			path = ZVProgressHUD;
 			sourceTree = "<group>";

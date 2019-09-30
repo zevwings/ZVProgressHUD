@@ -24,10 +24,12 @@ public extension ProgressHUD {
         on position: Position = .bottom,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .text(value: text),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .text(value: text),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show a success message
@@ -42,10 +44,12 @@ public extension ProgressHUD {
         on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .indicator(title: title, type: .success),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .success),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show a error message
@@ -60,10 +64,12 @@ public extension ProgressHUD {
         on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .indicator(title: title, type: .error),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .error),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show a warning message
@@ -78,10 +84,12 @@ public extension ProgressHUD {
         on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .indicator(title: title, type: .warning),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .warning),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show a waiting alert
@@ -96,10 +104,12 @@ public extension ProgressHUD {
         on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .indicator(title: title, type: .indicator(style: animationType)),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .indicator(style: animationType)),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show the progress of some task
@@ -116,10 +126,12 @@ public extension ProgressHUD {
         on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .indicator(title: title, type: .progress(value: progress)),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .progress(value: progress)),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show a custom image
@@ -138,10 +150,12 @@ public extension ProgressHUD {
         dismissAtomically: Bool = true,
         delay delayTimeInterval: TimeInterval = 0.0
     ) {
-        show(with: .indicator(title: title, type: .image(value: image, dismissAtomically: dismissAtomically)),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .image(value: image, dismissAtomically: dismissAtomically)),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show the animation waiting alert
@@ -169,10 +183,12 @@ public extension ProgressHUD {
             animationDuration = duration
         }
         
-        show(with: .indicator(title: title, type: .animation(value: images, duration: animationDuration)),
-             in: superview,
-             on: position,
-             delay: delayTimeInterval)
+        show(
+            with: .indicator(title: title, type: .animation(value: images, duration: animationDuration)),
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// show custom display type @see ZVProgressHUD.DisplayType
@@ -187,10 +203,12 @@ public extension ProgressHUD {
         on position: Position,
         delay delayTimeInterval: TimeInterval = 0
     ) {
-        internalShow(with: displayType,
-                     in: superview,
-                     on: position,
-                     delay: delayTimeInterval)
+        internalShow(
+            with: displayType,
+            in: superview,
+            on: position,
+            delay: delayTimeInterval
+        )
     }
     
     /// dismiss the hud
@@ -202,6 +220,9 @@ public extension ProgressHUD {
         with delayTimeInterval: TimeInterval = 0,
         completion: ProgressHUDCompletionHandler? = nil
     ) {
-        internalDismiss(with: delayTimeInterval, completion: completion)
+        internalDismiss(
+            with: delayTimeInterval,
+            completion: completion
+        )
     }
 }

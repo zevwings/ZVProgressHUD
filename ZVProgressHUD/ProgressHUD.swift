@@ -29,6 +29,12 @@ open class ProgressHUD: UIControl {
         static let keyboard: TimeInterval = 0.25
     }
     
+    public enum Position {
+        case top
+        case center
+        case bottom
+    }
+    
     public enum DisplayType {
         case indicator(title: String?, type: IndicatorView.IndicatorType)
         case text(value: String)
@@ -47,12 +53,6 @@ open class ProgressHUD: UIControl {
         case custom(color: UIColor)
     }
     
-    public enum Position {
-        case top
-        case center
-        case bottom
-    }
-
     // MARK: Public
     
     public static let shared = ProgressHUD(frame: .zero)
@@ -159,7 +159,7 @@ open class ProgressHUD: UIControl {
 
 }
 
-// MAKR: - Internal Operations
+// MARK: - Internal Operations
 
 extension ProgressHUD {
     
@@ -256,7 +256,8 @@ extension ProgressHUD {
         
         guard let displayType = displayType else { return }
         
-        let displayTimeInterval = getDisplayTimeInterval(for: displayType)
+        //swiftlint:disable:next line_length
+        let displayTimeInterval = displayType.getDisplayTimeInterval(minimumDismissTimeInterval, maximumDismissTimeInterval)
         
         updateSubviews()
         placeSubviews()
@@ -331,24 +332,19 @@ extension ProgressHUD {
             } else {
                 if displayType.indicatorType.progressValueChecker.0 &&
                     displayType.indicatorType.progressValueChecker.1 >= 1.0 {
-                    dismiss()
+                    fadeOut()
                 }
             }
         }
     }
 
     @objc private func fadeOutTimerAction(_ timer: Timer?) {
-        dismiss()
+        
+        let completion = timer?.userInfo as? ProgressHUDCompletionHandler
+        fadeOut(with: completion)
     }
 
-    @objc private func fadeOut(with data: Any?) {
-        
-        var completion: ProgressHUDCompletionHandler?
-        if let timer = data as? Timer {
-            completion = timer.userInfo as? ProgressHUDCompletionHandler
-        } else {
-            completion = data as? ProgressHUDCompletionHandler
-        }
+    @objc private func fadeOut(with completion: ProgressHUDCompletionHandler? = nil) {
         
         OperationQueue.main.addOperation { [weak self] in
             
@@ -410,18 +406,6 @@ extension ProgressHUD {
             
             strongSelf.setNeedsDisplay()
         }
-    }
-    
-    private func getDisplayTimeInterval(for displayType: DisplayType) -> TimeInterval {
-        
-        var displayTimeInterval: TimeInterval = displayType.dismissAtomically ? 3.0 : 0
-        
-        guard displayTimeInterval > 0 else { return 0 }
-        
-        displayTimeInterval = max(Double(displayType.title.count) * 0.06 + 0.5, minimumDismissTimeInterval)
-        displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
-        
-        return displayTimeInterval
     }
 }
 
@@ -683,12 +667,9 @@ private extension ProgressHUD {
         set {
             if _fadeOutTimer != nil {
                 _fadeOutTimer?.invalidate()
-                _fadeOutTimer = nil
             }
             
-            if newValue != nil {
-                _fadeOutTimer = newValue
-            }
+            _fadeOutTimer = newValue
         }
     }
     
@@ -699,12 +680,9 @@ private extension ProgressHUD {
         set {
             if _fadeInDeleyTimer != nil {
                 _fadeInDeleyTimer?.invalidate()
-                _fadeInDeleyTimer = nil
             }
             
-            if newValue != nil {
-                _fadeInDeleyTimer = newValue
-            }
+            _fadeInDeleyTimer = newValue
         }
     }
     
@@ -715,12 +693,9 @@ private extension ProgressHUD {
         set {
             if _fadeOutDelayTimer != nil {
                 _fadeOutDelayTimer?.invalidate()
-                _fadeOutDelayTimer = nil
             }
             
-            if newValue != nil {
-                _fadeOutDelayTimer = newValue
-            }
+            _fadeOutDelayTimer = newValue
         }
     }
     
@@ -781,7 +756,7 @@ private extension ProgressHUD {
     }
 }
 
-// MARK: - ProgressHUD.DisplayType
+// MARK: - DisplayType
 
 private extension ProgressHUD.DisplayType {
 
@@ -800,7 +775,7 @@ private extension ProgressHUD.DisplayType {
             }
         }
     }
-    
+        
     var title: String {
         switch self {
         case .text(let value): return value
@@ -813,13 +788,28 @@ private extension ProgressHUD.DisplayType {
         case .text: return .none
         case .indicator(_, let type): return type
         }
-    }    
+    }
+    
+    func getDisplayTimeInterval(
+        _ minimumDismissTimeInterval: TimeInterval,
+        _ maximumDismissTimeInterval: TimeInterval
+    ) -> TimeInterval {
+        
+        var displayTimeInterval: TimeInterval = dismissAtomically ? 3.0 : 0
+        
+        guard displayTimeInterval > 0 else { return 0 }
+        
+        displayTimeInterval = max(Double(title.count) * 0.06 + 0.5, minimumDismissTimeInterval)
+        displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
+        
+        return displayTimeInterval
+    }
 }
 
-// MARK: - ProgressHUD.DisplayStyle
+// MARK: - DisplayStyle
 
 private extension ProgressHUD.DisplayStyle {
-    
+     
     var foregroundColor: UIColor {
         switch self {
         case .dark: return .white
@@ -837,10 +827,9 @@ private extension ProgressHUD.DisplayStyle {
     }
 }
 
-// MARK: - ProgressHUD.MaskType
-
+// MARK: - MaskType
 private extension ProgressHUD.MaskType {
-    
+        
     var backgroundColor: CGColor {
         switch self {
         case .none, .clear: return UIColor.clear.cgColor
