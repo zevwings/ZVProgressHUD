@@ -16,7 +16,6 @@
 		4D99C8711F15DCC0009721FC /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D99C8701F15DCC0009721FC /* ProgressHUD.swift */; };
 		4DAE474D2340B2E2008773D2 /* ProgressHUD+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */; };
 		4DBCB8D6233E512C008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */; };
-		4DBCB8D8233E5149008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */; };
 		4DC8B6972306A61900170426 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6952306A61900170426 /* ProgressView.swift */; };
 		4DC8B6982306A61900170426 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6962306A61900170426 /* IndicatorView.swift */; };
 		4DFF5B4C20318D7A0098BA7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFF5B4B20318D7A0098BA7D /* AppDelegate.swift */; };
@@ -82,7 +81,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DBCB8D8233E5149008FCD82 /* ZVActivityIndicatorView in Frameworks */,
 				4D4445FC20A17185006FCEEC /* ZVProgressHUD.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,7 +195,6 @@
 			);
 			name = ZVProgressHUDExample;
 			packageProductDependencies = (
-				4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */,
 			);
 			productName = ZVProgressHUDExample;
 			productReference = 4DFF5B4920318D7A0098BA7D /* ZVProgressHUDExample.app */;
@@ -613,11 +610,6 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4DBCB8D2233E4EF8008FCD82 /* XCRemoteSwiftPackageReference "ZVActivityIndicatorView" */;
-			productName = ZVActivityIndicatorView;
-		};
-		4DBCB8D7233E5149008FCD82 /* ZVActivityIndicatorView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4DBCB8D2233E4EF8008FCD82 /* XCRemoteSwiftPackageReference "ZVActivityIndicatorView" */;
 			productName = ZVActivityIndicatorView;
