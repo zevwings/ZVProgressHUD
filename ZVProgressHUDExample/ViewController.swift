@@ -36,7 +36,11 @@ class ViewController: UIViewController {
     var useInstanceMethod: Bool = false
     var hud: ProgressHUD?
     
+    @IBOutlet weak var indicatorSizeLabel: UILabel!
     var indicatorSize: CGSize = CGSize(width: 48.0, height: 48.0)
+    @IBOutlet weak var logoSizeLabel: UILabel!
+    var logoSize: CGSize = CGSize(width: 30.0, height: 30.0)
+
     var displayStyle: DisplayStyle = .dark
     var maskType: MaskType = .black
     var animationType: AnimationType = .flat
@@ -47,7 +51,7 @@ class ViewController: UIViewController {
 //        ProgressHUD.shared.indicatorSize
         ProgressHUD.shared.maskType = .black
         ProgressHUD.shared.displayStyle = .dark
-        ProgressHUD.shared.logoSize = CGSize(width: 30, height: 30)
+        ProgressHUD.shared.logoSize = logoSize
         ProgressHUD.shared.logo = UIImage(named: "logo_crown")?.withRenderingMode(.alwaysTemplate)
         
         NotificationCenter.default.addObserver(self,
@@ -302,10 +306,21 @@ extension ViewController {
         return TimeInterval(self.dismissDelayTimeTextField.text ?? "") ?? 0
     }
     
-    @IBAction func setStateViewSize(_ sender: UISlider) {
+    @IBAction func setIndicatorViewSize(_ sender: UISlider) {
         let size = CGFloat(sender.value)
         indicatorSize = CGSize(width: size, height: size)
         ProgressHUD.shared.indicatorSize = indicatorSize
+        indicatorSizeLabel.text = "Indicator Size (\(String(format: "%.2f", size)))"
+
+    }
+    
+    @IBAction func setLogoViewSize(_ sender: UISlider) {
+        let size = CGFloat(sender.value)
+        logoSize = CGSize(width: size, height: size)
+        ProgressHUD.shared.logoSize = logoSize
+        
+        logoSizeLabel.text = "Logo Size (\(String(format: "%.2f", size)))"
+
     }
     
     @IBAction func setDisplayStyle(_ sender: UISegmentedControl) {

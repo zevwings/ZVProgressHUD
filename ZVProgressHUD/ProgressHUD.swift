@@ -50,15 +50,17 @@ open class ProgressHUD: UIControl {
     public var font: UIFont = .systemFont(ofSize: 16.0)
     
     public var strokeWith: CGFloat = 3.0
-    public var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
-    public var logoSize: CGSize = .init(width: 30.0, height: 30.0)
     public var animationType: AnimationType = .flat
 
-    public var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
-    public var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
-    public var indicatorEdgeInsets: UIEdgeInsets = .init(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    public var contentInsets = UIEdgeInsets(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
+    public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
+    public var indicatorEdgeInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+
+    public var indicatorSize = CGSize(width: 48.0, height: 48.0)
 
     public var logo: UIImage?
+    public var logoSize = CGSize(width: 30.0, height: 30.0)
+    
     public var completionHandler: ProgressHUDCompletionHandler?
     
     // MARK: Private
@@ -235,9 +237,11 @@ extension ProgressHUD {
         
         //swiftlint:disable:next line_length
         let displayTimeInterval = displayType.getDisplayTimeInterval(minimumDismissTimeInterval, maximumDismissTimeInterval)
-        
+
         updateSubviews()
-        placeSubviews()
+        
+        let keybordHeight = getVisibleKeyboardHeight()
+        placeSubviews(keybordHeight)
         
         if self.alpha != 1.0 {
             
@@ -431,8 +435,8 @@ private extension ProgressHUD {
         
         guard let containerView = containerView else { return }
         
-        frame = .init(origin: .zero, size: containerView.frame.size)
-        maskLayer.frame = .init(origin: .zero, size: containerView.frame.size)
+        frame = CGRect(origin: .zero, size: containerView.frame.size)
+        maskLayer.frame = CGRect(origin: .zero, size: containerView.frame.size)
         
         if !indicatorView.isHidden {
             indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
@@ -444,7 +448,7 @@ private extension ProgressHUD {
         
         var labelSize: CGSize = .zero
         if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
-            let maxSize: CGSize = .init(width: frame.width * 0.618, height: frame.width * 0.618)
+            let maxSize = CGSize(width: frame.width * 0.618, height: frame.width * 0.618)
             let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font]
             let options: NSStringDrawingOptions = [.usesFontLeading, .truncatesLastVisibleLine, .usesLineFragmentOrigin]
             labelSize = title.boundingRect(with: maxSize, options: options, attributes: attributes, context: nil).size
@@ -461,9 +465,9 @@ private extension ProgressHUD {
                            indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right)
         let contetnWidth = maxWidth + contentInsets.left + contentInsets.right
         
-        let contentSize: CGSize = .init(width: contetnWidth, height: contentHeight)
+        let contentSize = CGSize(width: contetnWidth, height: contentHeight)
         let oldOrigin = self.baseView.frame.origin
-        baseView.frame = .init(origin: oldOrigin, size: contentSize)
+        baseView.frame = CGRect(origin: oldOrigin, size: contentSize)
         
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -475,14 +479,14 @@ private extension ProgressHUD {
         if labelHeight > 0 && !indicatorView.isHidden {
             centerY = contentInsets.top + indicatorEdgeInsets.top + indicatorSize.height / 2.0
         }
-        indicatorView.center = .init(x: centerX, y: centerY)
-        logoView.center = .init(x: centerX, y: centerY)
+        indicatorView.center = CGPoint(x: centerX, y: centerY)
+        logoView.center = CGPoint(x: centerX, y: centerY)
 
         // Label
         if indicatorHeight > 0 && !titleLabel.isHidden {
             centerY = contentInsets.top + indicatorHeight + titleEdgeInsets.top + labelSize.height / 2.0
         }
-        titleLabel.center = .init(x: centerX, y: centerY)
+        titleLabel.center = CGPoint(x: centerX, y: centerY)
         
         CATransaction.commit()
     }
@@ -491,8 +495,8 @@ private extension ProgressHUD {
         
         guard let containerView = containerView else { return }
 
-        frame = .init(origin: .zero, size: containerView.frame.size)
-        maskLayer.frame = .init(origin: .zero, size: containerView.frame.size)
+        frame = CGRect(origin: .zero, size: containerView.frame.size)
+        maskLayer.frame = CGRect(origin: .zero, size: containerView.frame.size)
                 
         let keyWindow = getKeyWindow()
         let orenitationFrame = frame
@@ -551,7 +555,7 @@ private extension ProgressHUD {
 
         let posX = orenitationFrame.width / 2.0 + offset.horizontal
 
-        let center: CGPoint = .init(x: posX, y: posY)
+        let center = CGPoint(x: posX, y: posY)
         
         if animationDuration == 0 {
             baseView.center = center
@@ -695,6 +699,7 @@ private extension ProgressHUD {
                 return
             }
         })
+        
         return visibleKeyboardHeight
     }
 }
