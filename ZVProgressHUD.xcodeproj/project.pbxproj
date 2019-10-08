@@ -14,6 +14,12 @@
 		4D60771620327D4F00474944 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60771520327D4F00474944 /* ViewController.swift */; };
 		4D8046F91F14CBFD0069F9F2 /* Resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D8046F81F14CBFD0069F9F2 /* Resource.bundle */; };
 		4D99C8711F15DCC0009721FC /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D99C8701F15DCC0009721FC /* ProgressHUD.swift */; };
+		4DA34AA0234C1CBB00FECB75 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA34A9F234C1CBB00FECB75 /* Position.swift */; };
+		4DA34AA2234C1CDB00FECB75 /* DisplayType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA34AA1234C1CDB00FECB75 /* DisplayType.swift */; };
+		4DA34AA4234C1CF500FECB75 /* DisplayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA34AA3234C1CF500FECB75 /* DisplayStyle.swift */; };
+		4DA34AA6234C1D2300FECB75 /* MaskType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA34AA5234C1D2300FECB75 /* MaskType.swift */; };
+		4DA34AA9234C1DDB00FECB75 /* IndicatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA34AA8234C1DDA00FECB75 /* IndicatorType.swift */; };
+		4DA34AAB234C1DE500FECB75 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA34AAA234C1DE500FECB75 /* AnimationType.swift */; };
 		4DAE474D2340B2E2008773D2 /* ProgressHUD+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */; };
 		4DBCB8D6233E512C008FCD82 /* ZVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DBCB8D5233E512C008FCD82 /* ZVActivityIndicatorView */; };
 		4DC8B6972306A61900170426 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC8B6952306A61900170426 /* ProgressView.swift */; };
@@ -56,6 +62,12 @@
 		4D60771520327D4F00474944 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4D8046F81F14CBFD0069F9F2 /* Resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Resource.bundle; sourceTree = "<group>"; };
 		4D99C8701F15DCC0009721FC /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
+		4DA34A9F234C1CBB00FECB75 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		4DA34AA1234C1CDB00FECB75 /* DisplayType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayType.swift; sourceTree = "<group>"; };
+		4DA34AA3234C1CF500FECB75 /* DisplayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStyle.swift; sourceTree = "<group>"; };
+		4DA34AA5234C1D2300FECB75 /* MaskType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaskType.swift; sourceTree = "<group>"; };
+		4DA34AA8234C1DDA00FECB75 /* IndicatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorType.swift; sourceTree = "<group>"; };
+		4DA34AAA234C1DE500FECB75 /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProgressHUD+Operations.swift"; sourceTree = "<group>"; };
 		4DC8B6952306A61900170426 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		4DC8B6962306A61900170426 /* IndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
@@ -111,8 +123,14 @@
 			isa = PBXGroup;
 			children = (
 				4D5BDA901F146CAC00E68CB6 /* ZVProgressHUD.h */,
+				4DA34AA8234C1DDA00FECB75 /* IndicatorType.swift */,
+				4DA34AAA234C1DE500FECB75 /* AnimationType.swift */,
 				4DC8B6962306A61900170426 /* IndicatorView.swift */,
 				4DC8B6952306A61900170426 /* ProgressView.swift */,
+				4DA34A9F234C1CBB00FECB75 /* Position.swift */,
+				4DA34AA1234C1CDB00FECB75 /* DisplayType.swift */,
+				4DA34AA3234C1CF500FECB75 /* DisplayStyle.swift */,
+				4DA34AA5234C1D2300FECB75 /* MaskType.swift */,
 				4D99C8701F15DCC0009721FC /* ProgressHUD.swift */,
 				4DAE474C2340B2E2008773D2 /* ProgressHUD+Operations.swift */,
 				4D0B070D23262BCC00EB28B6 /* Deprecated.swift */,
@@ -292,9 +310,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D0B070E23262BCC00EB28B6 /* Deprecated.swift in Sources */,
+				4DA34AA9234C1DDB00FECB75 /* IndicatorType.swift in Sources */,
 				4DC8B6982306A61900170426 /* IndicatorView.swift in Sources */,
+				4DA34AAB234C1DE500FECB75 /* AnimationType.swift in Sources */,
+				4DA34AA0234C1CBB00FECB75 /* Position.swift in Sources */,
+				4DA34AA2234C1CDB00FECB75 /* DisplayType.swift in Sources */,
+				4DA34AA4234C1CF500FECB75 /* DisplayStyle.swift in Sources */,
 				4D99C8711F15DCC0009721FC /* ProgressHUD.swift in Sources */,
 				4DAE474D2340B2E2008773D2 /* ProgressHUD+Operations.swift in Sources */,
+				4DA34AA6234C1D2300FECB75 /* MaskType.swift in Sources */,
 				4DC8B6972306A61900170426 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

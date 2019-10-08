@@ -28,31 +28,7 @@ open class ProgressHUD: UIControl {
         static let fadeOut: TimeInterval = 0.15
         static let keyboard: TimeInterval = 0.25
     }
-    
-    public enum Position {
-        case top
-        case center
-        case bottom
-    }
-    
-    public enum DisplayType {
-        case indicator(title: String?, type: IndicatorView.IndicatorType)
-        case text(value: String)
-    }
-    
-    public enum DisplayStyle {
-        case light
-        case dark
-        case custom(backgroundColor: UIColor, foregroundColor: UIColor)
-    }
-    
-    public enum MaskType {
-        case none
-        case clear
-        case black
-        case custom(color: UIColor)
-    }
-    
+
     // MARK: Public
     
     public static let shared = ProgressHUD(frame: .zero)
@@ -76,7 +52,7 @@ open class ProgressHUD: UIControl {
     public var strokeWith: CGFloat = 3.0
     public var indicatorSize: CGSize = .init(width: 48.0, height: 48.0)
     public var logoSize: CGSize = .init(width: 30.0, height: 30.0)
-    public var animationType: IndicatorView.AnimationType = .flat
+    public var animationType: AnimationType = .flat
 
     public var contentInsets: UIEdgeInsets = .init(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
     public var titleEdgeInsets: UIEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 0 )
@@ -95,6 +71,8 @@ open class ProgressHUD: UIControl {
     
     private var containerView: UIView?
 
+    // MARK: UI
+    
     private lazy var maskLayer: CALayer = { [unowned self] in
         let maskLayer = CALayer()
         return maskLayer
@@ -156,7 +134,6 @@ open class ProgressHUD: UIControl {
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
 // MARK: - Internal Operations
@@ -190,7 +167,7 @@ extension ProgressHUD {
             if let superview = superview {
                 strongSelf.containerView = superview
             } else {
-                strongSelf.containerView = strongSelf.keyWindow
+                strongSelf.containerView = strongSelf.getKeyWindow()
             }
             
             // set property form displayType
@@ -409,67 +386,6 @@ extension ProgressHUD {
     }
 }
 
-// MARK: - Notifications
-
-private extension ProgressHUD {
-    
-    private func registerNotifications() {
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardNotification(_:)),
-                                               name: UIApplication.didChangeStatusBarOrientationNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardNotification(_:)),
-                                               name: UIApplication.didBecomeActiveNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardNotification(_:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardNotification(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardNotification(_:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardNotification(_:)),
-                                               name: UIResponder.keyboardDidHideNotification,
-                                               object: nil)
-    }
-    
-    @objc func handleKeyboardNotification(_ notification: Notification?) {
-        
-        let orientation = UIApplication.shared.statusBarOrientation
-        
-        var keybordHeight: CGFloat = 0
-        var animationDuration: TimeInterval = 0
-
-        if let notification = notification, let keyboardInfo = notification.userInfo {
-            let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
-            animationDuration = keyboardInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
-            if notification.name == UIResponder.keyboardWillShowNotification ||
-                notification.name == UIResponder.keyboardDidShowNotification {
-                if orientation == .portrait {
-                    keybordHeight = keyboardFrame?.height ?? 0
-                }
-            }
-        } else {
-            keybordHeight = visibleKeyboardHeight
-        }
-        
-        placeSubviews(keybordHeight, animationDuration: animationDuration)
-    }
-}
-
 // MARK: - Update Subviews
 
 private extension ProgressHUD {
@@ -578,16 +494,17 @@ private extension ProgressHUD {
         frame = .init(origin: .zero, size: containerView.frame.size)
         maskLayer.frame = .init(origin: .zero, size: containerView.frame.size)
                 
+        let keyWindow = getKeyWindow()
         let orenitationFrame = frame
         var statusBarFrame: CGRect = .zero
-        if containerView == self.keyWindow {
+        if containerView == keyWindow {
             statusBarFrame = UIApplication.shared.statusBarFrame
         }
         
         // safe area bottom height
         let bottomInset: CGFloat
         if #available(iOS 11.0, *) {
-            bottomInset = self.keyWindow?.safeAreaInsets.bottom ?? 0.0
+            bottomInset = keyWindow?.safeAreaInsets.bottom ?? 0.0
         } else {
             bottomInset = 0
         }
@@ -598,13 +515,17 @@ private extension ProgressHUD {
         if keybordHeight > 0 {
             defaultBottomInset = 0
         } else {
-            let tabBarHeight = self.keyWindow?.rootViewController?.tabBarController?.tabBar.frame.height ?? 24.0
+            let tabBarHeight = keyWindow?.rootViewController?.tabBarController?.tabBar.frame.height ?? 24.0
             defaultBottomInset = tabBarHeight + bottomInset
         }
         
         // if navigationBar is hidden, top instantce is 24.0
-        // swiftlint:disable:next line_length
-        let defaultTopInset: CGFloat = self.keyWindow?.rootViewController?.navigationController?.navigationBar.frame.height ?? 24.0
+        let defaultTopInset: CGFloat
+        if let navigationController = keyWindow?.rootViewController?.navigationController {
+            defaultTopInset = navigationController.navigationBar.frame.height
+        } else {
+            defaultTopInset = 24.0
+        }
         
         var activeHeight = orenitationFrame.height
         
@@ -656,6 +577,128 @@ private extension ProgressHUD {
     }
 }
 
+// MARK: - Notifications
+
+private extension ProgressHUD {
+    
+    private func registerNotifications() {
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardNotification(_:)),
+                                               name: UIApplication.didChangeStatusBarOrientationNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardNotification(_:)),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardNotification(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardNotification(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardNotification(_:)),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardNotification(_:)),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
+    }
+    
+    @objc func handleKeyboardNotification(_ notification: Notification?) {
+        
+        let orientation = UIApplication.shared.statusBarOrientation
+        
+        var keybordHeight: CGFloat = 0
+        var animationDuration: TimeInterval = 0
+
+        if let notification = notification, let keyboardInfo = notification.userInfo {
+            let keyboardFrame = keyboardInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+            animationDuration = keyboardInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
+            if notification.name == UIResponder.keyboardWillShowNotification ||
+                notification.name == UIResponder.keyboardDidShowNotification {
+                if orientation == .portrait {
+                    keybordHeight = keyboardFrame?.height ?? 0
+                }
+            }
+        } else {
+            keybordHeight = getVisibleKeyboardHeight()
+        }
+        
+        placeSubviews(keybordHeight, animationDuration: animationDuration)
+    }
+}
+
+// MARK: - KeyWindow & Keyboard
+
+private extension ProgressHUD {
+    
+    func getKeyWindow() -> UIWindow? {
+
+        var keyWindow: UIWindow?
+        UIApplication.shared.windows.forEach { window in
+            if  window.screen == UIScreen.main,
+                window.isHidden == false,
+                window.alpha > 0,
+                window.windowLevel >= UIWindow.Level.normal,
+                window.windowLevel <= maxSupportedWindowLevel {
+                keyWindow = window
+                return
+            }
+        }
+        return keyWindow
+    }
+    
+    func getVisibleKeyboardHeight() -> CGFloat {
+           
+        var visibleKeyboardHeight: CGFloat = 0.0
+        var keyboardWindow: UIWindow?
+        UIApplication.shared.windows.reversed().forEach { window in
+            let windowName = NSStringFromClass(window.classForCoder)
+            if #available(iOS 9.0, *) {
+                if windowName == "UIRemoteKeyboardWindow" {
+                    keyboardWindow = window
+                    return
+                }
+            } else {
+                if windowName == "UITextEffectsWindow" {
+                    keyboardWindow = window
+                    return
+                }
+            }
+        }
+
+        var possibleKeyboard: UIView?
+        keyboardWindow?.subviews.forEach({ subview in
+            let viewClassName = NSStringFromClass(subview.classForCoder)
+            if viewClassName.hasPrefix("UI") && viewClassName.hasSuffix("InputSetContainerView") {
+                possibleKeyboard = subview
+                return
+            }
+        })
+
+        possibleKeyboard?.subviews.forEach({ subview in
+            let viewClassName = NSStringFromClass(subview.classForCoder)
+            if viewClassName.hasPrefix("UI") && viewClassName.hasSuffix("InputSetHostView") {
+                let convertedRect = possibleKeyboard?.convert(subview.frame, to: self)
+                let intersectedRect = convertedRect?.intersection(self.bounds)
+                visibleKeyboardHeight = intersectedRect?.height ?? 0.0
+                return
+            }
+        })
+        return visibleKeyboardHeight
+    }
+}
+
 // MARK: - Props
 
 private extension ProgressHUD {
@@ -696,152 +739,6 @@ private extension ProgressHUD {
             }
             
             _fadeOutDelayTimer = newValue
-        }
-    }
-    
-    var keyWindow: UIWindow? {
-        var keyWindow: UIWindow?
-        UIApplication.shared.windows.forEach { (window) in
-            if  window.screen == UIScreen.main,
-                window.isHidden == false,
-                window.alpha > 0,
-                window.windowLevel >= UIWindow.Level.normal,
-                window.windowLevel <= maxSupportedWindowLevel {
-                keyWindow = window
-                return
-            }
-        }
-        return keyWindow
-    }
-    
-    var visibleKeyboardHeight: CGFloat {
-        
-        var visibleKeyboardHeight: CGFloat = 0.0
-        var keyboardWindow: UIWindow?
-        UIApplication.shared.windows.reversed().forEach { window in
-            let windowName = NSStringFromClass(window.classForCoder)
-            if #available(iOS 9.0, *) {
-                if windowName == "UIRemoteKeyboardWindow" {
-                    keyboardWindow = window
-                    return
-                }
-            } else {
-                if windowName == "UITextEffectsWindow" {
-                    keyboardWindow = window
-                    return
-                }
-            }
-        }
-        
-        var possibleKeyboard: UIView?
-        keyboardWindow?.subviews.forEach({ subview in
-            let viewClassName = NSStringFromClass(subview.classForCoder)
-            if viewClassName.hasPrefix("UI") && viewClassName.hasSuffix("InputSetContainerView") {
-                possibleKeyboard = subview
-                return
-            }
-        })
-        
-        possibleKeyboard?.subviews.forEach({ subview in
-            let viewClassName = NSStringFromClass(subview.classForCoder)
-            if viewClassName.hasPrefix("UI") && viewClassName.hasSuffix("InputSetHostView") {
-                let convertedRect = possibleKeyboard?.convert(subview.frame, to: self)
-                let intersectedRect = convertedRect?.intersection(self.bounds)
-                visibleKeyboardHeight = intersectedRect?.height ?? 0.0
-                return
-            }
-        })
-        
-        return visibleKeyboardHeight
-    }
-}
-
-// MARK: - DisplayType
-
-private extension ProgressHUD.DisplayType {
-
-    var dismissAtomically: Bool {
-        switch self {
-        case .text:
-            return true
-        case .indicator(_, let type):
-            switch type {
-            case .success, .error, .warning:
-                return true
-            case .image(_, let dismissAtomically):
-                return dismissAtomically
-            default:
-                return false
-            }
-        }
-    }
-        
-    var title: String {
-        switch self {
-        case .text(let value): return value
-        case .indicator(let title, _): return title ?? ""
-        }
-    }
-    
-    var indicatorType: IndicatorView.IndicatorType {
-        switch self {
-        case .text: return .none
-        case .indicator(_, let type): return type
-        }
-    }
-    
-    func getDisplayTimeInterval(
-        _ minimumDismissTimeInterval: TimeInterval,
-        _ maximumDismissTimeInterval: TimeInterval
-    ) -> TimeInterval {
-        
-        var displayTimeInterval: TimeInterval = dismissAtomically ? 3.0 : 0
-        
-        guard displayTimeInterval > 0 else { return 0 }
-        
-        displayTimeInterval = max(Double(title.count) * 0.06 + 0.5, minimumDismissTimeInterval)
-        displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
-        
-        return displayTimeInterval
-    }
-}
-
-// MARK: - DisplayStyle
-
-private extension ProgressHUD.DisplayStyle {
-     
-    var foregroundColor: UIColor {
-        switch self {
-        case .dark: return .white
-        case .light: return UIColor(white: 0.2, alpha: 1)
-        case .custom(let color): return color.foregroundColor
-        }
-    }
-    
-    var backgroundColor: UIColor {
-        switch self {
-        case .dark: return UIColor(white: 0, alpha: 0.75)
-        case .light: return .white
-        case .custom(let color): return color.backgroundColor
-        }
-    }
-}
-
-// MARK: - MaskType
-private extension ProgressHUD.MaskType {
-        
-    var backgroundColor: CGColor {
-        switch self {
-        case .none, .clear: return UIColor.clear.cgColor
-        case .black: return UIColor.init(white: 0, alpha: 0.3).cgColor
-        case .custom(let color): return color.cgColor
-        }
-    }
-    
-    var isUserInteractionEnabled: Bool {
-        switch self {
-        case .none: return false
-        default: return true
         }
     }
 }

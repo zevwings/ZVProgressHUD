@@ -37,9 +37,9 @@ class ViewController: UIViewController {
     var hud: ProgressHUD?
     
     var indicatorSize: CGSize = CGSize(width: 48.0, height: 48.0)
-    var displayStyle: ProgressHUD.DisplayStyle = .dark
-    var maskType: ProgressHUD.MaskType = .black
-    var animationType: IndicatorView.AnimationType = .flat
+    var displayStyle: DisplayStyle = .dark
+    var maskType: MaskType = .black
+    var animationType: AnimationType = .flat
 
     override func viewDidLoad() {
         super.viewDidLoad()

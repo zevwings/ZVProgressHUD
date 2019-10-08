@@ -134,7 +134,7 @@ public extension ProgressHUD {
     }
     
     @available(*, deprecated, message: "this attribute will remove in future, use singleton instead.")
-    class var animationType: IndicatorView.AnimationType {
+    class var animationType: AnimationType {
         get {
             return shared.animationType
         }

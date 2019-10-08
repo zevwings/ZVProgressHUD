@@ -11,20 +11,6 @@ import ZVActivityIndicatorView
 
 public class IndicatorView: UIView {
 
-    public enum IndicatorType {
-        case none
-        case error, success, warning
-        case indicator(style: AnimationType)
-        case progress(value: Float)
-        case image(value: UIImage, dismissAtomically: Bool)
-        case animation(value: [UIImage], duration: TimeInterval)
-    }
-    
-    public enum AnimationType {
-        case flat
-        case native
-    }
-    
     var strokeWidth: CGFloat = 3.0 {
         didSet {
             flatActivityIndicatorView?.strokeWidth = strokeWidth
@@ -230,52 +216,5 @@ private extension IndicatorView {
         }
         
         flatActivityIndicatorView?.startAnimating()
-    }
-}
-
-// MARK: - ZVIndicatorView.IndicatorType
-
-extension IndicatorView.IndicatorType {
-    
-    var resource: String {
-        switch self {
-        case .error:
-            return "error"
-        case .success:
-            return "success"
-        case .warning:
-            return "warning"
-        default:
-            return ""
-        }
-    }
-    
-    var shouldHidden: Bool {
-        switch self {
-        case .none:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var progressValueChecker: (Bool, Float) {
-        switch self {
-        case .progress(let value):
-            return (true, value)
-        default:
-            return (false, 0.0)
-        }
-    }
-    
-    var showLogo: Bool {
-        switch self {
-        case .progress:
-            return true
-        case .indicator(let animationType):
-            return animationType == .flat
-        default:
-            return false
-        }
     }
 }
