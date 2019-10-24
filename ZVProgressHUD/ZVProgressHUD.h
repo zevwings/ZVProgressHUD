@@ -6,7 +6,7 @@
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for ZVProgressHUD.
 FOUNDATION_EXPORT double ZVProgressHUDVersionNumber;
