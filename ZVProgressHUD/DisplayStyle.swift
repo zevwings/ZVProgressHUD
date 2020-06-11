@@ -11,13 +11,13 @@ import UIKit
 public enum DisplayStyle {
     case light
     case dark
-    case custom(backgroundColor: UIColor, foregroundColor: UIColor)
+    case custom((backgroundColor: UIColor, foregroundColor: UIColor))
     
     var foregroundColor: UIColor {
         switch self {
         case .dark: return .white
         case .light: return UIColor(white: 0.2, alpha: 1)
-        case .custom(let color): return color.foregroundColor
+        case .custom(let (foregroundColor, _)): return foregroundColor
         }
     }
     
@@ -25,7 +25,7 @@ public enum DisplayStyle {
         switch self {
         case .dark: return UIColor(white: 0, alpha: 0.75)
         case .light: return .white
-        case .custom(let color): return color.backgroundColor
+        case .custom(let (_, backgroundColor)): return backgroundColor
         }
     }
 }
