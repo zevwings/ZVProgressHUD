@@ -337,11 +337,9 @@ extension ViewController {
         case 2:
             let backgroundColor = UIColor(red: 86.0 / 255.0, green: 75.0 / 255.0, blue: 151.0 / 255.0, alpha: 1.0)
             let foregroundColor = UIColor(red: 239.0 / 255.0, green: 83.0 / 255.0, blue: 64.0 / 255.0, alpha: 1.0)
-            ProgressHUD.shared.displayStyle = .custom(backgroundColor: backgroundColor,
-                                                 foregroundColor: foregroundColor)
+            ProgressHUD.shared.displayStyle = .custom((backgroundColor: backgroundColor, foregroundColor: foregroundColor))
             
-            displayStyle = .custom(backgroundColor: backgroundColor,
-                                   foregroundColor: foregroundColor)
+            displayStyle = .custom((backgroundColor: backgroundColor, foregroundColor: foregroundColor))
             break
         default:
             break
