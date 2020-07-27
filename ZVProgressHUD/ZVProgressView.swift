@@ -6,11 +6,11 @@
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
-import UIKit
-
 #if !os(macOS)
 
-class ProgressView: UIView {
+import UIKit
+
+class ZVProgressView: UIView {
     
     var strokeWidth: CGFloat = 3.0 {
         didSet {

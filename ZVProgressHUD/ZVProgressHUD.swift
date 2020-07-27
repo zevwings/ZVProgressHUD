@@ -31,6 +31,13 @@ open class ZVProgressHUD: UIControl {
         static let keyboard: TimeInterval = 0.25
     }
 
+    /// the position of the `HUD`
+    public enum Position {
+        case top
+        case center
+        case bottom
+    }
+
     // MARK: Public
     
     public static let shared = ZVProgressHUD(frame: .zero)
@@ -90,8 +97,8 @@ open class ZVProgressHUD: UIControl {
         return baseView
     }()
     
-    private lazy var indicatorView: IndicatorView = {
-        let indicatorView = IndicatorView()
+    private lazy var indicatorView: ZVIndicatorView = {
+        let indicatorView = ZVIndicatorView()
         indicatorView.isUserInteractionEnabled = false
         indicatorView.alpha = 0
         return indicatorView

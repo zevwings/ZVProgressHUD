@@ -41,8 +41,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var logoSizeLabel: UILabel!
     var logoSize: CGSize = CGSize(width: 30.0, height: 30.0)
 
-    var displayStyle: DisplayStyle = .dark
-    var maskType: MaskType = .black
+    var displayStyle: ZVProgressHUD.DisplayStyle = .dark
+    var maskType: ZVProgressHUD.MaskType = .black
     var animationType: AnimationType = .flat
 
     override func viewDidLoad() {
