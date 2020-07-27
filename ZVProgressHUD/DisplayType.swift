@@ -6,6 +6,8 @@
 //  Copyright © 2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
 public enum DisplayType {
@@ -57,3 +59,5 @@ public enum DisplayType {
         return displayTimeInterval
     }
 }
+
+#endif

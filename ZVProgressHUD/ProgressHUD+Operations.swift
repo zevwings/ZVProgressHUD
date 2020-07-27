@@ -6,11 +6,13 @@
 //  Copyright © 2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
 // MARK: - Handle
 
-public extension ProgressHUD {
+public extension ZVProgressHUD {
     
     /// show a toast
     ///
@@ -218,7 +220,7 @@ public extension ProgressHUD {
     ///   - completion: dismiss completion handler
     func dismiss(
         with delayTimeInterval: TimeInterval = 0,
-        completion: ProgressHUDCompletionHandler? = nil
+        completion: ZVProgressHUDCompletionHandler? = nil
     ) {
         internalDismiss(
             with: delayTimeInterval,
@@ -226,3 +228,5 @@ public extension ProgressHUD {
         )
     }
 }
+
+#endif

@@ -6,6 +6,8 @@
 //  Copyright © 2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
 public enum IndicatorType {
@@ -59,3 +61,5 @@ public enum IndicatorType {
     }
 
 }
+
+#endif

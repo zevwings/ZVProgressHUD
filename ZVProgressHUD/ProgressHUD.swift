@@ -1,27 +1,29 @@
 //
-//  ProgressHUD.swift
-//  ProgressHUD
+//  ZVProgressHUD.swift
+//  ZVProgressHUD
 //
 //  Created by zevwings on 2017/7/12.
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
-public typealias ProgressHUDCompletionHandler = () -> Void
+public typealias ZVProgressHUDCompletionHandler = () -> Void
 
 public extension Notification.Name {
     
-    static let ProgressHUDReceivedTouchUpInsideEvent = Notification.Name("com.zevwings.progresshud.touchup.inside")
+    static let ZVProgressHUDReceivedTouchUpInsideEvent = Notification.Name("com.zevwings.progresshud.touchup.inside")
     
-    static let ProgressHUDWillAppear = Notification.Name("com.zevwings.progresshud.willAppear")
-    static let ProgressHUDDidAppear = Notification.Name("com.zevwings.progresshud.didAppear")
+    static let ZVProgressHUDWillAppear = Notification.Name("com.zevwings.progresshud.willAppear")
+    static let ZVProgressHUDDidAppear = Notification.Name("com.zevwings.progresshud.didAppear")
     
-    static let ProgressHUDWillDisappear = Notification.Name("com.zevwings.progresshud.willDisappear")
-    static let ProgressHUDDidDisappear = Notification.Name("com.zevwings.progresshud.didDisappear")
+    static let ZVProgressHUDWillDisappear = Notification.Name("com.zevwings.progresshud.willDisappear")
+    static let ZVProgressHUDDidDisappear = Notification.Name("com.zevwings.progresshud.didDisappear")
 }
 
-open class ProgressHUD: UIControl {
+open class ZVProgressHUD: UIControl {
     
     private struct AnimationDuration {
         static let fadeIn: TimeInterval = 0.15
@@ -31,7 +33,7 @@ open class ProgressHUD: UIControl {
 
     // MARK: Public
     
-    public static let shared = ProgressHUD(frame: .zero)
+    public static let shared = ZVProgressHUD(frame: .zero)
     
     public var displayStyle: DisplayStyle = .light
     public var maskType: MaskType = .none
@@ -61,7 +63,7 @@ open class ProgressHUD: UIControl {
     public var logo: UIImage?
     public var logoSize = CGSize(width: 30.0, height: 30.0)
     
-    public var completionHandler: ProgressHUDCompletionHandler?
+    public var completionHandler: ZVProgressHUDCompletionHandler?
     
     // MARK: Private
     
@@ -140,7 +142,7 @@ open class ProgressHUD: UIControl {
 
 // MARK: - Internal Operations
 
-extension ProgressHUD {
+extension ZVProgressHUD {
     
     func internalShow(
         with displayType: DisplayType,
@@ -211,7 +213,7 @@ extension ProgressHUD {
 
     func internalDismiss(
         with delayTimeInterval: TimeInterval = 0,
-        completion: ProgressHUDCompletionHandler? = nil
+        completion: ZVProgressHUDCompletionHandler? = nil
     ) {
         
         if delayTimeInterval > 0 {
@@ -246,7 +248,7 @@ extension ProgressHUD {
         if self.alpha != 1.0 {
             
             // send the notification HUD will appear
-            NotificationCenter.default.post(name: .ProgressHUDWillAppear, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: .ZVProgressHUDWillAppear, object: self, userInfo: nil)
             
             let animationBlock = {
                 self.alpha = 1.0
@@ -265,7 +267,7 @@ extension ProgressHUD {
                 self.registerNotifications()
                 
                 // send the notification HUD did appear
-                NotificationCenter.default.post(name: .ProgressHUDDidAppear, object: self, userInfo: nil)
+                NotificationCenter.default.post(name: .ZVProgressHUDDidAppear, object: self, userInfo: nil)
                 
                 if displayTimeInterval > 0 {
                     self.fadeOutTimer = Timer.scheduledTimer(
@@ -321,18 +323,18 @@ extension ProgressHUD {
 
     @objc private func fadeOutTimerAction(_ timer: Timer?) {
         
-        let completion = timer?.userInfo as? ProgressHUDCompletionHandler
+        let completion = timer?.userInfo as? ZVProgressHUDCompletionHandler
         fadeOut(with: completion)
     }
 
-    @objc private func fadeOut(with completion: ProgressHUDCompletionHandler? = nil) {
+    @objc private func fadeOut(with completion: ZVProgressHUDCompletionHandler? = nil) {
         
         OperationQueue.main.addOperation { [weak self] in
             
             guard let strongSelf = self else { return }
             
             // send the notification HUD will disAppear
-            NotificationCenter.default.post(name: .ProgressHUDWillDisappear, object: self, userInfo: nil)
+            NotificationCenter.default.post(name: .ZVProgressHUDWillDisappear, object: self, userInfo: nil)
             
             let animationBlock = {
                 strongSelf.alpha = 0
@@ -362,7 +364,7 @@ extension ProgressHUD {
                 NotificationCenter.default.removeObserver(strongSelf)
                 
                 // send the notification HUD did disAppear
-                NotificationCenter.default.post(name: .ProgressHUDDidDisappear, object: self, userInfo: nil)
+                NotificationCenter.default.post(name: .ZVProgressHUDDidDisappear, object: self, userInfo: nil)
                 
                 // execute completion handler
                 completion?()
@@ -392,7 +394,7 @@ extension ProgressHUD {
 
 // MARK: - Update Subviews
 
-private extension ProgressHUD {
+private extension ZVProgressHUD {
     
     func updateViewHierarchy() {
         
@@ -574,16 +576,16 @@ private extension ProgressHUD {
 
 // MARK: - Event Handler
 
-private extension ProgressHUD {
+private extension ZVProgressHUD {
     
     @objc func overlayRecievedTouchUpInsideEvent(_ sender: UIControl) {
-        NotificationCenter.default.post(name: .ProgressHUDReceivedTouchUpInsideEvent, object: self, userInfo: nil)
+        NotificationCenter.default.post(name: .ZVProgressHUDReceivedTouchUpInsideEvent, object: self, userInfo: nil)
     }
 }
 
 // MARK: - Notifications
 
-private extension ProgressHUD {
+private extension ZVProgressHUD {
     
     private func registerNotifications() {
         
@@ -644,7 +646,7 @@ private extension ProgressHUD {
 
 // MARK: - KeyWindow & Keyboard
 
-private extension ProgressHUD {
+private extension ZVProgressHUD {
     
     func getKeyWindow() -> UIWindow? {
 
@@ -706,7 +708,7 @@ private extension ProgressHUD {
 
 // MARK: - Props
 
-private extension ProgressHUD {
+private extension ZVProgressHUD {
     
     var fadeOutTimer: Timer? {
         get {
@@ -747,3 +749,5 @@ private extension ProgressHUD {
         }
     }
 }
+
+#endif

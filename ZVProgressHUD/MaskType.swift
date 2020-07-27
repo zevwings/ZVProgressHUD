@@ -6,6 +6,8 @@
 //  Copyright © 2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
 public enum MaskType {
@@ -30,3 +32,5 @@ public enum MaskType {
     }
 
 }
+
+#endif

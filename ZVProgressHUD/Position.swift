@@ -6,6 +6,8 @@
 //  Copyright © 2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
 public enum Position {
@@ -13,3 +15,5 @@ public enum Position {
     case center
     case bottom
 }
+
+#endif

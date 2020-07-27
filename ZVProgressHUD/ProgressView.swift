@@ -8,6 +8,8 @@
 
 import UIKit
 
+#if !os(macOS)
+
 class ProgressView: UIView {
     
     var strokeWidth: CGFloat = 3.0 {
@@ -113,3 +115,5 @@ class ProgressView: UIView {
         CATransaction.commit()
     }
 }
+
+#endif

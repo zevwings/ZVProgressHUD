@@ -6,12 +6,14 @@
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 
-@available(*, deprecated, renamed: "ProgressHUD", message: "renamed ProgressHUD will remove in future")
-public typealias ZVProgressHUD = ProgressHUD
+@available(*, deprecated, renamed: "ZVProgressHUD", message: "renamed ProgressHUD will remove in future")
+public typealias ProgressHUD = ZVProgressHUD
 
-public extension ProgressHUD {
+public extension ZVProgressHUD {
     
     @available(*, deprecated, message: "this attribute will remove in future, use singleton instead.")
     class var displayStyle: DisplayStyle {
@@ -194,7 +196,7 @@ public extension ProgressHUD {
     }
 }
 
-public extension ProgressHUD {
+public extension ZVProgressHUD {
     
     /// show a toast
     ///
@@ -390,8 +392,10 @@ public extension ProgressHUD {
     @available(*, deprecated, message: "this method will remove in future, use singleton instead.")
     class func dismiss(
         delay: TimeInterval = 0.0,
-        completion: ProgressHUDCompletionHandler? = nil
+        completion: ZVProgressHUDCompletionHandler? = nil
     ) {
         shared.dismiss(with: delay, completion: completion)
     }
 }
+
+#endif

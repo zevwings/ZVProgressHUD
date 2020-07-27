@@ -6,6 +6,8 @@
 //  Copyright © 2017-2019 zevwings. All rights reserved.
 //
 
+#if !os(macOS)
+
 import UIKit
 import ZVActivityIndicatorView
 
@@ -44,7 +46,7 @@ public class IndicatorView: UIView {
     
     private var imageIndicaotorView: UIImageView?
     private var nativeActivityIndicatorView: UIActivityIndicatorView?
-    private var flatActivityIndicatorView: ActivityIndicatorView?
+    private var flatActivityIndicatorView: ZVActivityIndicatorView?
     private var progressIndicatorView: ProgressView?
     
     convenience init() {
@@ -115,7 +117,7 @@ private extension IndicatorView {
         }
         
         if let resource = value as? String,
-            let path = Bundle(for: ProgressHUD.self).path(forResource: "Resource", ofType: "bundle") {
+            let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") {
             
             let bundle = Bundle(path: path)
             guard let fileName = bundle?.path(forResource: resource, ofType: "png") else { return }
@@ -205,7 +207,7 @@ private extension IndicatorView {
         progressIndicatorView?.removeFromSuperview()
 
         if flatActivityIndicatorView == nil {
-            flatActivityIndicatorView = ActivityIndicatorView()
+            flatActivityIndicatorView = ZVActivityIndicatorView()
             flatActivityIndicatorView?.tintColor = tintColor
             flatActivityIndicatorView?.hidesWhenStopped = true
             flatActivityIndicatorView?.strokeWidth = strokeWidth
@@ -218,3 +220,5 @@ private extension IndicatorView {
         flatActivityIndicatorView?.startAnimating()
     }
 }
+
+#endif
