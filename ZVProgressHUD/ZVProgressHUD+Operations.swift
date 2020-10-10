@@ -10,7 +10,7 @@
 
 import UIKit
 
-// MARK: - Public
+// MARK: - Properties
 
 public extension ZVProgressHUD {
     
@@ -176,6 +176,8 @@ public extension ZVProgressHUD {
         }
     }
 }
+
+// MARK: - Handle (Class)
 
 public extension ZVProgressHUD {
     
@@ -369,7 +371,7 @@ public extension ZVProgressHUD {
     }
 }
 
-// MARK: - Handle
+// MARK: - Handle (Shared)
 
 public extension ZVProgressHUD {
     
