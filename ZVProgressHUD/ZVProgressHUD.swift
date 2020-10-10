@@ -202,9 +202,7 @@ extension ZVProgressHUD {
             // set property form displayStyle
             self.titleLabel.textColor = self.displayStyle.foregroundColor
             self.indicatorView.tintColor = self.displayStyle.foregroundColor
-            
-            print("begin fade in delayTimeInterval \(delayTimeInterval)")
-            
+                        
             // display
             if delayTimeInterval > 0 {
                 self.fadeInDeleyTimer = Timer.scheduledTimer(
@@ -239,9 +237,6 @@ extension ZVProgressHUD {
     }
     
     @objc private func fadeInTimerAction(_ timer: Timer?) {
-        
-        print(" fade in timer ")
-
         fadeIn()
     }
     
@@ -256,9 +251,7 @@ extension ZVProgressHUD {
         
         let keybordHeight = getVisibleKeyboardHeight()
         placeSubviews(keybordHeight)
-        
-        print("self.alpha \(self.alpha)")
-        
+                
         if self.alpha != 1.0 {
             
             // send the notification HUD will appear
