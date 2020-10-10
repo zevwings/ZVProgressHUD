@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "ZVActivityIndicatorView",
+        "repositoryURL": "https://github.com/zevwings/ZVActivityIndicatorView.git",
+        "state": {
+          "branch": null,
+          "revision": "afca4fd495305cbb398544b3b41ee04e08742652",
+          "version": "0.2.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

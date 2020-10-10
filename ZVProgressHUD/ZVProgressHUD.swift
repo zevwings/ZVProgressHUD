@@ -159,61 +159,63 @@ extension ZVProgressHUD {
     ) {
         OperationQueue.main.addOperation { [weak self] in
             
-            guard let strongSelf = self else { return }
+            guard let `self` = self else { return }
 
-            if strongSelf.superview != superview {
-                strongSelf.indicatorView.removeFromSuperview()
-                strongSelf.titleLabel.removeFromSuperview()
-                strongSelf.baseView.removeFromSuperview()
-                strongSelf.logoView.removeFromSuperview()
-                strongSelf.removeFromSuperview()
+            if self.superview != superview {
+                self.indicatorView.removeFromSuperview()
+                self.titleLabel.removeFromSuperview()
+                self.baseView.removeFromSuperview()
+                self.logoView.removeFromSuperview()
+                self.removeFromSuperview()
             }
             
-            strongSelf.fadeOutTimer = nil
-            strongSelf.fadeInDeleyTimer = nil
-            strongSelf.fadeOutDelayTimer = nil
+            self.fadeOutTimer = nil
+            self.fadeInDeleyTimer = nil
+            self.fadeOutDelayTimer = nil
             
-            strongSelf.position = position
+            self.position = position
 
             if let superview = superview {
-                strongSelf.containerView = superview
+                self.containerView = superview
             } else {
-                strongSelf.containerView = strongSelf.getKeyWindow()
+                self.containerView = self.getKeyWindow()
             }
             
             // set property form displayType
-            strongSelf.displayType = displayType
-            strongSelf.titleLabel.text = displayType.title
-            strongSelf.titleLabel.isHidden = displayType.title.isEmpty
-            strongSelf.indicatorView.indcatorType = displayType.indicatorType
+            self.displayType = displayType
+            self.titleLabel.text = displayType.title
+            self.titleLabel.isHidden = displayType.title.isEmpty
+            self.indicatorView.indcatorType = displayType.indicatorType
             
-            strongSelf.updateViewHierarchy()
+            self.updateViewHierarchy()
 
-            strongSelf.titleLabel.font = strongSelf.font
-            strongSelf.indicatorView.strokeWidth = strongSelf.strokeWith
-            strongSelf.baseView.layer.cornerRadius = strongSelf.cornerRadius
-            strongSelf.baseView.backgroundColor = strongSelf.displayStyle.backgroundColor
-            strongSelf.logoView.image = strongSelf.logo
+            self.titleLabel.font = self.font
+            self.indicatorView.strokeWidth = self.strokeWith
+            self.baseView.layer.cornerRadius = self.cornerRadius
+            self.baseView.backgroundColor = self.displayStyle.backgroundColor
+            self.logoView.image = self.logo
             
             // set property form maskType
-            strongSelf.isUserInteractionEnabled = strongSelf.maskType.isUserInteractionEnabled
-            strongSelf.maskLayer.backgroundColor = strongSelf.maskType.backgroundColor
+            self.isUserInteractionEnabled = self.maskType.isUserInteractionEnabled
+            self.maskLayer.backgroundColor = self.maskType.backgroundColor
             
             // set property form displayStyle
-            strongSelf.titleLabel.textColor = strongSelf.displayStyle.foregroundColor
-            strongSelf.indicatorView.tintColor = strongSelf.displayStyle.foregroundColor
+            self.titleLabel.textColor = self.displayStyle.foregroundColor
+            self.indicatorView.tintColor = self.displayStyle.foregroundColor
+            
+            print("begin fade in delayTimeInterval \(delayTimeInterval)")
             
             // display
             if delayTimeInterval > 0 {
-                strongSelf.fadeInDeleyTimer = Timer.scheduledTimer(
+                self.fadeInDeleyTimer = Timer.scheduledTimer(
                     timeInterval: delayTimeInterval,
-                    target: strongSelf,
-                    selector: #selector(strongSelf.fadeInTimerAction(_:)),
+                    target: self,
+                    selector: #selector(self.fadeInTimerAction(_:)),
                     userInfo: nil,
                     repeats: false
                 )
             } else {
-                strongSelf.fadeIn()
+                self.fadeIn()
             }
         }
     }
@@ -237,6 +239,9 @@ extension ZVProgressHUD {
     }
     
     @objc private func fadeInTimerAction(_ timer: Timer?) {
+        
+        print(" fade in timer ")
+
         fadeIn()
     }
     
@@ -251,6 +256,8 @@ extension ZVProgressHUD {
         
         let keybordHeight = getVisibleKeyboardHeight()
         placeSubviews(keybordHeight)
+        
+        print("self.alpha \(self.alpha)")
         
         if self.alpha != 1.0 {
             
@@ -314,7 +321,7 @@ extension ZVProgressHUD {
                 fadeOutTimer = Timer.scheduledTimer(
                     timeInterval: displayTimeInterval,
                     target: self,
-                    selector: #selector(self.fadeInTimerAction(_:)),
+                    selector: #selector(self.fadeOutTimerAction(_:)),
                     userInfo: nil,
                     repeats: false
                 )
@@ -724,6 +731,7 @@ private extension ZVProgressHUD {
         set {
             if _fadeOutTimer != nil {
                 _fadeOutTimer?.invalidate()
+                _fadeOutTimer = nil
             }
             
             _fadeOutTimer = newValue
@@ -737,6 +745,7 @@ private extension ZVProgressHUD {
         set {
             if _fadeInDeleyTimer != nil {
                 _fadeInDeleyTimer?.invalidate()
+                _fadeInDeleyTimer = nil
             }
             
             _fadeInDeleyTimer = newValue
@@ -750,6 +759,7 @@ private extension ZVProgressHUD {
         set {
             if _fadeOutDelayTimer != nil {
                 _fadeOutDelayTimer?.invalidate()
+                _fadeOutDelayTimer = nil
             }
             
             _fadeOutDelayTimer = newValue
