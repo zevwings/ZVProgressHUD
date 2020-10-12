@@ -61,6 +61,8 @@ open class ZVProgressHUD: UIControl {
     public var strokeWith: CGFloat = 3.0
     public var animationType: AnimationType = .flat
 
+    //swiftlint:disable:next line_length
+    public var maximumContentSize = CGSize(width: UIScreen.main.bounds.width * 0.618, height: UIScreen.main.bounds.width * 0.618)
     public var contentInsets = UIEdgeInsets(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
     public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
     public var indicatorEdgeInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
@@ -78,9 +80,9 @@ open class ZVProgressHUD: UIControl {
     private var _fadeInDeleyTimer: Timer?
     private var _fadeOutDelayTimer: Timer?
 
-    private var displayType: DisplayType?
+    private var _displayType: DisplayType?
     
-    private var containerView: UIView?
+    private var _containerView: UIView?
 
     // MARK: UI
     
@@ -176,13 +178,13 @@ extension ZVProgressHUD {
             self.position = position
 
             if let superview = superview {
-                self.containerView = superview
+                self._containerView = superview
             } else {
-                self.containerView = self.getKeyWindow()
+                self._containerView = self.getKeyWindow()
             }
             
             // set property form displayType
-            self.displayType = displayType
+            self._displayType = displayType
             self.titleLabel.text = displayType.title
             self.titleLabel.isHidden = displayType.title.isEmpty
             self.indicatorView.indcatorType = displayType.indicatorType
@@ -242,7 +244,7 @@ extension ZVProgressHUD {
     
     @objc private func fadeIn() {
         
-        guard let displayType = displayType else { return }
+        guard let displayType = _displayType else { return }
         
         //swiftlint:disable:next line_length
         let displayTimeInterval = displayType.getDisplayTimeInterval(minimumDismissTimeInterval, maximumDismissTimeInterval)
@@ -338,49 +340,49 @@ extension ZVProgressHUD {
         
         OperationQueue.main.addOperation { [weak self] in
             
-            guard let strongSelf = self else { return }
+            guard let `self` = self else { return }
             
             // send the notification HUD will disAppear
             NotificationCenter.default.post(name: .ZVProgressHUDWillDisappear, object: self, userInfo: nil)
             
             let animationBlock = {
-                strongSelf.alpha = 0
-                strongSelf.baseView.alpha = 0
-                strongSelf.baseView.backgroundColor = .clear
-                strongSelf.indicatorView.alpha = 0
-                strongSelf.titleLabel.alpha = 0
+                self.alpha = 0
+                self.baseView.alpha = 0
+                self.baseView.backgroundColor = .clear
+                self.indicatorView.alpha = 0
+                self.titleLabel.alpha = 0
             }
             
             let completionBlock = {
                 
-                guard strongSelf.alpha == 0 else { return }
+                guard self.alpha == 0 else { return }
                 
-                strongSelf.fadeOutTimer = nil
-                strongSelf.fadeOutDelayTimer = nil
+                self.fadeOutTimer = nil
+                self.fadeOutDelayTimer = nil
                 
                 // update view hierarchy
-                strongSelf.indicatorView.removeFromSuperview()
-                strongSelf.titleLabel.removeFromSuperview()
-                strongSelf.baseView.removeFromSuperview()
-                strongSelf.logoView.removeFromSuperview()
-                strongSelf.removeFromSuperview()
+                self.indicatorView.removeFromSuperview()
+                self.titleLabel.removeFromSuperview()
+                self.baseView.removeFromSuperview()
+                self.logoView.removeFromSuperview()
+                self.removeFromSuperview()
                 
-                strongSelf.containerView = nil
+                self._containerView = nil
                 
                 // remove notifications from self
-                NotificationCenter.default.removeObserver(strongSelf)
+                NotificationCenter.default.removeObserver(self)
                 
                 // send the notification HUD did disAppear
                 NotificationCenter.default.post(name: .ZVProgressHUDDidDisappear, object: self, userInfo: nil)
                 
                 // execute completion handler
                 completion?()
-                strongSelf.completionHandler?()
+                self.completionHandler?()
             }
             
-            if strongSelf.fadeOutAnimationTImeInterval > 0 {
+            if self.fadeOutAnimationTImeInterval > 0 {
                 UIView.animate(
-                    withDuration: strongSelf.fadeOutAnimationTImeInterval,
+                    withDuration: self.fadeOutAnimationTImeInterval,
                     delay: 0,
                     options: [.allowUserInteraction, .curveEaseOut, .beginFromCurrentState],
                     animations: {
@@ -394,7 +396,7 @@ extension ZVProgressHUD {
                 completionBlock()
             }
             
-            strongSelf.setNeedsDisplay()
+            self.setNeedsDisplay()
         }
     }
 }
@@ -406,9 +408,9 @@ private extension ZVProgressHUD {
     func updateViewHierarchy() {
         
         if superview == nil {
-            containerView?.addSubview(self)
+            _containerView?.addSubview(self)
         } else {
-            containerView?.bringSubviewToFront(self)
+            _containerView?.bringSubviewToFront(self)
         }
         
         if maskLayer.superlayer == nil {
@@ -421,7 +423,7 @@ private extension ZVProgressHUD {
             bringSubviewToFront(baseView)
         }
         
-        if let displayType = displayType, displayType.indicatorType.showLogo, logo != nil, logoView.superview == nil {
+        if let displayType = _displayType, displayType.indicatorType.showLogo, logo != nil, logoView.superview == nil {
             baseView.addSubview(logoView)
         } else {
             baseView.bringSubviewToFront(logoView)
@@ -442,7 +444,7 @@ private extension ZVProgressHUD {
     
     func updateSubviews() {
         
-        guard let containerView = containerView else { return }
+        guard let containerView = _containerView else { return }
         
         frame = CGRect(origin: .zero, size: containerView.frame.size)
         maskLayer.frame = CGRect(origin: .zero, size: containerView.frame.size)
@@ -451,16 +453,20 @@ private extension ZVProgressHUD {
             indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
         }
         
-        if let displayType = displayType, displayType.indicatorType.showLogo, logo != nil {
+        if let displayType = _displayType, displayType.indicatorType.showLogo, logo != nil {
             logoView.frame = CGRect(origin: .zero, size: logoSize)
         }
         
         var labelSize: CGSize = .zero
         if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
-            let maxSize = CGSize(width: frame.width * 0.618, height: frame.width * 0.618)
             let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font]
             let options: NSStringDrawingOptions = [.usesFontLeading, .truncatesLastVisibleLine, .usesLineFragmentOrigin]
-            labelSize = title.boundingRect(with: maxSize, options: options, attributes: attributes, context: nil).size
+            labelSize = title.boundingRect(
+                with: maximumContentSize,
+                options: options,
+                attributes: attributes,
+                context: nil
+            ).size
             titleLabel.frame = CGRect(origin: .zero, size: labelSize)
         }
         
@@ -502,7 +508,7 @@ private extension ZVProgressHUD {
         
     @objc func placeSubviews(_ keybordHeight: CGFloat = 0, animationDuration: TimeInterval = 0) {
         
-        guard let containerView = containerView else { return }
+        guard let containerView = _containerView else { return }
 
         frame = CGRect(origin: .zero, size: containerView.frame.size)
         maskLayer.frame = CGRect(origin: .zero, size: containerView.frame.size)

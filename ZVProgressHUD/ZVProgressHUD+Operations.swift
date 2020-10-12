@@ -131,6 +131,15 @@ public extension ZVProgressHUD {
         }
     }
     
+    class var maximumContentSize: CGSize {
+        get {
+            return shared.maximumContentSize
+        }
+        set {
+            shared.maximumContentSize = newValue
+        }
+    }
+    
     class var contentInsets: UIEdgeInsets {
         get {
             return shared.contentInsets

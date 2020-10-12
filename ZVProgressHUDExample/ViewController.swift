@@ -278,7 +278,8 @@ extension ViewController {
             hud?.displayStyle = displayStyle
             hud?.maskType = maskType
             hud?.animationType = animationType
-            hud?.showText("pure text", in: self.view, delay: showDelay)
+            hud?.maximumContentSize = CGSize(width: UIScreen.main.bounds.width * 0.95, height: UIScreen.main.bounds.height * 0.618)
+            hud?.showText("pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text pure text", in: self.view, delay: showDelay)
         } else {
             ZVProgressHUD.shared.showText("pure text", in: self.view, delay: showDelay)
         }
