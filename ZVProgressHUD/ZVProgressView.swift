@@ -19,15 +19,28 @@ class ZVProgressView: UIView {
         }
     }
     
-    private var _strokeColor: UIColor = .black
-    var strokeColor: UIColor {
-        get {
-            return _strokeColor
+    var strokeColor: UIColor = .black {
+        didSet {
+            foregroundLayer.strokeColor = strokeColor.cgColor
+            backgroundLayer.strokeColor = strokeColor.withAlphaComponent(0.5).cgColor
         }
-        set {
-            _strokeColor = newValue
-            foregroundLayer.strokeColor = newValue.cgColor
-            backgroundLayer.strokeColor = newValue.withAlphaComponent(0.5).cgColor
+    }
+    
+    var progressLabelColor: UIColor = .black {
+        didSet {
+            progressLabel.textColor = progressLabelColor
+        }
+    }
+    
+    var font: UIFont = .systemFont(ofSize: 12) {
+        didSet {
+            progressLabel.font = font
+        }
+    }
+    
+    var isProgressLabelHidden: Bool = false {
+        didSet {
+            progressLabel.isHidden = isProgressLabelHidden
         }
     }
     
@@ -37,13 +50,22 @@ class ZVProgressView: UIView {
             setNeedsDisplay()
         }
     }
+    
+    private lazy var progressLabel : UILabel = {
+       let label = UILabel()
+        label.textColor = strokeColor
+        label.font = font
+        label.textAlignment = .center
+        label.frame = bounds
+        return label
+    }()
 
-    private lazy var foregroundLayer: CAShapeLayer = { [unowned self] in
+    private lazy var foregroundLayer: CAShapeLayer = {
         
         let foregroundLayer = CAShapeLayer()
-        foregroundLayer.lineCap = CAShapeLayerLineCap.round
-        foregroundLayer.lineWidth = self.strokeWidth
-        foregroundLayer.frame = self.bounds
+        foregroundLayer.lineCap = .round
+        foregroundLayer.lineWidth = strokeWidth
+        foregroundLayer.frame = bounds
         foregroundLayer.fillColor = UIColor.clear.cgColor
         foregroundLayer.strokeStart = 0.0
         foregroundLayer.strokeEnd = 0.0
@@ -51,12 +73,12 @@ class ZVProgressView: UIView {
         return foregroundLayer
     }()
     
-    private lazy var backgroundLayer: CAShapeLayer = { [unowned self] in
+    private lazy var backgroundLayer: CAShapeLayer = {
         
         let backgroundLayer = CAShapeLayer()
-        backgroundLayer.lineCap = CAShapeLayerLineCap.round
-        backgroundLayer.lineWidth = self.strokeWidth
-        backgroundLayer.frame = self.bounds
+        backgroundLayer.lineCap = .round
+        backgroundLayer.lineWidth = strokeWidth
+        backgroundLayer.frame = bounds
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.strokeStart = 0.0
         backgroundLayer.strokeEnd = 1.0
@@ -67,6 +89,7 @@ class ZVProgressView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        addSubview(progressLabel)
         layer.addSublayer(backgroundLayer)
         layer.addSublayer(foregroundLayer)
         layer.masksToBounds = true
@@ -84,26 +107,28 @@ class ZVProgressView: UIView {
         let rect = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
         foregroundLayer.frame = rect
         backgroundLayer.frame = rect
-        
+        progressLabel.frame = rect
         prepare()
     }
     
     private func prepare() {
         
-        let arcCenter: CGPoint = .init(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
-        let radius: CGFloat = (min(self.bounds.width, self.bounds.height) - self.strokeWidth * 2) / 2
-        let startAngle = CGFloat( -0.5 * Double.pi)
-        let endAngle = CGFloat(1.5 * Double.pi)
+        let arcCenter = CGPoint(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
+        let radius = (min(self.bounds.height, self.bounds.width) - self.strokeWidth * 2) / 2.0
+        let startAngle = -CGFloat.pi / 2
+        let endAngle = CGFloat.pi * 3 / 2
 
-        let path = UIBezierPath(
+        let bezierPath = UIBezierPath(
             arcCenter: arcCenter,
             radius: radius,
             startAngle: startAngle,
             endAngle: endAngle,
             clockwise: true
-        ).cgPath
-        foregroundLayer.path = path
-        backgroundLayer.path = path
+        )
+
+        foregroundLayer.path = bezierPath.cgPath
+        backgroundLayer.path = bezierPath.cgPath
+        
     }
     
     func updateProgress(_ progress: Float) {
@@ -112,6 +137,7 @@ class ZVProgressView: UIView {
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
         CATransaction.setAnimationDuration(0.15)
         foregroundLayer.strokeEnd = CGFloat(progress)
+        progressLabel.text = "\(Int(progress * 100))%"
         CATransaction.commit()
     }
 }

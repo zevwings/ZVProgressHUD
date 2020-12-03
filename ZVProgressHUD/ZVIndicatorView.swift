@@ -12,10 +12,42 @@ import UIKit
 import ZVActivityIndicatorView
 
 public class ZVIndicatorView: UIView {
-
+    
+    public enum AnimationType {
+        case flat
+        case native
+    }
+    
+    public enum IndicatorType {
+        case none
+        case error, success, warning
+        case indicator(style: AnimationType)
+        case progress(value: Float)
+        case image(value: UIImage, dismissAtomically: Bool)
+        case animation(value: [UIImage], duration: TimeInterval)
+    }
+    
     var strokeWidth: CGFloat = 3.0 {
         didSet {
             flatActivityIndicatorView?.strokeWidth = strokeWidth
+        }
+    }
+    
+    var progressLabelFont : UIFont = .systemFont(ofSize: 12) {
+        didSet {
+            progressIndicatorView?.font = progressLabelFont
+        }
+    }
+    
+    var progressLabelColor: UIColor = .black {
+        didSet {
+            progressIndicatorView?.progressLabelColor = progressLabelColor
+        }
+    }
+    
+    var isProgressLabelHidden: Bool = false {
+        didSet {
+            progressIndicatorView?.isProgressLabelHidden = isProgressLabelHidden
         }
     }
     
@@ -160,6 +192,8 @@ private extension ZVIndicatorView {
         if progressIndicatorView == nil {
             progressIndicatorView = ZVProgressView(frame: .zero)
             progressIndicatorView?.strokeColor = tintColor
+            progressIndicatorView?.progressLabelColor = progressLabelColor
+            progressIndicatorView?.font = progressLabelFont
         }
         
         if progressIndicatorView?.superview == nil {

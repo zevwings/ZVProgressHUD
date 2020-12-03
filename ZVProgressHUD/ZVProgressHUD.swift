@@ -10,7 +10,7 @@
 
 import UIKit
 
-public typealias ZVProgressHUDCompletionHandler = () -> Void
+// MARK: - Notifications
 
 public extension Notification.Name {
     
@@ -23,7 +23,64 @@ public extension Notification.Name {
     static let ZVProgressHUDDidDisappear = Notification.Name("com.zevwings.progresshud.didDisappear")
 }
 
+// MARK: - ZVProgressHUD
+
 open class ZVProgressHUD: UIControl {
+    
+    public typealias CompletionHandler = () -> Void
+
+    public struct Configuration {
+        
+        public var displayStyle: DisplayStyle = .light
+        public var maskType: MaskType = .none
+        public var position: Position = .center
+            
+        public var cornerRadius: CGFloat = 8.0
+        public var offset: UIOffset = .zero
+        
+        public var titleLabelFont: UIFont = .systemFont(ofSize: 16.0)
+        public var titleLabelColor: UIColor?
+
+        public var progressLabelFont: UIFont = .systemFont(ofSize: 12.0)
+        public var progressLabelColor: UIColor?
+        public var isProgressLabelHidden: Bool = false
+        
+        public var strokeWidth: CGFloat = 3.0
+        public var animationType: ZVIndicatorView.AnimationType = .flat
+
+        public var contentInsets = UIEdgeInsets(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
+        public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
+        public var indicatorEdgeInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+
+        public var indicatorSize = CGSize(width: 48.0, height: 48.0)
+
+        public var logo: UIImage?
+        public var logoSize = CGSize(width: 30.0, height: 30.0)
+    }
+    
+    public enum DisplayType {
+        case indicator(title: String?, type: ZVIndicatorView.IndicatorType)
+        case text(value: String)
+    }
+    
+    public enum DisplayStyle {
+        case light
+        case dark
+        case custom((backgroundColor: UIColor, foregroundColor: UIColor))
+    }
+    
+    public enum MaskType {
+        case none
+        case clear
+        case black
+        case custom(color: UIColor)
+    }
+    
+    public enum Position {
+        case top
+        case center
+        case bottom
+    }
     
     private struct AnimationDuration {
         static let fadeIn: TimeInterval = 0.15
@@ -31,49 +88,24 @@ open class ZVProgressHUD: UIControl {
         static let keyboard: TimeInterval = 0.25
     }
 
-    /// the position of the `HUD`
-    public enum Position {
-        case top
-        case center
-        case bottom
-    }
-
     // MARK: Public
     
-    public static let shared = ZVProgressHUD(frame: .zero)
+    internal static let shared = ZVProgressHUD(frame: .zero)
     
-    public var displayStyle: DisplayStyle = .light
-    public var maskType: MaskType = .none
-    public var position:Position = .center
+    var maxSupportedWindowLevel: UIWindow.Level = .normal
     
-    public var maxSupportedWindowLevel: UIWindow.Level = .normal
-    public var fadeInAnimationTimeInterval: TimeInterval = AnimationDuration.fadeIn
-    public var fadeOutAnimationTImeInterval: TimeInterval = AnimationDuration.fadeOut
+    var fadeInAnimationTimeInterval: TimeInterval = ZVProgressHUD.AnimationDuration.fadeIn
+    var fadeOutAnimationTImeInterval: TimeInterval = ZVProgressHUD.AnimationDuration.fadeOut
     
-    public var minimumDismissTimeInterval: TimeInterval = 3.0
-    public var maximumDismissTimeInterval: TimeInterval = 10.0
+    var minimumDismissTimeInterval: TimeInterval = 3.0
+    var maximumDismissTimeInterval: TimeInterval = 10.0
     
-    public var cornerRadius: CGFloat = 8.0
-    public var offset: UIOffset = .zero
-    
-    public var font: UIFont = .systemFont(ofSize: 16.0)
-    
-    public var strokeWith: CGFloat = 3.0
-    public var animationType: AnimationType = .flat
-
     //swiftlint:disable:next line_length
-    public var maximumContentSize = CGSize(width: UIScreen.main.bounds.width * 0.618, height: UIScreen.main.bounds.width * 0.618)
-    public var contentInsets = UIEdgeInsets(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
-    public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
-    public var indicatorEdgeInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    var maximumContentSize = CGSize(width: UIScreen.main.bounds.width * 0.618, height: UIScreen.main.bounds.width * 0.618)
 
-    public var indicatorSize = CGSize(width: 48.0, height: 48.0)
-
-    public var logo: UIImage?
-    public var logoSize = CGSize(width: 30.0, height: 30.0)
-    
-    public var completionHandler: ZVProgressHUDCompletionHandler?
-    
+    /// 全局配置属性
+    internal var configuration = Configuration()
+            
     // MARK: Private
     
     private var _fadeOutTimer: Timer?
@@ -83,6 +115,9 @@ open class ZVProgressHUD: UIControl {
     private var _displayType: DisplayType?
     
     private var _containerView: UIView?
+
+    /// 临时配置属性，在`HUD`消失时，清空
+    private var _tempConfiguration: Configuration?
 
     // MARK: UI
     
@@ -112,7 +147,6 @@ open class ZVProgressHUD: UIControl {
         titleLabel.minimumScaleFactor = 0.5
         titleLabel.textAlignment = .center
         titleLabel.isUserInteractionEnabled = false
-        titleLabel.font = self.font
         titleLabel.backgroundColor = .clear
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.numberOfLines = 0
@@ -123,7 +157,6 @@ open class ZVProgressHUD: UIControl {
     private lazy var logoView: UIImageView = { [unowned self] in
         
         let logoView = UIImageView(frame: .zero)
-        logoView.tintColor = self.displayStyle.foregroundColor
         logoView.contentMode = .scaleAspectFit
         logoView.layer.masksToBounds = true
         return logoView
@@ -135,7 +168,7 @@ open class ZVProgressHUD: UIControl {
         NotificationCenter.default.removeObserver(self)
     }
     
-    public override init(frame: CGRect) {
+    private override init(frame: CGRect) {
         super.init(frame: frame)
         
         alpha = 0
@@ -154,15 +187,17 @@ open class ZVProgressHUD: UIControl {
 extension ZVProgressHUD {
     
     func internalShow(
-        with displayType: DisplayType,
-        in superview: UIView? = nil,
-        on position: Position,
-        delay delayTimeInterval: TimeInterval = 0
+        displayType: DisplayType,
+        in superview: UIView?,
+        delay delayTimeInterval: TimeInterval,
+        with configuration: Configuration?
     ) {
         OperationQueue.main.addOperation { [weak self] in
             
             guard let `self` = self else { return }
 
+            self._tempConfiguration = configuration
+            
             if self.superview != superview {
                 self.indicatorView.removeFromSuperview()
                 self.titleLabel.removeFromSuperview()
@@ -175,8 +210,6 @@ extension ZVProgressHUD {
             self.fadeInDeleyTimer = nil
             self.fadeOutDelayTimer = nil
             
-            self.position = position
-
             if let superview = superview {
                 self._containerView = superview
             } else {
@@ -185,26 +218,31 @@ extension ZVProgressHUD {
             
             // set property form displayType
             self._displayType = displayType
-            self.titleLabel.text = displayType.title
-            self.titleLabel.isHidden = displayType.title.isEmpty
-            self.indicatorView.indcatorType = displayType.indicatorType
             
             self.updateViewHierarchy()
 
-            self.titleLabel.font = self.font
-            self.indicatorView.strokeWidth = self.strokeWith
-            self.baseView.layer.cornerRadius = self.cornerRadius
-            self.baseView.backgroundColor = self.displayStyle.backgroundColor
-            self.logoView.image = self.logo
-            
             // set property form maskType
             self.isUserInteractionEnabled = self.maskType.isUserInteractionEnabled
             self.maskLayer.backgroundColor = self.maskType.backgroundColor
             
-            // set property form displayStyle
-            self.titleLabel.textColor = self.displayStyle.foregroundColor
+            self.baseView.layer.cornerRadius = self.cornerRadius
+            self.baseView.backgroundColor = self.displayStyle.backgroundColor
+            
+            self.titleLabel.text = displayType.title
+            self.titleLabel.isHidden = displayType.title.isEmpty
+            self.titleLabel.font = self.titleLabelFont
+            self.titleLabel.textColor = self.titleLabelColor
+
+            self.indicatorView.indcatorType = displayType.indicatorType
+            self.indicatorView.strokeWidth = self.strokeWidth
             self.indicatorView.tintColor = self.displayStyle.foregroundColor
-                        
+            self.indicatorView.progressLabelFont = self.progressLabelFont
+            self.indicatorView.progressLabelColor = self.progressLabelColor
+            self.indicatorView.isProgressLabelHidden = self.isProgressLabelHidden
+            
+            self.logoView.image = self.logo
+            self.logoView.tintColor = self.displayStyle.foregroundColor
+
             // display
             if delayTimeInterval > 0 {
                 self.fadeInDeleyTimer = Timer.scheduledTimer(
@@ -222,7 +260,7 @@ extension ZVProgressHUD {
 
     func internalDismiss(
         with delayTimeInterval: TimeInterval = 0,
-        completion: ZVProgressHUDCompletionHandler? = nil
+        completion: CompletionHandler? = nil
     ) {
         
         if delayTimeInterval > 0 {
@@ -290,7 +328,7 @@ extension ZVProgressHUD {
                 } else {
                     if displayType.indicatorType.progressValueChecker.0 &&
                         displayType.indicatorType.progressValueChecker.1 >= 1.0 {
-                        self.dismiss()
+                        self.internalDismiss()
                     }
                 }
             }
@@ -332,11 +370,11 @@ extension ZVProgressHUD {
 
     @objc private func fadeOutTimerAction(_ timer: Timer?) {
         
-        let completion = timer?.userInfo as? ZVProgressHUDCompletionHandler
+        let completion = timer?.userInfo as? CompletionHandler
         fadeOut(with: completion)
     }
 
-    @objc private func fadeOut(with completion: ZVProgressHUDCompletionHandler? = nil) {
+    @objc private func fadeOut(with completion: CompletionHandler? = nil) {
         
         OperationQueue.main.addOperation { [weak self] in
             
@@ -377,7 +415,8 @@ extension ZVProgressHUD {
                 
                 // execute completion handler
                 completion?()
-                self.completionHandler?()
+                
+                self._tempConfiguration = nil
             }
             
             if self.fadeOutAnimationTImeInterval > 0 {
@@ -459,7 +498,7 @@ private extension ZVProgressHUD {
         
         var labelSize: CGSize = .zero
         if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
-            let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font]
+            let attributes: [NSAttributedString.Key: Any] = [.font: titleLabelFont]
             let options: NSStringDrawingOptions = [.usesFontLeading, .truncatesLastVisibleLine, .usesLineFragmentOrigin]
             labelSize = title.boundingRect(
                 with: maximumContentSize,
@@ -719,7 +758,7 @@ private extension ZVProgressHUD {
     }
 }
 
-// MARK: - Props
+// MARK: - Timers
 
 private extension ZVProgressHUD {
     
@@ -732,7 +771,6 @@ private extension ZVProgressHUD {
                 _fadeOutTimer?.invalidate()
                 _fadeOutTimer = nil
             }
-            
             _fadeOutTimer = newValue
         }
     }
@@ -746,7 +784,6 @@ private extension ZVProgressHUD {
                 _fadeInDeleyTimer?.invalidate()
                 _fadeInDeleyTimer = nil
             }
-            
             _fadeInDeleyTimer = newValue
         }
     }
@@ -760,8 +797,238 @@ private extension ZVProgressHUD {
                 _fadeOutDelayTimer?.invalidate()
                 _fadeOutDelayTimer = nil
             }
-            
             _fadeOutDelayTimer = newValue
+        }
+    }
+}
+
+// MARK: - Props
+
+private extension ZVProgressHUD {
+    
+    var actualConfiguration: Configuration {
+        if let configuration = _tempConfiguration {
+            return configuration
+        }
+        return configuration
+    }
+    
+    var displayStyle: DisplayStyle {
+        return actualConfiguration.displayStyle
+    }
+    
+    var maskType: MaskType {
+        return actualConfiguration.maskType
+    }
+    
+    var position: Position {
+        return actualConfiguration.position
+    }
+    
+    var cornerRadius: CGFloat {
+        return actualConfiguration.cornerRadius
+    }
+    
+    var offset: UIOffset {
+        return actualConfiguration.offset
+    }
+    
+    var titleLabelFont: UIFont {
+        return actualConfiguration.titleLabelFont
+    }
+    
+    var titleLabelColor: UIColor {
+        if let color = _tempConfiguration?.titleLabelColor {
+            return color
+        }
+        if let color = configuration.titleLabelColor {
+            return color
+        }
+        return actualConfiguration.displayStyle.foregroundColor
+    }
+
+    var progressLabelFont: UIFont {
+        return actualConfiguration.progressLabelFont
+    }
+    
+    var progressLabelColor: UIColor {
+        if let color = _tempConfiguration?.progressLabelColor {
+            return color
+        }
+        if let color = configuration.progressLabelColor {
+            return color
+        }
+        return actualConfiguration.displayStyle.foregroundColor
+    }
+    
+    var isProgressLabelHidden: Bool {
+        return actualConfiguration.isProgressLabelHidden
+    }
+
+    var strokeWidth: CGFloat {
+        return actualConfiguration.strokeWidth
+    }
+    
+    var animationType: ZVIndicatorView.AnimationType {
+        return actualConfiguration.animationType
+    }
+
+    var contentInsets: UIEdgeInsets {
+        return actualConfiguration.contentInsets
+    }
+    var titleEdgeInsets: UIEdgeInsets {
+        return actualConfiguration.titleEdgeInsets
+    }
+    
+    var indicatorEdgeInsets: UIEdgeInsets {
+        return actualConfiguration.indicatorEdgeInsets
+    }
+
+    var indicatorSize: CGSize {
+        return actualConfiguration.indicatorSize
+    }
+
+    var logo: UIImage? {
+        return actualConfiguration.logo
+    }
+    
+    var logoSize: CGSize {
+        return actualConfiguration.logoSize
+    }
+
+}
+
+// MARK: - ZVProgressHUD.DisplayType
+
+extension ZVProgressHUD.DisplayType {
+    
+    var dismissAtomically: Bool {
+        switch self {
+        case .text:
+            return true
+        case .indicator(_, let type):
+            switch type {
+            case .success, .error, .warning:
+                return true
+            case .image(_, let dismissAtomically):
+                return dismissAtomically
+            default:
+                return false
+            }
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .text(let value): return value
+        case .indicator(let title, _): return title ?? ""
+        }
+    }
+
+    var indicatorType: ZVIndicatorView.IndicatorType {
+        switch self {
+        case .text: return .none
+        case .indicator(_, let type): return type
+        }
+    }
+
+    func getDisplayTimeInterval(
+        _ minimumDismissTimeInterval: TimeInterval,
+        _ maximumDismissTimeInterval: TimeInterval
+    ) -> TimeInterval {
+
+        var displayTimeInterval: TimeInterval = dismissAtomically ? 3.0 : 0
+
+        guard displayTimeInterval > 0 else { return 0 }
+
+        displayTimeInterval = max(Double(title.count) * 0.06 + 0.5, minimumDismissTimeInterval)
+        displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
+
+        return displayTimeInterval
+    }
+}
+
+// MARK: - ZVProgressHUD.DisplayStyle
+
+extension ZVProgressHUD.DisplayStyle {
+    var foregroundColor: UIColor {
+        switch self {
+        case .dark: return .white
+        case .light: return UIColor(white: 0.2, alpha: 1)
+        case .custom(let (foregroundColor, _)): return foregroundColor
+        }
+    }
+
+    var backgroundColor: UIColor {
+        switch self {
+        case .dark: return UIColor(white: 0, alpha: 0.75)
+        case .light: return .white
+        case .custom(let (_, backgroundColor)): return backgroundColor
+        }
+    }
+}
+
+// MARK: - ZVProgressHUD.MaskType
+
+extension ZVProgressHUD.MaskType {
+    
+    var backgroundColor: CGColor {
+        switch self {
+        case .none, .clear: return UIColor.clear.cgColor
+        case .black: return UIColor.init(white: 0, alpha: 0.3).cgColor
+        case .custom(let color): return color.cgColor
+        }
+    }
+
+    var isUserInteractionEnabled: Bool {
+        switch self {
+        case .none: return false
+        default: return true
+        }
+    }
+}
+
+// MARK: - ZVIndicatorView.IndicatorType
+
+extension ZVIndicatorView.IndicatorType {
+    
+    var resource: String {
+        switch self {
+        case .error:
+            return "error"
+        case .success:
+            return "success"
+        case .warning:
+            return "warning"
+        default:
+            return ""
+        }
+    }
+
+    var shouldHidden: Bool {
+        switch self {
+        case .none:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var progressValueChecker: (Bool, Float) {
+        switch self {
+        case .progress(let value):
+            return (true, value)
+        default:
+            return (false, 0.0)
+        }
+    }
+
+    var showLogo: Bool {
+        switch self {
+        case .indicator(let animationType):
+            return animationType == .flat
+        default:
+            return false
         }
     }
 }
