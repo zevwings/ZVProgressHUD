@@ -56,6 +56,8 @@ open class ZVProgressHUD: UIControl {
 
         public var logo: UIImage?
         public var logoSize = CGSize(width: 30.0, height: 30.0)
+        
+        public init() {}
     }
     
     public enum DisplayType {
