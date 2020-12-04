@@ -166,7 +166,6 @@ public extension ZVProgressHUD {
     class func showError(
         with title: String = "",
         in superview: UIView? = nil,
-        on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0,
         with configuration: Configuration? = nil
     ) {
@@ -187,7 +186,6 @@ public extension ZVProgressHUD {
     class func showWarning(
         with title: String = "",
         in superview: UIView? = nil,
-        on position: Position = .center,
         delay delayTimeInterval: TimeInterval = 0.0,
         with configuration: Configuration? = nil
     ) {
