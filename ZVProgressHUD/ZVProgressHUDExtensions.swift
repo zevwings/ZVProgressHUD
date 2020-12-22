@@ -302,6 +302,28 @@ public extension ZVProgressHUD {
         )
     }
     
+    /// show the animation waiting alert
+    ///
+    /// - Parameters:
+    ///   - images: animation image array
+    ///   - duration: animation duration @see UIImage
+    ///   - title: the message remind users what you want
+    ///   - superview: super view, if superview is nil, show on main window
+    ///   - delayTimeInterval: the view will show delay the `delayTimeInterval`
+    class func showCustomView(
+        _ view: UIView,
+        in superview: UIView? = nil,
+        delay delayTimeInterval: TimeInterval = 0.0,
+        with configuration: Configuration? = nil
+    ) {
+        shared.internalShow(
+            displayType: .customeView(view: view),
+            in: superview,
+            delay: delayTimeInterval,
+            with: configuration
+        )
+    }
+    
     /// show custom display type @see ZVProgressHUD.DisplayType
     ///
     /// - Parameters:

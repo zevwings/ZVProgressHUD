@@ -21,7 +21,8 @@ class ViewController: UIViewController {
         ("showWarning", #selector(showWarning)),
         ("showCustomImage", #selector(showCustomImage)),
         ("showCustomImageWithLabel", #selector(showCustomImageWithLabel)),
-        ("showAnimation", #selector(showCustomView)),
+        ("showAnimation", #selector(showAnimation)),
+        ("showCustomView", #selector(showCustomView)),
         ("showLabel", #selector(showLabel)),
         ("dismiss", #selector(dismissHUD))
     ]
@@ -37,6 +38,12 @@ class ViewController: UIViewController {
     var progress: Float = 0.0
     var timer: Timer?
     
+    var countDown: Int = 0
+    private lazy var loadingView: ZVDownloadingView = {
+        let loadingView = ZVDownloadingView() 
+        return loadingView
+    }()
+    
     @IBOutlet weak var indicatorSizeLabel: UILabel!
     @IBOutlet weak var logoSizeLabel: UILabel!
 
@@ -45,10 +52,10 @@ class ViewController: UIViewController {
         
         ZVProgressHUD.setMaskType(.black)
         ZVProgressHUD.setDisplayStyle(.dark)
-        ZVProgressHUD.setLogoSize(CGSize(width: 48.0, height: 48.0))
+        ZVProgressHUD.setLogoSize(CGSize(width: 30.0, height: 30.0))
         
-        ZVProgressHUD.setProgressLabelColor(.green)
-        ZVProgressHUD.setTitleLabelColor(.cyan)
+//        ZVProgressHUD.setProgressLabelColor(.green)
+//        ZVProgressHUD.setTitleLabelColor(.cyan)
 
         let logo = UIImage(named: "logo_crown")?.withRenderingMode(.alwaysTemplate)
         ZVProgressHUD.setLogo(logo)
@@ -155,8 +162,7 @@ extension ViewController {
         )
     }
 
-
-    @objc func showCustomView() {
+    @objc func showAnimation() {
 
         var images = [UIImage]()
         for index in 1 ... 3 {
@@ -167,7 +173,30 @@ extension ViewController {
         ZVProgressHUD.showAnimation(images, delay: showDelay)
 
     }
+    
+    @objc func showCustomView() {
+        
+        var configuration = ZVProgressHUD.Configuration()
+        configuration.animationType = .native
+        configuration.displayStyle = .custom((.clear, .clear))
+        configuration.maskType = .black
 
+        loadingView.show(with: "Request Data ....")
+        ZVProgressHUD.showCustomView(loadingView, with: configuration)
+
+        countDown = 0
+        progress = 0
+        
+        self.timer = Timer.scheduledTimer(
+            timeInterval: 0.25,
+            target: self,
+            selector: #selector(ViewController.customProgressTimerAction(_:)),
+            userInfo: ["title": "Progress"],
+            repeats: true
+        )
+
+    }
+    
     @objc func showLabel() {
         
         ZVProgressHUD.showText("pure text", in: self.view, delay: showDelay)
@@ -260,6 +289,35 @@ extension ViewController {
         if progress > 1.0 {
             timer?.invalidate()
             timer = nil
+        }
+    }
+    
+    @objc func customProgressTimerAction(_ sender: Timer?) {
+
+        let userInfo = sender?.userInfo as? [String: String]
+        let title = userInfo?["title"] ?? ""
+//        progress += 0.05
+        
+        countDown += 1
+        
+        guard countDown >= 10 else { return }
+        
+        if countDown == 10 {
+            loadingView.start()
+        }
+        
+        progress += 0.05
+        
+        loadingView.update(progress)
+
+        print("timer action : \(progress)")
+        
+        if progress > 1.0 {
+            timer?.invalidate()
+            timer = nil
+            
+            loadingView.dismiss()
+            ZVProgressHUD.dismiss()
         }
     }
 }

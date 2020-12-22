@@ -48,11 +48,11 @@ open class ZVProgressHUD: UIControl {
         public var strokeWidth: CGFloat = 3.0
         public var animationType: ZVIndicatorView.AnimationType = .flat
 
-        public var contentInsets = UIEdgeInsets(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
+        public var contentInsets = UIEdgeInsets(top: 24.0, left: 24.0, bottom: 24.0, right: 24.0)
         public var titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0 )
-        public var indicatorEdgeInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+        public var indicatorEdgeInsets = UIEdgeInsets(top: 12.0, left: 12.0, bottom: 12.0, right: 12.0)
 
-        public var indicatorSize = CGSize(width: 48.0, height: 48.0)
+        public var indicatorSize = CGSize(width: 56.0, height: 56.0)
 
         public var logo: UIImage?
         public var logoSize = CGSize(width: 30.0, height: 30.0)
@@ -63,6 +63,7 @@ open class ZVProgressHUD: UIControl {
     public enum DisplayType {
         case indicator(title: String?, type: ZVIndicatorView.IndicatorType)
         case text(value: String)
+        case customeView(view: UIView)
     }
     
     public enum DisplayStyle {
@@ -117,6 +118,9 @@ open class ZVProgressHUD: UIControl {
     private var _displayType: DisplayType?
     
     private var _containerView: UIView?
+    
+    /// 展示自定视图时，保存临时视图
+    private weak var _tempCustomView: UIView?
 
     /// 临时配置属性，在`HUD`消失时，清空
     private var _tempConfiguration: Configuration?
@@ -206,6 +210,11 @@ extension ZVProgressHUD {
                 self.baseView.removeFromSuperview()
                 self.logoView.removeFromSuperview()
                 self.removeFromSuperview()
+            }
+            
+            /// 确保自定义视图不会重复添加
+            if let customView = self._tempCustomView {
+                customView.removeFromSuperview()
             }
             
             self.fadeOutTimer = nil
@@ -448,6 +457,10 @@ private extension ZVProgressHUD {
     
     func updateViewHierarchy() {
         
+        guard let displayType = _displayType else { return }
+        
+        self.isUserInteractionEnabled = self.maskType.isUserInteractionEnabled
+        
         if superview == nil {
             _containerView?.addSubview(self)
         } else {
@@ -458,93 +471,144 @@ private extension ZVProgressHUD {
             layer.addSublayer(maskLayer)
         }
         
+        self.maskLayer.backgroundColor = self.maskType.backgroundColor
+        
         if baseView.superview == nil {
             addSubview(baseView)
         } else {
             bringSubviewToFront(baseView)
         }
         
-        if let displayType = _displayType, displayType.indicatorType.showLogo, logo != nil, logoView.superview == nil {
+        baseView.layer.cornerRadius = cornerRadius
+        baseView.backgroundColor = displayStyle.backgroundColor
+
+        switch displayType {
+        case let .indicator(title, indicatorType):
+            updateIndicatorHierarchy(with: indicatorType)
+            updateLabelHierarchy(with: title)
+        case let .text(title):
+            updateLabelHierarchy(with: title)
+        case let .customeView(view):
+            _tempCustomView = view
+            baseView.addSubview(view)
+        }
+    }
+
+    /// 更新 指示视图视图层级
+    func updateIndicatorHierarchy(with indicatorType: ZVIndicatorView.IndicatorType) {
+
+        if indicatorType.showLogo && logo != nil && logoView.superview == nil {
             baseView.addSubview(logoView)
         } else {
             baseView.bringSubviewToFront(logoView)
         }
-        
+        logoView.image = logo
+        logoView.tintColor = displayStyle.foregroundColor
+
+        /// 添加指示视图
         if indicatorView.superview == nil {
             baseView.addSubview(indicatorView)
         } else {
             baseView.bringSubviewToFront(indicatorView)
         }
         
+        indicatorView.indcatorType = indicatorType
+        indicatorView.strokeWidth = strokeWidth
+        indicatorView.tintColor = displayStyle.foregroundColor
+        indicatorView.progressLabelFont = progressLabelFont
+        indicatorView.progressLabelColor = progressLabelColor
+        indicatorView.isProgressLabelHidden = isProgressLabelHidden
+    }
+    
+    /// 更新描述标题视图层级
+    func updateLabelHierarchy(with text: String?) {
+        
         if titleLabel.superview == nil {
             baseView.addSubview(titleLabel)
         } else {
             baseView.bringSubviewToFront(titleLabel)
         }
+        
+        titleLabel.text = text
+        titleLabel.isHidden = false
+        titleLabel.font = titleLabelFont
+        titleLabel.textColor = titleLabelColor
     }
     
     func updateSubviews() {
         
-        guard let containerView = _containerView else { return }
+        guard let containerView = _containerView, let displayType = _displayType else { return }
         
         frame = CGRect(origin: .zero, size: containerView.frame.size)
         maskLayer.frame = CGRect(origin: .zero, size: containerView.frame.size)
         
-        if !indicatorView.isHidden {
-            indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
-        }
-        
-        if let displayType = _displayType, displayType.indicatorType.showLogo, logo != nil {
-            logoView.frame = CGRect(origin: .zero, size: logoSize)
-        }
-        
-        var labelSize: CGSize = .zero
-        if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
-            let attributes: [NSAttributedString.Key: Any] = [.font: titleLabelFont]
-            let options: NSStringDrawingOptions = [.usesFontLeading, .truncatesLastVisibleLine, .usesLineFragmentOrigin]
-            labelSize = title.boundingRect(
-                with: maximumContentSize,
-                options: options,
-                attributes: attributes,
-                context: nil
-            ).size
-            titleLabel.frame = CGRect(origin: .zero, size: labelSize)
-        }
-        
-        let labelHeight = titleLabel.isHidden ? 0 : labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
-        let indicatorHeight = indicatorView.isHidden ?
-            0 :
-            indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
-        
-        let contentHeight = labelHeight + indicatorHeight + contentInsets.top + contentInsets.bottom
-        let maxWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right,
-                           indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right)
-        let contetnWidth = maxWidth + contentInsets.left + contentInsets.right
-        
-        let contentSize = CGSize(width: contetnWidth, height: contentHeight)
-        let oldOrigin = self.baseView.frame.origin
-        baseView.frame = CGRect(origin: oldOrigin, size: contentSize)
-        
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        
-        let centerX: CGFloat = contetnWidth / 2.0
-        var centerY: CGFloat = contentHeight / 2.0
+        switch displayType {
+        case .indicator, .text:
+            
+            if !indicatorView.isHidden {
+                indicatorView.frame = CGRect(origin: .zero, size: indicatorSize)
+            }
+            
+            if let displayType = _displayType, displayType.indicatorType.showLogo, logo != nil {
+                logoView.frame = CGRect(origin: .zero, size: logoSize)
+            }
+            
+            var labelSize: CGSize = .zero
+            if !titleLabel.isHidden, let title = titleLabel.text as NSString?, title.length > 0 {
+                let attributes: [NSAttributedString.Key: Any] = [.font: titleLabelFont]
+                let options: NSStringDrawingOptions = [
+                    .usesFontLeading,
+                    .truncatesLastVisibleLine,
+                    .usesLineFragmentOrigin
+                ]
+                labelSize = title.boundingRect(
+                    with: maximumContentSize,
+                    options: options,
+                    attributes: attributes,
+                    context: nil
+                ).size
+                titleLabel.frame = CGRect(origin: .zero, size: labelSize)
+            }
+            
+            let labelHeight = titleLabel.isHidden ? 0 : labelSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+            let indicatorHeight = indicatorView.isHidden ?
+                0 :
+                indicatorSize.height + indicatorEdgeInsets.top + indicatorEdgeInsets.bottom
+            
+            let contentHeight = labelHeight + indicatorHeight + contentInsets.top + contentInsets.bottom
+            let maxWidth = max(labelSize.width + titleEdgeInsets.left + titleEdgeInsets.right,
+                               indicatorSize.width + indicatorEdgeInsets.left + indicatorEdgeInsets.right)
+            let contetnWidth = maxWidth + contentInsets.left + contentInsets.right
+            
+            let contentSize = CGSize(width: contetnWidth, height: contentHeight)
+            let origin = self.baseView.frame.origin
+            baseView.frame = CGRect(origin: origin, size: contentSize)
 
-        // Indicator
-        if labelHeight > 0 && !indicatorView.isHidden {
-            centerY = contentInsets.top + indicatorEdgeInsets.top + indicatorSize.height / 2.0
-        }
-        indicatorView.center = CGPoint(x: centerX, y: centerY)
-        logoView.center = CGPoint(x: centerX, y: centerY)
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            
+            let centerX: CGFloat = contetnWidth / 2.0
+            var centerY: CGFloat = contentHeight / 2.0
 
-        // Label
-        if indicatorHeight > 0 && !titleLabel.isHidden {
-            centerY = contentInsets.top + indicatorHeight + titleEdgeInsets.top + labelSize.height / 2.0
+            // Indicator
+            if labelHeight > 0 && !indicatorView.isHidden {
+                centerY = contentInsets.top + indicatorEdgeInsets.top + indicatorSize.height / 2.0
+            }
+            indicatorView.center = CGPoint(x: centerX, y: centerY)
+            logoView.center = CGPoint(x: centerX, y: centerY)
+
+            // Label
+            if indicatorHeight > 0 && !titleLabel.isHidden {
+                centerY = contentInsets.top + indicatorHeight + titleEdgeInsets.top + labelSize.height / 2.0
+            }
+            titleLabel.center = CGPoint(x: centerX, y: centerY)
+            
+            CATransaction.commit()
+            
+        case let .customeView(view):
+            let origin = self.baseView.frame.origin
+            baseView.frame = CGRect(origin: origin, size: view.frame.size)
         }
-        titleLabel.center = CGPoint(x: centerX, y: centerY)
-        
-        CATransaction.commit()
     }
         
     @objc func placeSubviews(_ keybordHeight: CGFloat = 0, animationDuration: TimeInterval = 0) {
@@ -917,6 +981,8 @@ extension ZVProgressHUD.DisplayType {
             default:
                 return false
             }
+        case .customeView:
+            return false
         }
     }
 
@@ -924,6 +990,8 @@ extension ZVProgressHUD.DisplayType {
         switch self {
         case .text(let value): return value
         case .indicator(let title, _): return title ?? ""
+        case .customeView:
+            return ""
         }
     }
 
@@ -931,6 +999,7 @@ extension ZVProgressHUD.DisplayType {
         switch self {
         case .text: return .none
         case .indicator(_, let type): return type
+        case .customeView: return .none
         }
     }
 
@@ -947,6 +1016,15 @@ extension ZVProgressHUD.DisplayType {
         displayTimeInterval = min(displayTimeInterval, maximumDismissTimeInterval)
 
         return displayTimeInterval
+    }
+    
+    var customView: UIView? {
+        switch self {
+        case let .customeView(view):
+            return view
+        default:
+            return nil
+        }
     }
 }
 
