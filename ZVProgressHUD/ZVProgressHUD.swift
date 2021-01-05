@@ -116,6 +116,9 @@ open class ZVProgressHUD: UIControl {
     private var _fadeOutDelayTimer: Timer?
 
     private var _displayType: DisplayType?
+    public var displayType: DisplayType? {
+        return _displayType
+    }
     
     private var _containerView: UIView?
     
