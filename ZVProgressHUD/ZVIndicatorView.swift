@@ -30,6 +30,19 @@ public class ZVIndicatorView: UIView {
     var strokeWidth: CGFloat = 3.0 {
         didSet {
             flatActivityIndicatorView?.strokeWidth = strokeWidth
+            progressIndicatorView?.strokeWidth = strokeWidth
+        }
+    }
+    
+    var progressForegroundColor: UIColor = .black {
+        didSet {
+            progressIndicatorView?.progressForegroundColor = progressForegroundColor
+        }
+    }
+    
+    var progressBackgroundColor: UIColor = .black {
+        didSet {
+            progressIndicatorView?.progressBackgroundColor = progressBackgroundColor
         }
     }
     
@@ -105,7 +118,6 @@ extension ZVIndicatorView {
             imageIndicaotorView?.tintColor = tintColor
             nativeActivityIndicatorView?.color = tintColor
             flatActivityIndicatorView?.tintColor = tintColor
-            progressIndicatorView?.strokeColor = tintColor
         }
     }
     
@@ -191,7 +203,8 @@ private extension ZVIndicatorView {
 
         if progressIndicatorView == nil {
             progressIndicatorView = ZVProgressView(frame: .zero)
-            progressIndicatorView?.strokeColor = tintColor
+            progressIndicatorView?.progressBackgroundColor = progressBackgroundColor
+            progressIndicatorView?.progressForegroundColor = progressForegroundColor
             progressIndicatorView?.progressLabelColor = progressLabelColor
             progressIndicatorView?.font = progressLabelFont
         }

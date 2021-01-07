@@ -41,6 +41,8 @@ open class ZVProgressHUD: UIControl {
         public var titleLabelFont: UIFont = .systemFont(ofSize: 16.0)
         public var titleLabelColor: UIColor?
 
+        public var progressForegroundColor: UIColor?
+        public var progressBackgroundColor: UIColor?
         public var progressLabelFont: UIFont = .systemFont(ofSize: 12.0)
         public var progressLabelColor: UIColor?
         public var isProgressLabelHidden: Bool = false
@@ -250,6 +252,8 @@ extension ZVProgressHUD {
             self.indicatorView.indcatorType = displayType.indicatorType
             self.indicatorView.strokeWidth = self.strokeWidth
             self.indicatorView.tintColor = self.displayStyle.foregroundColor
+            self.indicatorView.progressForegroundColor = self.progressForegroundColor
+            self.indicatorView.progressBackgroundColor = self.progressBackgroundColor
             self.indicatorView.progressLabelFont = self.progressLabelFont
             self.indicatorView.progressLabelColor = self.progressLabelColor
             self.indicatorView.isProgressLabelHidden = self.isProgressLabelHidden
@@ -516,11 +520,6 @@ private extension ZVProgressHUD {
         }
         
         indicatorView.indcatorType = indicatorType
-        indicatorView.strokeWidth = strokeWidth
-        indicatorView.tintColor = displayStyle.foregroundColor
-        indicatorView.progressLabelFont = progressLabelFont
-        indicatorView.progressLabelColor = progressLabelColor
-        indicatorView.isProgressLabelHidden = isProgressLabelHidden
     }
     
     /// 更新描述标题视图层级
@@ -914,6 +913,26 @@ private extension ZVProgressHUD {
             return color
         }
         return actualConfiguration.displayStyle.foregroundColor
+    }
+    
+    var progressForegroundColor: UIColor {
+        if let color = _tempConfiguration?.progressForegroundColor {
+            return color
+        }
+        if let color = configuration.progressForegroundColor {
+            return color
+        }
+        return actualConfiguration.displayStyle.foregroundColor
+    }
+    
+    var progressBackgroundColor: UIColor {
+        if let color = _tempConfiguration?.progressBackgroundColor {
+            return color
+        }
+        if let color = configuration.progressBackgroundColor {
+            return color
+        }
+        return actualConfiguration.displayStyle.foregroundColor.withAlphaComponent(0.5)
     }
 
     var progressLabelFont: UIFont {

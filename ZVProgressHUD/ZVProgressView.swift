@@ -19,10 +19,15 @@ class ZVProgressView: UIView {
         }
     }
     
-    var strokeColor: UIColor = .black {
+    var progressBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.5) {
         didSet {
-            foregroundLayer.strokeColor = strokeColor.cgColor
-            backgroundLayer.strokeColor = strokeColor.withAlphaComponent(0.5).cgColor
+            backgroundLayer.strokeColor = progressBackgroundColor.cgColor
+        }
+    }
+    
+    var progressForegroundColor: UIColor = .black {
+        didSet {
+            foregroundLayer.strokeColor = progressForegroundColor.cgColor
         }
     }
     
@@ -53,7 +58,7 @@ class ZVProgressView: UIView {
     
     private lazy var progressLabel : UILabel = {
        let label = UILabel()
-        label.textColor = strokeColor
+        label.textColor = progressLabelColor
         label.font = font
         label.textAlignment = .center
         label.frame = bounds
@@ -114,7 +119,7 @@ class ZVProgressView: UIView {
     private func prepare() {
         
         let arcCenter = CGPoint(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
-        let radius = (min(self.bounds.height, self.bounds.width) - self.strokeWidth * 2) / 2.0
+        let radius = (min(self.bounds.height, self.bounds.width) - self.strokeWidth) / 2.0
         let startAngle = -CGFloat.pi / 2
         let endAngle = CGFloat.pi * 3 / 2
 
