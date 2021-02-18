@@ -164,7 +164,7 @@ private extension ZVIndicatorView {
         print(m)
         
         if let resource = value as? String,
-           let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") {
+           let path = Bundle.module.path(forResource: "Resource", ofType: "bundle") {
             
             let bundle = Bundle(path: path)
             guard let fileName = bundle?.path(forResource: resource, ofType: "png") else { return }
