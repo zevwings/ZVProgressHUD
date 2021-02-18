@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -19,8 +19,17 @@ let package = Package(
             name: "ZVProgressHUD",
             dependencies: ["ZVActivityIndicatorView"],
             path: "./ZVProgressHUD",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            resources: [
+                .process("Resource.bundle")
+            ]
         )
+//        .target(
+//            name: "ZVProgressHUD",
+//            dependencies: ["ZVActivityIndicatorView"],
+//            path: "./ZVProgressHUD",
+//            exclude: ["Info.plist"]
+//        )
     ],
     swiftLanguageVersions: [.v5]
 )
