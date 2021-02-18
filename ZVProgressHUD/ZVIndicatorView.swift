@@ -159,15 +159,18 @@ private extension ZVIndicatorView {
         if imageIndicaotorView?.superview == nil {
             addSubview(imageIndicaotorView!)
         }
-        
-        let m = Bundle.module
-        print(m)
-        
-        if let resource = value as? String,
-           let path = Bundle.module.path(forResource: "Resource", ofType: "bundle") {
-            
-            let bundle = Bundle(path: path)
-            guard let fileName = bundle?.path(forResource: resource, ofType: "png") else { return }
+                
+        if let resource = value as? String {
+            #if ZVProgressHUD_SPM
+            let bundlePath = Bundle.module.path(forResource: "Resource", ofType: "bundle")
+            #else
+            let bundlePath = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle")
+            #endif
+            guard let path = bundlePath,
+                  let bundle = Bundle(path: path),
+                  let fileName = bundle.path(forResource: resource, ofType: "png")
+            else { return }
+
             let image = UIImage(contentsOfFile: fileName)?.withRenderingMode(.alwaysTemplate)
             imageIndicaotorView?.tintColor = tintColor
             imageIndicaotorView?.image = image

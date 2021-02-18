@@ -22,14 +22,11 @@ let package = Package(
             exclude: ["Info.plist"],
             resources: [
                 .process("Resource.bundle")
+            ],
+            swiftSettings: [
+                .define("ZVProgressHUD_SPM")
             ]
         )
-//        .target(
-//            name: "ZVProgressHUD",
-//            dependencies: ["ZVActivityIndicatorView"],
-//            path: "./ZVProgressHUD",
-//            exclude: ["Info.plist"]
-//        )
     ],
     swiftLanguageVersions: [.v5]
 )
