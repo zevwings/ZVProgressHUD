@@ -271,33 +271,4 @@ private extension ZVIndicatorView {
     }
 }
 
-
-import class Foundation.Bundle
-
-private class BundleFinder {}
-
-extension Foundation.Bundle {
-    /// Returns the resource bundle associated with the current Swift module.
-    static var module: Bundle = {
-        let bundleName = "Resource"
-
-        let candidates = [
-            Bundle.main.resourceURL,
-            Bundle(for: BundleFinder.self).resourceURL,
-            Bundle.main.bundleURL,
-            Bundle(for: ZVProgressHUD.self).bundleURL
-        ]
-
-        for candidate in candidates {
-            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
-            
-            print("bundlePath : \(bundlePath)")
-            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
-                return bundle
-            }
-        }
-        fatalError("unable to find bundle named Resource")
-    }()
-}
-
 #endif
