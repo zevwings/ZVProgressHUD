@@ -279,7 +279,7 @@ private class BundleFinder {}
 extension Foundation.Bundle {
     /// Returns the resource bundle associated with the current Swift module.
     static var module: Bundle = {
-        let bundleName = "ZVProgressHUD"
+        let bundleName = "Resource"
 
         let candidates = [
             // Bundle should be present here when the package is linked into an App.
@@ -298,7 +298,7 @@ extension Foundation.Bundle {
                 return bundle
             }
         }
-        fatalError("unable to find bundle named ID3TagEditor_ID3TagEditorTests")
+        fatalError("unable to find bundle named Resource")
     }()
 }
 
