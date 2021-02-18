@@ -282,21 +282,16 @@ extension Foundation.Bundle {
         let bundleName = "Resource"
 
         let candidates = [
-            // Bundle should be present here when the package is linked into an App.
             Bundle.main.resourceURL,
-
-            // Bundle should be present here when the package is linked into a framework.
             Bundle(for: BundleFinder.self).resourceURL,
-
-            // For command-line tools.
             Bundle.main.bundleURL,
-            
-            
             Bundle(for: ZVProgressHUD.self).bundleURL
         ]
 
         for candidate in candidates {
             let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            
+            print("bundlePath : \(bundlePath)")
             if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
                 return bundle
             }
