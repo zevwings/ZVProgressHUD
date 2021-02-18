@@ -290,6 +290,9 @@ extension Foundation.Bundle {
 
             // For command-line tools.
             Bundle.main.bundleURL,
+            
+            
+            Bundle(for: ZVProgressHUD.self).bundleURL
         ]
 
         for candidate in candidates {
