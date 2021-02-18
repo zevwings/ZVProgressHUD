@@ -160,8 +160,11 @@ private extension ZVIndicatorView {
             addSubview(imageIndicaotorView!)
         }
         
+        let m = Bundle.module
+        print(m)
+        
         if let resource = value as? String,
-            let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") {
+           let path = Bundle(for: ZVProgressHUD.self).path(forResource: "Resource", ofType: "bundle") {
             
             let bundle = Bundle(path: path)
             guard let fileName = bundle?.path(forResource: resource, ofType: "png") else { return }
@@ -266,6 +269,37 @@ private extension ZVIndicatorView {
         
         flatActivityIndicatorView?.startAnimating()
     }
+}
+
+
+import class Foundation.Bundle
+
+private class BundleFinder {}
+
+extension Foundation.Bundle {
+    /// Returns the resource bundle associated with the current Swift module.
+    static var module: Bundle = {
+        let bundleName = "ZVProgressHUD"
+
+        let candidates = [
+            // Bundle should be present here when the package is linked into an App.
+            Bundle.main.resourceURL,
+
+            // Bundle should be present here when the package is linked into a framework.
+            Bundle(for: BundleFinder.self).resourceURL,
+
+            // For command-line tools.
+            Bundle.main.bundleURL,
+        ]
+
+        for candidate in candidates {
+            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
+                return bundle
+            }
+        }
+        fatalError("unable to find bundle named ID3TagEditor_ID3TagEditorTests")
+    }()
 }
 
 #endif

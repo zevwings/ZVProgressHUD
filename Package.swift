@@ -18,7 +18,9 @@ let package = Package(
         .target(
             name: "ZVProgressHUD",
             dependencies: ["ZVActivityIndicatorView"],
-            path: "ZVProgressHUD"),
+            path: "./ZVProgressHUD",
+            exclude: ["Info.plist"]
+        )
     ],
     swiftLanguageVersions: [.v5]
 )
