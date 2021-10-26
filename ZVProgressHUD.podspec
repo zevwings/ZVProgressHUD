@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name              = "ZVProgressHUD"
-  s.version           = "3.0.5"
+  s.version           = "3.0.6"
   s.summary           = "A pure-swift and wieldy HUD"
   s.swift_version     = '5.1'
 
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/zevwings/ZVProgressHUD"
   s.license      = "MIT"
   s.author       = { "zevwings" => "zevwings@gmail.com" }
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
   s.source       = { :git => "https://github.com/zevwings/ZVProgressHUD.git", :tag => "#{s.version}" }
   s.source_files = "ZVProgressHUD/**/*.swift", "ZVProgressHUD/ZVProgressHUD.h"
   s.resources    = "ZVProgressHUD/Resource.bundle"
