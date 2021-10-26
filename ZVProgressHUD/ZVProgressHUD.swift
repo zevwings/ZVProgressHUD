@@ -105,8 +105,9 @@ open class ZVProgressHUD: UIControl {
     var minimumDismissTimeInterval: TimeInterval = 3.0
     var maximumDismissTimeInterval: TimeInterval = 10.0
     
-    //swiftlint:disable:next line_length
+    // swiftlint:disable:next line_length
     var maximumContentSize = CGSize(width: UIScreen.main.bounds.width * 0.618, height: UIScreen.main.bounds.width * 0.618)
+    // swiftlint:disable:previous: line_length
 
     /// 全局配置属性
     internal var configuration = Configuration()
@@ -302,8 +303,9 @@ extension ZVProgressHUD {
         
         guard let displayType = _displayType else { return }
         
-        //swiftlint:disable:next line_length
+        // swiftlint:disable:next line_length
         let displayTimeInterval = displayType.getDisplayTimeInterval(minimumDismissTimeInterval, maximumDismissTimeInterval)
+        // swiftlint:disable:previous: line_length
 
         updateSubviews()
         
@@ -663,7 +665,7 @@ private extension ZVProgressHUD {
         
         let distanceOfNavigationBarOrTabBar: CGFloat = 12
         
-        //swiftlint:disable line_length
+        // swiftlint:disable line_length
         let posY: CGFloat
         switch position {
         case .top:
@@ -673,7 +675,7 @@ private extension ZVProgressHUD {
         case .bottom:
             posY = activeHeight - defaultBottomInset - distanceOfNavigationBarOrTabBar - baseView.frame.height * 0.5 + offset.vertical
         }
-        //swiftlint:enable line_length
+        // swiftlint:enable line_length
 
         let posX = orenitationFrame.width / 2.0 + offset.horizontal
 

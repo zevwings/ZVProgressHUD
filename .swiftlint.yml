@@ -32,9 +32,9 @@ type_body_length:
   - 300 # warning
   - 400 # error
 # or they can set both explicitly
-file_length:
-  warning: 800
-  error: 1200
+#file_length:
+#  warning: 800
+#  error: 1200
 function_body_length:
   warning: 60
   error: 80
